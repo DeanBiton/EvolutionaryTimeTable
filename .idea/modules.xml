@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/EvolutionaryTimeTable.iml" filepath="$PROJECT_DIR$/EvolutionaryTimeTable.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SchoolHourLogic/SchoolHourLogic.iml" filepath="$PROJECT_DIR$/SchoolHourLogic/SchoolHourLogic.iml" />
     </modules>
   </component>
 </project>
