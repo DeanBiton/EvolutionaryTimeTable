@@ -13,6 +13,8 @@ import java.util.*;
 public abstract class EvolutionaryAlgorithm implements Serializable {
 
     public EvolutionaryAlgorithmData eaData;
+    private boolean suspended=false;
+
 
     public  EvolutionaryAlgorithm(int _initialPopulation, Selection _selection, Crossover _crossover)
     {
@@ -26,7 +28,10 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
 
     public boolean isActivated(){ return eaData.getBestSolution()!=null;}
 
+
     public void runAlgorithm (List<EndCondition> endConditions, int printEveryThisNumberOfGenerations) {
+        LocalDateTime time1 = LocalDateTime.now();
+
         List<Evolutionary> generation = createFirstGeneration();
         eaData.setBestSolution(null);
         eaData.initEveryGenAndItsBestSolution();
@@ -37,9 +42,23 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
 
         while (! EndConditionIsMet)
         {
+            synchronized(this) {
+                while(suspended) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        suspended=false;
+                        Thread.currentThread().interrupt();
+                    }
+                }
+            }
+            if(Thread.currentThread().isInterrupted())
+            {
+                break;
+            }
             currentGeneration++;
 
-             thisGenBestSolution = generation.stream().max(Evolutionary::compare).get();
+            thisGenBestSolution = generation.stream().max(Evolutionary::compare).get();
             if(eaData.getBestSolution() == null)
             {
                 eaData.setBestSolution(thisGenBestSolution);
@@ -52,16 +71,15 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
                 }
             }
 
-            if(Thread.currentThread().isInterrupted())
-            {
-                break;
-            }
+
 
             if(currentGeneration % printEveryThisNumberOfGenerations == 0)
             {
                 synchronized (eaData.getEveryGenAndItsBestSolution())
                 {
-                    eaData.getEveryGenAndItsBestSolution().add(new Pair(currentGeneration, thisGenBestSolution.fitness()));
+                    //eaData.getEveryGenAndItsBestSolution().add(new Pair(currentGeneration, thisGenBestSolution.fitness()));
+                    System.out.print("currentGeneration= "+currentGeneration);
+                    System.out.println(", thisGenBestSolution.fitness= " +thisGenBestSolution.fitness());
                 }
             }
 
@@ -73,7 +91,12 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
 
             EndConditionGetterClass endConditionGetterClass=new EndConditionGetterClass(currentGeneration,eaData.getBestSolution().fitness());
             EndConditionIsMet= eaData.getEndConditionAlgorithm().stream().anyMatch(t-> t.checkCondition(endConditionGetterClass));
+
+
         }
+        LocalDateTime time2 = LocalDateTime.now();
+
+        System.out.println("Minutes: " + Duration.between(time1, time2).toMinutes() + ", Seconds: " + (Duration.between(time1, time2).getSeconds() - Duration.between(time1, time2).toMinutes() * 60));
     }
 
     protected List<Evolutionary> createFirstGeneration() {
@@ -120,6 +143,16 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
     protected abstract Evolutionary createEvolutionaryInstance();
 
     protected abstract List<Evolutionary> crossover(Evolutionary parent1, Evolutionary parent2);
+
+
+    public void suspend() {
+        suspended = true;
+    }
+
+    public synchronized void resume() {
+        suspended = false;
+        notifyAll();
+    }
 }
 
 

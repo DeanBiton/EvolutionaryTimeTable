@@ -2,14 +2,12 @@ import DTO.*;
 import Evolution.*;
 import Evolution.EndCondition.EndCondition;
 import Evolution.MySolution.Crossover.Crossover;
-import Evolution.MySolution.Crossover.CrossoverSelector;
+import Evolution.MySolution.MyMutation.Mutation;
 import Evolution.MySolution.SchoolHourData;
 import Evolution.MySolution.TupleGroup;
+
 import Evolution.Selection.Selection;
-import Evolution.Selection.SelectionSelector;
-import Xml.JAXBClasses.ETTCrossover;
 import Xml.JAXBClasses.ETTDescriptor;
-import Xml.JAXBClasses.ETTEvolutionEngine;
 import Xml.SchoolHourXMLLoader;
 
 import java.io.*;
@@ -25,29 +23,8 @@ public class SchoolHourManager {
     private Boolean evolutionaryAlgorithmRunned = false;
     private Thread currentThread = null;
     private final String saveAndLoadFileEnding = ".txt";
+    private boolean isSuspended= false;
 
-    private Selection ettGetSelection(ETTEvolutionEngine ettEvolutionEngine)
-    {
-        String name = ettEvolutionEngine.getETTSelection().getType();
-        String configuration= ettEvolutionEngine.getETTSelection().getConfiguration();
-        Selection selection;
-        try{
-            SelectionSelector ss= SelectionSelector.valueOf(name);
-            selection=ss.create(configuration);
-        } catch (IllegalArgumentException e)
-        {
-            throw new RuntimeException("Selection "+ name+" doesnt exists");
-        }
-        return selection;
-    }
-
-    private Crossover ettGetCrossover(ETTCrossover ettCrossover)
-    {
-        String crossovername= ettCrossover.getName();
-        int cuttingPoints=ettCrossover.getCuttingPoints();
-        String configuration=ettCrossover.getConfiguration();
-        return CrossoverSelector.valueOf(crossovername).create(cuttingPoints,configuration);
-    }
 
     public boolean isXMLFileLoadedSuccessfully() {
         return xmlFileLoadedSuccessfully;
@@ -64,7 +41,7 @@ public class SchoolHourManager {
             }
         }
 
-         return evolutionaryAlgurithmIsRunning;
+        return evolutionaryAlgurithmIsRunning;
     }
 
     public boolean getEvolutionaryAlgorithmRunned() {
@@ -82,11 +59,15 @@ public class SchoolHourManager {
         ETTDescriptor discriptor = SchoolHourXMLLoader.LoadXML(XMLPath);
         data = new SchoolHourData(discriptor);
         dtoData = new DTOSchoolHoursData(data);
+        EvolutionaryAlgorithmData eaData=new EvolutionaryAlgorithmData(discriptor.getETTEvolutionEngine());
+        schoolHourEvolutionaryAlgorithm = new SchoolHourEvolutionaryAlgorithm(eaData, data);
 
-        Selection selection= ettGetSelection(discriptor.getETTEvolutionEngine());
-        Crossover crossover = ettGetCrossover(discriptor.getETTEvolutionEngine().getETTCrossover());
-        int initialPopulation = discriptor.getETTEvolutionEngine().getETTInitialPopulation().getSize();
-        schoolHourEvolutionaryAlgorithm = new SchoolHourEvolutionaryAlgorithm(initialPopulation, selection, crossover, data);
+
+        //  Selection selection=getSelection(discriptor.getETTEvolutionEngine());
+        //  Crossover crossover = getCrossover(discriptor.getETTEvolutionEngine().getETTCrossover());
+        //   int initialPopulation=discriptor.getETTEvolutionEngine().getETTInitialPopulation().getSize();
+        // schoolHourEvolutionaryAlgorithm = new SchoolHourEvolutionaryAlgorithm(initialPopulation, selection, crossover, data);
+
 
         stopAlgorithm();
         xmlFileLoadedSuccessfully = true;
@@ -115,7 +96,6 @@ public class SchoolHourManager {
         {
             throw new RuntimeException("SchoolHourManager did not load a file");
         }
-
         stopAlgorithm();
         currentThread=new Thread(() -> {
             schoolHourEvolutionaryAlgorithm.runAlgorithm(endConditions, printEveryThisNumberOfGenerations);
@@ -171,6 +151,22 @@ public class SchoolHourManager {
         }
     }
 
+    public void suspend(){
+        if(currentThread!=null)
+        {
+            if(currentThread.isAlive()) {
+
+                schoolHourEvolutionaryAlgorithm.suspend();
+                isSuspended=true;
+            }
+        }
+    }
+    public void resume()
+    {
+        if(isSuspended)
+            schoolHourEvolutionaryAlgorithm.resume();
+    }
+
     public void LoadFile(String filePath){
         if(!CheckFileEndsWith(filePath,saveAndLoadFileEnding))
             throw new RuntimeException("Load fail, doesnt end with "+saveAndLoadFileEnding);
@@ -223,5 +219,12 @@ public class SchoolHourManager {
             throw  new RuntimeException("File save failed");
         }
     }
+
+    public void setCrossover(Crossover crossover)
+    {
+        schoolHourEvolutionaryAlgorithm.eaData.setCrossover(crossover);
+    }
+    public void setSelection(Selection selection) {schoolHourEvolutionaryAlgorithm.eaData.setSelection(selection);}
+    public void setMutationProbability(Mutation mutation,Double probabilty){}
 }
 
