@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/EvolutionaryTimeTable.iml" filepath="$PROJECT_DIR$/EvolutionaryTimeTable.iml" />
       <module fileurl="file://$PROJECT_DIR$/SchoolHourLogic/SchoolHourLogic.iml" filepath="$PROJECT_DIR$/SchoolHourLogic/SchoolHourLogic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SchoolHourUI/SchoolHourUI.iml" filepath="$PROJECT_DIR$/SchoolHourUI/SchoolHourUI.iml" />
     </modules>
   </component>
 </project>
