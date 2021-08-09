@@ -2,7 +2,11 @@ package Evolution;
 
 import Evolution.EndCondition.EndCondition;
 import Evolution.MySolution.Crossover.Crossover;
+import Evolution.MySolution.Crossover.CrossoverSelector;
 import Evolution.Selection.Selection;
+import Evolution.Selection.SelectionSelector;
+import Xml.JAXBClasses.ETTCrossover;
+import Xml.JAXBClasses.ETTEvolutionEngine;
 import javafx.util.Pair;
 
 import java.io.Serializable;
@@ -17,6 +21,38 @@ public class EvolutionaryAlgorithmData implements Serializable {
     private Evolutionary bestSolution;
     private List<Pair<Integer, Double>> everyGenAndItsBestSolution;
     private List<EndCondition> endCondition;
+
+
+    public EvolutionaryAlgorithmData(ETTEvolutionEngine ettEvolutionEngine)
+    {
+         selection=ETTgetSelection(ettEvolutionEngine);
+         crossover = ETTgetCrossover(ettEvolutionEngine.getETTCrossover());
+         initialPopulation=ettEvolutionEngine.getETTInitialPopulation().getSize();
+        this.endCondition = new ArrayList<>();
+        bestSolution=null;
+    }
+    private Selection ETTgetSelection(ETTEvolutionEngine ettEvolutionEngine)
+    {
+        String name = ettEvolutionEngine.getETTSelection().getType();
+        String configuration= ettEvolutionEngine.getETTSelection().getConfiguration();
+        Selection selection;
+        try{
+            SelectionSelector ss= SelectionSelector.valueOf(name);
+            selection=ss.create(configuration);
+        } catch (IllegalArgumentException e)
+        {
+            throw new RuntimeException("Selection "+ name+" doesnt exists");
+        }
+        return selection;
+    }
+
+    private Crossover ETTgetCrossover(ETTCrossover ettCrossover)
+    {
+        String crossovername= ettCrossover.getName();
+        int cuttingPoints=ettCrossover.getCuttingPoints();
+        String configuration=ettCrossover.getConfiguration();
+        return CrossoverSelector.valueOf(crossovername).create(cuttingPoints,configuration);
+    }
 
     public EvolutionaryAlgorithmData(int initialPopulation, Selection selection, Crossover crossover) {
         this.initialPopulation = initialPopulation;

@@ -15,6 +15,11 @@ public class SchoolHourEvolutionaryAlgorithm extends EvolutionaryAlgorithm{
         data=_data;
     }
 
+    public SchoolHourEvolutionaryAlgorithm(EvolutionaryAlgorithmData _evolutionaryAlgorithmData, SchoolHourData data) {
+        super(_evolutionaryAlgorithmData);
+        this.data = data;
+    }
+
     @Override
     protected Evolutionary createEvolutionaryInstance() {
         return new TupleGroup(data);
