@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public enum SelectionSelector {
     Truncation {
         @Override
-        public Selection create(String configuration) {
+        public Selection create(String configuration, int elitism) {
             ArrayList<String> parameters = HelperFunc.getParameters(configuration);
             if (parameters.size() != 1)
                 throw new RuntimeException("number of parametrs incorrect for Selection Truncation");
@@ -18,11 +18,11 @@ public enum SelectionSelector {
             } catch (Exception e) {
                 throw new RuntimeException("parametrs incorrect for Selection Truncation");
             }
-                return new Truncation(topPercent, 0);
+                return new Truncation(topPercent, elitism);
         }
     };
 
-    public abstract Selection create(String configuration);
+    public abstract Selection create(String configuration, int elitism);
 
     }
 
