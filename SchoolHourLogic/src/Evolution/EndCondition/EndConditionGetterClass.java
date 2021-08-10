@@ -1,6 +1,5 @@
 package Evolution.EndCondition;
 
-import org.apache.commons.lang3.time.StopWatch;
 
 import java.util.concurrent.TimeUnit;
 

@@ -16,7 +16,7 @@ import java.util.List;
 
 public class SchoolHourManager {
 
-    private SchoolHourData data;
+    public SchoolHourData data;
     private DTOSchoolHoursData dtoData;
     private SchoolHourEvolutionaryAlgorithm schoolHourEvolutionaryAlgorithm;
     private boolean xmlFileLoadedSuccessfully = false;
