@@ -8,6 +8,18 @@ public class TupleGroup implements Evolutionary {
     private SchoolHourData data;
     private double fitness;
 
+    @Override
+    public Evolutionary clone()
+    {
+        TupleGroup clone = new TupleGroup(data);
+        List<Tuple> cloneTuples = new ArrayList<>();
+
+        tuples.forEach(tuple -> cloneTuples.add(new Tuple(tuple)));
+        clone.setTuples(cloneTuples);
+
+        return clone;
+    }
+
     public TupleGroup(SchoolHourData _data) {
         data = _data;
         fitness = -1;

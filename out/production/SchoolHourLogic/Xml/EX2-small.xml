@@ -134,6 +134,7 @@
 	<ETT-EvolutionEngine>
 		<ETT-InitialPopulation size="150"/>
 		<ETT-Selection type="Truncation" configuration="TopPercent=20">
+			<ETT-Elitism>20</ETT-Elitism>
 		</ETT-Selection>
 		<ETT-Crossover name="DayTimeOriented" cutting-points="4"/>
 		<ETT-Mutations>
