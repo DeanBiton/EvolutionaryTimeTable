@@ -22,9 +22,9 @@ public class Program {
             endConditions.add(new ByTime(1));
             s.runEvolutionaryAlgorithm(endConditions,10);
           //  Thread.sleep(5000);
-            s.suspend();
-            Thread.sleep(10000);
-            s.resume();
+           // s.suspend();
+            //Thread.sleep(10000);
+           // s.resume();
           //  Thread.sleep(4000);
           //  s.stopAlgorithm();
 
