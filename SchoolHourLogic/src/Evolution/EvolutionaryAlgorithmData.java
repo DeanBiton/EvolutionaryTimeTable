@@ -25,9 +25,9 @@ public class EvolutionaryAlgorithmData implements Serializable {
 
     public EvolutionaryAlgorithmData(ETTEvolutionEngine ettEvolutionEngine)
     {
-         selection=ETTgetSelection(ettEvolutionEngine);
+        initialPopulation=ettEvolutionEngine.getETTInitialPopulation().getSize();
+        selection=ETTgetSelection(ettEvolutionEngine);
          crossover = ETTgetCrossover(ettEvolutionEngine.getETTCrossover());
-         initialPopulation=ettEvolutionEngine.getETTInitialPopulation().getSize();
         this.endCondition = new ArrayList<>();
         bestSolution=null;
     }
@@ -35,10 +35,13 @@ public class EvolutionaryAlgorithmData implements Serializable {
     {
         String name = ettEvolutionEngine.getETTSelection().getType();
         String configuration= ettEvolutionEngine.getETTSelection().getConfiguration();
+        int elitism= ettEvolutionEngine.getETTSelection().getETTElitism()!=null? ettEvolutionEngine.getETTSelection().getETTElitism():0;
+        if(elitism>initialPopulation)
+            throw new RuntimeException("elitism is above initial population");
         Selection selection;
         try{
             SelectionSelector ss= SelectionSelector.valueOf(name);
-            selection=ss.create(configuration);
+            selection=ss.create(configuration,elitism);
         } catch (IllegalArgumentException e)
         {
             throw new RuntimeException("Selection "+ name+" doesnt exists");
