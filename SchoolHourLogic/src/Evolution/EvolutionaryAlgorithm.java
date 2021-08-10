@@ -4,16 +4,19 @@ import Evolution.EndCondition.EndConditionGetterClass;
 import Evolution.MySolution.Crossover.Crossover;
 import Evolution.Selection.Selection;
 import javafx.util.Pair;
+import org.apache.commons.lang3.time.StopWatch;
 
 import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public abstract class EvolutionaryAlgorithm implements Serializable {
 
     public EvolutionaryAlgorithmData eaData;
     private boolean suspended=false;
+    private StopWatch stopWatch= new StopWatch();
 
 
     public  EvolutionaryAlgorithm(int _initialPopulation, Selection _selection, Crossover _crossover)
@@ -31,7 +34,7 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
 
     public void runAlgorithm (List<EndCondition> endConditions, int printEveryThisNumberOfGenerations) {
         LocalDateTime time1 = LocalDateTime.now();
-
+        stopWatch.start();
         List<Evolutionary> generation = createFirstGeneration();
         eaData.setBestSolution(null);
         eaData.initEveryGenAndItsBestSolution();
@@ -45,7 +48,9 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
             synchronized(this) {
                 while(suspended) {
                     try {
+                        stopWatch.suspend();
                         wait();
+                        stopWatch.resume();
                     } catch (InterruptedException e) {
                         suspended=false;
                         Thread.currentThread().interrupt();
@@ -89,7 +94,7 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
                 generation.get(0).fitness();
             }
 
-            EndConditionGetterClass endConditionGetterClass=new EndConditionGetterClass(currentGeneration,eaData.getBestSolution().fitness());
+            EndConditionGetterClass endConditionGetterClass=new EndConditionGetterClass(currentGeneration,eaData.getBestSolution().fitness(),(int)stopWatch.getTime(TimeUnit.MINUTES));
             EndConditionIsMet= eaData.getEndConditionAlgorithm().stream().anyMatch(t-> t.checkCondition(endConditionGetterClass));
 
 
@@ -97,6 +102,7 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
         LocalDateTime time2 = LocalDateTime.now();
 
         System.out.println("Minutes: " + Duration.between(time1, time2).toMinutes() + ", Seconds: " + (Duration.between(time1, time2).getSeconds() - Duration.between(time1, time2).toMinutes() * 60));
+        stopWatch.stop();
     }
 
     protected List<Evolutionary> createFirstGeneration() {
