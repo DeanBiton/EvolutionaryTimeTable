@@ -29,6 +29,7 @@ public class Flipping extends Mutation {
     @Override
     public void mutate(TupleGroup group) {
         List<Tuple> list= new ArrayList(group.getTuples());
+        System.out.println(group.getTuples().size());
 
         for (int i = 0; i < maxTuples; i ++)
         {

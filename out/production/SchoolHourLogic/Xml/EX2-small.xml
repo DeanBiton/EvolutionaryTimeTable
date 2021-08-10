@@ -133,9 +133,7 @@
 	</ETT-TimeTable>
 	<ETT-EvolutionEngine>
 		<ETT-InitialPopulation size="150"/>
-		<ETT-Selection type="Truncation" configuration="TopPercent=20">
-			<ETT-Elitism>20</ETT-Elitism>
-		</ETT-Selection>
+		-<ETT-Selection type="RouletteWheel"/>
 		<ETT-Crossover name="DayTimeOriented" cutting-points="4"/>
 		<ETT-Mutations>
 			<ETT-Mutation name="Flipping" probability="0.4" configuration="MaxTupples=3,Component=D"/>
