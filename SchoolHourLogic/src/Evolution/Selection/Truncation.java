@@ -6,7 +6,8 @@ public class Truncation extends Selection{
 
     private int topPercent;
 
-    public Truncation(int _topPercent) {
+    public Truncation(int _topPercent, int _elitism) {
+        super(_elitism);
         if(_topPercent > 100 || _topPercent < 0)
         {
             throw new RuntimeException("topPercent must be between 0 and 100 in Selection Trunction");

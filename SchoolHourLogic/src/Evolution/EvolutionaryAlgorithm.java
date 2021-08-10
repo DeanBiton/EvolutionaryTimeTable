@@ -77,9 +77,9 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
             {
                 synchronized (eaData.getEveryGenAndItsBestSolution())
                 {
-                    //eaData.getEveryGenAndItsBestSolution().add(new Pair(currentGeneration, thisGenBestSolution.fitness()));
-                    System.out.print("currentGeneration= "+currentGeneration);
-                    System.out.println(", thisGenBestSolution.fitness= " +thisGenBestSolution.fitness());
+                    eaData.getEveryGenAndItsBestSolution().add(new Pair(currentGeneration, thisGenBestSolution.fitness()));
+                    //System.out.print("currentGeneration= "+currentGeneration);
+                    //System.out.println(", thisGenBestSolution.fitness= " +thisGenBestSolution.fitness());
                 }
             }
 

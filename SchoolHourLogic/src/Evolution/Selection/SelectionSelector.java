@@ -18,7 +18,7 @@ public enum SelectionSelector {
             } catch (Exception e) {
                 throw new RuntimeException("parametrs incorrect for Selection Truncation");
             }
-                return new Truncation(topPercent);
+                return new Truncation(topPercent, 0);
         }
     };
 
