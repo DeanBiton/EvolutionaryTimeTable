@@ -4,6 +4,8 @@ import Evolution.EndCondition.NumberOfGenerations;
 import Evolution.Evolutionary;
 import Evolution.MySolution.Crossover.AspectOriented;
 import Evolution.MySolution.Crossover.Crossover;
+import Evolution.MySolution.TupleGroup;
+import Evolution.Rule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,7 @@ public class Program {
         try{
             //SchoolHourSystem.run();
 
-
+/*
             SchoolHourManager s=new SchoolHourManager();
             s.LoadXML("C:\\Users\\belik\\IdeaProjects\\EvolutionaryTimeTable\\SchoolHourLogic\\src\\Xml\\EX2-small.xml");
 
@@ -34,7 +36,16 @@ public class Program {
             //Crossover aspect= new AspectOriented(2, AspectOriented.OrientationType.TEACHER);
             //s.setCrossover(aspect);
            // Thread.sleep(5000);
-            //s.resume();
+            //s.resume();*/
+
+            SchoolHourManager s = new SchoolHourManager();
+            s.LoadXML("C:\\Users\\user\\Desktop\\EX2-small.xml");
+
+            TupleGroup tupleGroup = new TupleGroup(s.data);
+            tupleGroup.random();
+            double fitness = Rule.RuleType.Sequentiality.fitnessRuleCalc(tupleGroup);
+            System.out.println(fitness);
+
         }
         catch (Exception ex)
         {

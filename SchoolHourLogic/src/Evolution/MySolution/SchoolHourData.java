@@ -115,7 +115,16 @@ public class SchoolHourData implements Serializable {
         for (ETTRule r : ettRules.getETTRule()) {
             Rule rule;
             try {
-                rule = new Rule(Rule.RuleType.valueOf(r.getETTRuleId()), Rule.RuleImplementationLevel.valueOf(r.getType()));
+               if(Rule.RuleType.Sequentiality == Rule.RuleType.valueOf(r.getETTRuleId()))
+               {
+                   ArrayList<String> parameters = HelperFunc.getParameters(r.getETTConfiguration());
+                   Integer totalHours = Integer.parseInt(parameters.get(0));
+                   rule = new Rule(Rule.RuleType.valueOf(r.getETTRuleId()), Rule.RuleImplementationLevel.valueOf(r.getType()), totalHours);
+               }
+               else
+               {
+                   rule = new Rule(Rule.RuleType.valueOf(r.getETTRuleId()), Rule.RuleImplementationLevel.valueOf(r.getType()));
+               }
             } catch (IllegalArgumentException e) {
                 throw new RuntimeException(r.getETTRuleId()+ " - rule doesnt exist");
             }

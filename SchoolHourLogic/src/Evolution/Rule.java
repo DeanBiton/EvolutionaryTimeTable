@@ -1,5 +1,6 @@
 package Evolution;
 import Evolution.MySolution.*;
+import com.sun.org.apache.bcel.internal.generic.RET;
 import javafx.util.Pair;
 
 import java.io.Serializable;
@@ -14,6 +15,12 @@ public class Rule implements Serializable {
     public Rule(RuleType _type, RuleImplementationLevel _implementationLevel) {
         type = _type;
         implementationLevel = _implementationLevel;
+    }
+
+    public Rule(RuleType _type, RuleImplementationLevel _implementationLevel, int _totalHours) {
+        type = _type;
+        implementationLevel = _implementationLevel;
+        type.totalHours = _totalHours;
     }
 
     public RuleType getType() {
@@ -201,7 +208,115 @@ public class Rule implements Serializable {
                 return sumOfClassroomsScore / numberOfClassrooms;
             }
         }
+        , DayOffTeacher{
+            public double fitnessRuleCalc(Evolutionary evolutionary) {
+                double sumOfTeachersScore = 0;
+                TupleGroup group = getTupleGroup(evolutionary);
+                int numberOfTeachers = group.getData().getTeachers().size();
+                int numberOfDays = group.getData().getNumberOfDays();
+
+                for(Teacher teacher : group.getData().getTeachers().values())
+                {
+                    Set<Integer> teacherLearningDays = new HashSet<>();
+                    group.getTuples().stream().
+                            filter(tuple -> tuple.getTeacher() == teacher).
+                            forEach(tuple -> teacherLearningDays.add(tuple.getDay()));
+
+                    if(numberOfDays == 1)
+                    {
+                        sumOfTeachersScore += (teacherLearningDays.size() == 0) ? 100 : 0;
+                    }
+                    else
+                    {
+                        sumOfTeachersScore += teacherLearningDays.size() == numberOfDays ?
+                                (double)(numberOfDays - 2) * 100 / (numberOfDays - 1) :
+                                (double)teacherLearningDays.size() * 100 / (numberOfDays - 1);
+                    }
+                }
+
+                return sumOfTeachersScore / numberOfTeachers;
+            }
+        }
+        , Sequentiality {
+            public double fitnessRuleCalc(Evolutionary evolutionary) {
+                double sumOfSubjectsScore = 0;
+                TupleGroup group = getTupleGroup(evolutionary);
+                int numberOfSubjects = group.getData().getSubjects().size();
+                int numberOfDays = group.getData().getNumberOfDays();
+
+                for(Subject subject : group.getData().getSubjects().values())
+                {
+                    double sumOfDaysScore = 0;
+                    List<Tuple> subjectTuples = group.getTuples().stream().
+                            filter(tuple -> tuple.getSubject() == subject).
+                            collect(Collectors.toList());
+
+                    for (int day = 1; day <= numberOfDays; day++)
+                    {
+                        int finalDay = day;
+                        int longetsConsecutiveHoursInADay = findLLongetsConsecutiveHoursOfSubject(
+                                subjectTuples.stream()
+                                        .filter(tuple -> tuple.getDay() == finalDay)
+                                        .collect(Collectors.toList()));
+
+                        if((longetsConsecutiveHoursInADay <= totalHours) || longetsConsecutiveHoursInADay == 0)
+                        {
+                            sumOfDaysScore += 100;
+                        }
+                        else
+                        {
+                            sumOfDaysScore += (double) totalHours * 100 / longetsConsecutiveHoursInADay;
+                        }
+                    }
+
+                    sumOfSubjectsScore += sumOfDaysScore / numberOfDays;
+                }
+
+                    return sumOfSubjectsScore / numberOfSubjects;
+            }
+
+            private int findLLongetsConsecutiveHoursOfSubject(List<Tuple> subjectTuples)
+            {
+                int longetsHoursInADay = 0;
+                int consecutiveHoursInADay = 1;
+
+                subjectTuples = subjectTuples.stream().sorted((o1,o2)-> {
+                    if(!o1.getHour().equals(o2.getHour()))
+                        return o1.getHour() - o2.getHour();
+                    else return 1;
+                }).collect(Collectors.toList());
+
+                for(int i = 1; i < subjectTuples.size(); i++)
+                {
+                    if(subjectTuples.get(i).getHour() - subjectTuples.get(i-1).getHour() == 1)
+                    {
+                        consecutiveHoursInADay++;
+                    }
+                    else if(subjectTuples.get(i).getHour() == subjectTuples.get(i-1).getHour())
+                    {
+
+                    }
+                    else
+                    {
+                        if(consecutiveHoursInADay > longetsHoursInADay)
+                        {
+                            longetsHoursInADay = consecutiveHoursInADay;
+                        }
+                        consecutiveHoursInADay = 1;
+                    }
+                }
+
+                if(consecutiveHoursInADay > longetsHoursInADay)
+                {
+                    longetsHoursInADay = consecutiveHoursInADay;
+                }
+
+                return longetsHoursInADay;
+            }
+        }
         ;
+
+        int totalHours = 0;
 
         protected TupleGroup getTupleGroup(Evolutionary evolutionary)
         {
@@ -217,6 +332,8 @@ public class Rule implements Serializable {
         public double fitnessRuleCalc(Evolutionary evolutionary) {
             return 0;
         }
+
+
     }
 
     public enum RuleImplementationLevel
