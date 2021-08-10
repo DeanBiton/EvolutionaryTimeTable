@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface Evolutionary extends Serializable {
 
+    public Evolutionary clone();
+
     public void random();
 
     public double fitness();

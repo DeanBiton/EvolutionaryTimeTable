@@ -113,27 +113,30 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
     }
 
     protected List<Evolutionary> getNextGen(List<Evolutionary> currentGen) {
-        List<Evolutionary> parents = eaData.getSelection().selection(currentGen);
         List<Evolutionary> children = new ArrayList<>();
+        List<Evolutionary> parents = eaData.getSelection().selection(currentGen, children);
+
+        if(parents.size() % 2 != 0)
+        {
+            throw new RuntimeException("number of parents is not even.");
+        }
 
         for(int i = 0; i < parents.size(); i+=2)
         {
             List<Evolutionary> twoNewChildren;
-            if(i != parents.size() - 1)
-            {
-                twoNewChildren = crossover(parents.get(i), parents.get(i+1));
-            }
-            else
-            {
-                twoNewChildren = crossover(parents.get(i), parents.get(i));
-            }
+            twoNewChildren = crossover(parents.get(i), parents.get(i+1));
 
             if(twoNewChildren.size() != 2)
             {
-                throw new RuntimeException("number of children is not 2");
+                throw new RuntimeException("number of children is not 2.");
             }
 
             children.addAll(twoNewChildren);
+        }
+
+        if((currentGen.size() - eaData.getSelection().getElitism()) % 2 == 1)
+        {
+            children.remove(children.size() - 1);
         }
 
         children.forEach(Evolutionary::mutation);

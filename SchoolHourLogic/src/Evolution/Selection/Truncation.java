@@ -21,7 +21,7 @@ public class Truncation extends Selection{
     }
 
     @Override
-    public List<Evolutionary> selection(List<Evolutionary> currentGen) {
+    public List<Evolutionary> selection(List<Evolutionary> currentGen, int numberOfParents) {
 
         Collections.sort(currentGen, Collections.reverseOrder(Evolutionary::compare));
 
@@ -31,7 +31,7 @@ public class Truncation extends Selection{
         if(numberOfSolutions == 0)
             numberOfSolutions = 1;
 
-        for (int i = 0; i < currentGen.size(); i++)
+        for (int i = 0; i < numberOfParents; i++)
         {
             Evolutionary parent = currentGen.get(HelperFunc.getRandomNumber(0,numberOfSolutions-1));
             if(i % 2 == 1)
