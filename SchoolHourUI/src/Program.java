@@ -1,3 +1,4 @@
+import Evolution.EndCondition.ByTime;
 import Evolution.EndCondition.EndCondition;
 import Evolution.EndCondition.NumberOfGenerations;
 import Evolution.MySolution.Crossover.AspectOriented;
@@ -10,21 +11,22 @@ public class Program {
 
     public static void main(String[] args) {
         try{
-            SchoolHourSystem.run();
+            //SchoolHourSystem.run();
 
 
-           /* SchoolHourManager s=new SchoolHourManager();
-            s.LoadXML("C:\\Users\\belik\\Downloads\\EX1-small.xml");
+            SchoolHourManager s=new SchoolHourManager();
+            s.LoadXML("C:\\Users\\belik\\IdeaProjects\\EvolutionaryTimeTable\\SchoolHourLogic\\src\\Xml\\EX2-small.xml");
 
             List<EndCondition> endConditions= new ArrayList<>();
-            endConditions.add(new NumberOfGenerations(1000));
+           // endConditions.add(new NumberOfGenerations(1000));
+            endConditions.add(new ByTime(1));
             s.runEvolutionaryAlgorithm(endConditions,10);
-            Thread.sleep(5000);
+          //  Thread.sleep(5000);
             s.suspend();
-            Thread.sleep(2000);
+            Thread.sleep(10000);
             s.resume();
-            Thread.sleep(4000);
-            s.stopAlgorithm();*/
+          //  Thread.sleep(4000);
+          //  s.stopAlgorithm();
 
             //Crossover aspect= new AspectOriented(2, AspectOriented.OrientationType.TEACHER);
             //s.setCrossover(aspect);
