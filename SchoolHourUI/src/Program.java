@@ -1,6 +1,7 @@
 import Evolution.EndCondition.ByTime;
 import Evolution.EndCondition.EndCondition;
 import Evolution.EndCondition.NumberOfGenerations;
+import Evolution.Evolutionary;
 import Evolution.MySolution.Crossover.AspectOriented;
 import Evolution.MySolution.Crossover.Crossover;
 
@@ -17,10 +18,12 @@ public class Program {
             SchoolHourManager s=new SchoolHourManager();
             s.LoadXML("C:\\Users\\belik\\IdeaProjects\\EvolutionaryTimeTable\\SchoolHourLogic\\src\\Xml\\EX2-small.xml");
 
+
+
             List<EndCondition> endConditions= new ArrayList<>();
-           // endConditions.add(new NumberOfGenerations(1000));
-            endConditions.add(new ByTime(1));
-            s.runEvolutionaryAlgorithm(endConditions,10);
+            endConditions.add(new NumberOfGenerations(2000));
+           // endConditions.add(new ByTime(1));
+            s.runEvolutionaryAlgorithm(endConditions,20);
           //  Thread.sleep(5000);
            // s.suspend();
             //Thread.sleep(10000);

@@ -20,8 +20,17 @@ public enum SelectionSelector {
             }
                 return new Truncation(topPercent, elitism);
         }
-    };
+    },
 
+    RouletteWheel{
+        @Override
+        public Selection create(String configuration, int elitism) {
+            if (configuration!=null)
+                throw new RuntimeException("number of parametrs incorrect for Selection RouletteWheel");
+
+            return new RouletteWheel(elitism);
+        }
+    };
     public abstract Selection create(String configuration, int elitism);
 
     }
