@@ -40,16 +40,6 @@ public class TupleGroup implements Evolutionary {
 
     @Override
     public void random() {
-
-        tuples = new ArrayList<>();
-
-        tuples.add(new Tuple(1,1,data.getClassrooms().get(1), data.getTeachers().get(1), data.getSubjects().get(1)));
-        tuples.add(new Tuple(1,2,data.getClassrooms().get(1), data.getTeachers().get(1), data.getSubjects().get(1)));
-        tuples.add(new Tuple(1,3,data.getClassrooms().get(1), data.getTeachers().get(1), data.getSubjects().get(1)));
-        tuples.add(new Tuple(4,1,data.getClassrooms().get(1), data.getTeachers().get(1), data.getSubjects().get(1)));
-        tuples.add(new Tuple(5,1,data.getClassrooms().get(1), data.getTeachers().get(1), data.getSubjects().get(1)));
-        tuples.add(new Tuple(6,1,data.getClassrooms().get(1), data.getTeachers().get(1), data.getSubjects().get(1)));
-/*
         int numberOfTuples = getNumberOfTuples();
 
         tuples = new ArrayList<>(numberOfTuples);
@@ -57,7 +47,7 @@ public class TupleGroup implements Evolutionary {
         for(int i = 0; i < numberOfTuples; i++)
         {
             tuples.add(data.createRandomTuple());
-        }*/
+        }
     }
 
     private int getNumberOfTuples() {

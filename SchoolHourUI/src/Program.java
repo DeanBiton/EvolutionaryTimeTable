@@ -16,8 +16,7 @@ public class Program {
         try{
             //SchoolHourSystem.run();
 
-/*
-            SchoolHourManager s=new SchoolHourManager();
+          /*  SchoolHourManager s=new SchoolHourManager();
             s.LoadXML("C:\\Users\\belik\\IdeaProjects\\EvolutionaryTimeTable\\SchoolHourLogic\\src\\Xml\\EX2-small.xml");
 
 
@@ -26,6 +25,7 @@ public class Program {
             endConditions.add(new NumberOfGenerations(2000));
            // endConditions.add(new ByTime(1));
             s.runEvolutionaryAlgorithm(endConditions,20);
+
           //  Thread.sleep(5000);
            // s.suspend();
             //Thread.sleep(10000);
@@ -38,13 +38,13 @@ public class Program {
            // Thread.sleep(5000);
             //s.resume();*/
 
-            SchoolHourManager s = new SchoolHourManager();
+/*            SchoolHourManager s = new SchoolHourManager();
             s.LoadXML("C:\\Users\\user\\Desktop\\EX2-small.xml");
 
             TupleGroup tupleGroup = new TupleGroup(s.data);
             tupleGroup.random();
             double fitness = Rule.RuleType.Sequentiality.fitnessRuleCalc(tupleGroup);
-            System.out.println(fitness);
+            System.out.println(fitness);*/
 
         }
         catch (Exception ex)
