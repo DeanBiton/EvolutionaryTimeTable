@@ -29,15 +29,17 @@ public class Flipping extends Mutation {
     @Override
     public void mutate(TupleGroup group) {
         List<Tuple> list= new ArrayList(group.getTuples());
-        System.out.println(group.getTuples().size());
 
-        for (int i = 0; i < maxTuples; i ++)
+        if(!group.getTuples().isEmpty())
         {
-            Tuple tuple = list.get(HelperFunc.getRandomNumber(0,group.getTuples().size()-1));
-
-            if(probability >= Math.random() || probability == 1)
+            for (int i = 0; i < maxTuples; i ++)
             {
-                mutateTuple(tuple, group.getData());
+                Tuple tuple = list.get(HelperFunc.getRandomNumber(0, group.getTuples().size()-1));
+
+                if(probability >= Math.random() || probability == 1)
+                {
+                    mutateTuple(tuple, group.getData());
+                }
             }
         }
     }

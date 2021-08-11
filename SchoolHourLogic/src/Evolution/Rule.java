@@ -243,6 +243,7 @@ public class Rule implements Serializable {
                 TupleGroup group = getTupleGroup(evolutionary);
                 int numberOfSubjects = group.getData().getSubjects().size();
                 int numberOfDays = group.getData().getNumberOfDays();
+                int numberOfHours = group.getData().getNumberOfHoursInADay();
 
                 for(Subject subject : group.getData().getSubjects().values())
                 {
@@ -265,7 +266,7 @@ public class Rule implements Serializable {
                         }
                         else
                         {
-                            sumOfDaysScore += (double) totalHours * 100 / longetsConsecutiveHoursInADay;
+                            sumOfDaysScore += 100 - ((double) (longetsConsecutiveHoursInADay - totalHours) * 100 / (numberOfHours - totalHours));
                         }
                     }
 
@@ -306,7 +307,7 @@ public class Rule implements Serializable {
                     }
                 }
 
-                if(consecutiveHoursInADay > longetsHoursInADay)
+                if(consecutiveHoursInADay > longetsHoursInADay && !subjectTuples.isEmpty())
                 {
                     longetsHoursInADay = consecutiveHoursInADay;
                 }
@@ -332,8 +333,6 @@ public class Rule implements Serializable {
         public double fitnessRuleCalc(Evolutionary evolutionary) {
             return 0;
         }
-
-
     }
 
     public enum RuleImplementationLevel
