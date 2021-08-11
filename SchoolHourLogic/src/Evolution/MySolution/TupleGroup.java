@@ -40,6 +40,7 @@ public class TupleGroup implements Evolutionary {
 
     @Override
     public void random() {
+
         int numberOfTuples = getNumberOfTuples();
 
         tuples = new ArrayList<>(numberOfTuples);
