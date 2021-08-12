@@ -12,51 +12,51 @@ import Xml.SchoolHourXMLLoader;
 
 import java.io.*;
 import java.nio.file.Paths;
+import java.util.EventListener;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 public class SchoolHourManager {
 
     private SchoolHourData data;
     private DTOSchoolHoursData dtoData;
     private SchoolHourEvolutionaryAlgorithm schoolHourEvolutionaryAlgorithm;
-    private boolean xmlFileLoadedSuccessfully = false;
-    private Boolean evolutionaryAlgorithmRunned = false;
     private Thread currentThread = null;
     private final String saveAndLoadFileEnding = ".txt";
+
+    private boolean xmlFileLoadedSuccessfully = false;
     private boolean isSuspended= false;
-
-
-    public boolean isXMLFileLoadedSuccessfully() {
-        return xmlFileLoadedSuccessfully;
-    }
-
-    public boolean isEvolutionaryAlgurithmIsRunning() {
-        boolean evolutionaryAlgurithmIsRunning = false;
-
-        if(currentThread != null)
-        {
-            if(currentThread.isAlive())
-            {
-                evolutionaryAlgurithmIsRunning = true;
-            }
-        }
-
-        return evolutionaryAlgurithmIsRunning;
-    }
-
-    public boolean getEvolutionaryAlgorithmRunned() {
-        synchronized (evolutionaryAlgorithmRunned)
-        {
-            return evolutionaryAlgorithmRunned;
-        }
-    }
-
-    public String getSaveAndLoadFileEnding() {
-        return saveAndLoadFileEnding;
-    }
+    private Boolean evolutionaryAlgorithmRunned = false;
 
     public void LoadXML(String XMLPath) throws Exception {
-        ETTDescriptor discriptor = SchoolHourXMLLoader.LoadXML(XMLPath);
+        File xmlFile = getXMLFile(XMLPath);
+        LoadXML(xmlFile);
+    }
+
+    private static File getXMLFile(String XMLPath) {
+        if(XMLPath == null)
+        {
+            throw new NullPointerException("The path given is null");
+        }
+
+        if(!XMLPath.endsWith(".xml"))
+        {
+            throw new IllegalArgumentException("The file is not a xml file");
+        }
+
+        File xmlFile = new File(XMLPath);
+        if(!xmlFile.exists())
+        {
+            throw new IllegalArgumentException("The file does not exist");
+        }
+
+        return xmlFile;
+    }
+
+    public void LoadXML(File XMLfile) throws Exception
+    {
+        ETTDescriptor discriptor = SchoolHourXMLLoader.LoadXML(XMLfile);
         data = new SchoolHourData(discriptor);
         dtoData = new DTOSchoolHoursData(data);
         EvolutionaryAlgorithmData eaData=new EvolutionaryAlgorithmData(discriptor.getETTEvolutionEngine());
@@ -82,10 +82,10 @@ public class SchoolHourManager {
         }
 
         DTOEvolutionaryAlgorithmSettings dtoEvolutionaryAlgorithmSettings = new DTOEvolutionaryAlgorithmSettings(
-                schoolHourEvolutionaryAlgorithm.eaData.getInitialPopulation(),
+                schoolHourEvolutionaryAlgorithm.getInitialPopulation(),
                 dtoData.getDtoMutations(),
-                DTOSelection.getDTOSelection(schoolHourEvolutionaryAlgorithm.eaData.getSelection()),
-                DTOCrossover.getDTOCrossover(schoolHourEvolutionaryAlgorithm.eaData.getCrossover()));
+                DTOSelection.getDTOSelection(schoolHourEvolutionaryAlgorithm.getSelection()),
+                DTOCrossover.getDTOCrossover(schoolHourEvolutionaryAlgorithm.getCrossover()));
 
         return new DTODataAndAlgorithmSettings(dtoEvolutionaryAlgorithmSettings, dtoData);
     }
@@ -115,7 +115,7 @@ public class SchoolHourManager {
             throw new RuntimeException("SchoolHourManager is not running the algorithm");
         }
 
-        return new DTOTupleGroupWithFitnessDetails((TupleGroup)schoolHourEvolutionaryAlgorithm.eaData.getBestSolution(), dtoData);
+        return new DTOTupleGroupWithFitnessDetails((TupleGroup)schoolHourEvolutionaryAlgorithm.getBestSolution(), dtoData);
     }
 
     public DTOEveryGenAndItsBestSolution getEveryGenAndItsBestSolution()
@@ -134,7 +134,7 @@ public class SchoolHourManager {
         {
             showFullList = true;
         }
-        return new DTOEveryGenAndItsBestSolution(schoolHourEvolutionaryAlgorithm.eaData.getEveryGenAndItsBestSolution(), showFullList);
+        return new DTOEveryGenAndItsBestSolution(schoolHourEvolutionaryAlgorithm.getEveryGenAndItsBestSolution(), showFullList);
     }
 
     public void stopAlgorithm()
@@ -161,8 +161,8 @@ public class SchoolHourManager {
             }
         }
     }
-    public void resume()
-    {
+
+    public void resume() {
         if(isSuspended)
             schoolHourEvolutionaryAlgorithm.resume();
     }
@@ -187,7 +187,7 @@ public class SchoolHourManager {
         dtoData = new DTOSchoolHoursData(data);
         stopAlgorithm();
         xmlFileLoadedSuccessfully = true;
-        evolutionaryAlgorithmRunned = schoolHourEvolutionaryAlgorithm.eaData.getBestSolution() != null;
+        evolutionaryAlgorithmRunned = schoolHourEvolutionaryAlgorithm.getBestSolution() != null;
     }
 
     public boolean CheckFileEndsWith(String filePath,String endString)
@@ -220,11 +220,45 @@ public class SchoolHourManager {
         }
     }
 
+    public boolean isXMLFileLoadedSuccessfully() {
+        return xmlFileLoadedSuccessfully;
+    }
+
+    public boolean isEvolutionaryAlgurithmIsRunning() {
+        boolean evolutionaryAlgurithmIsRunning = false;
+
+        if(currentThread != null)
+        {
+            if(currentThread.isAlive())
+            {
+                evolutionaryAlgurithmIsRunning = true;
+            }
+        }
+
+        return evolutionaryAlgurithmIsRunning;
+    }
+
+    public boolean getEvolutionaryAlgorithmRunned() {
+        synchronized (evolutionaryAlgorithmRunned)
+        {
+            return evolutionaryAlgorithmRunned;
+        }
+    }
+
+    public String getSaveAndLoadFileEnding() {
+        return saveAndLoadFileEnding;
+    }
+
     public void setCrossover(Crossover crossover)
     {
-        schoolHourEvolutionaryAlgorithm.eaData.setCrossover(crossover);
+        schoolHourEvolutionaryAlgorithm.setCrossover(crossover);
     }
-    public void setSelection(Selection selection) {schoolHourEvolutionaryAlgorithm.eaData.setSelection(selection);}
+
+    public void setSelection(Selection selection) {
+        schoolHourEvolutionaryAlgorithm.setSelection(selection);
+    }
+
     public void setMutationProbability(Mutation mutation,Double probabilty){}
+
 }
 
