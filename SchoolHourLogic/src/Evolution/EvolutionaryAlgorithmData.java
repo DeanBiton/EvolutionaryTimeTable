@@ -15,13 +15,12 @@ import java.util.List;
 
 public class EvolutionaryAlgorithmData implements Serializable {
 
-    private int initialPopulation;
+    private Integer initialPopulation;
     private Selection selection;
     private Crossover crossover;
     private Evolutionary bestSolution;
     private List<Pair<Integer, Double>> everyGenAndItsBestSolution;
     private List<EndCondition> endCondition;
-
 
     public EvolutionaryAlgorithmData(ETTEvolutionEngine ettEvolutionEngine)
     {
@@ -31,6 +30,7 @@ public class EvolutionaryAlgorithmData implements Serializable {
         this.endCondition = new ArrayList<>();
         bestSolution=null;
     }
+
     private Selection ETTgetSelection(ETTEvolutionEngine ettEvolutionEngine)
     {
         String name = ettEvolutionEngine.getETTSelection().getType();
@@ -65,7 +65,7 @@ public class EvolutionaryAlgorithmData implements Serializable {
         bestSolution=null;
     }
 
-    public int getInitialPopulation() {
+    public Integer getInitialPopulation() {
         return initialPopulation;
     }
 

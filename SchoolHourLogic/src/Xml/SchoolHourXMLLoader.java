@@ -5,15 +5,14 @@ import Xml.JAXBClasses.*;
 
 public class SchoolHourXMLLoader {
 
-    public static ETTDescriptor LoadXML(String XMLPath) throws Exception {
+    public static ETTDescriptor LoadXML(File XMLfile) throws Exception {
         JAXBContext jaxbContext;
         ETTDescriptor descriptor = null;
 
         try {
-            File xmlFile = getXMLFile(XMLPath);
             jaxbContext = getJAXBContent(ETTDescriptor.class);
             Unmarshaller jaxbUnmarshaller = getUnmarshaller(jaxbContext);
-            descriptor = (ETTDescriptor) jaxbUnmarshaller.unmarshal(xmlFile);
+            descriptor = (ETTDescriptor) jaxbUnmarshaller.unmarshal(XMLfile);
 
             if(descriptor == null)
             {
@@ -48,25 +47,5 @@ public class SchoolHourXMLLoader {
         JAXBContext jaxbContext = JAXBContext.newInstance(klass);
 
         return jaxbContext;
-    }
-
-    private static File getXMLFile(String XMLPath) {
-        if(XMLPath == null)
-        {
-            throw new NullPointerException("The path given is null");
-        }
-
-        if(!XMLPath.endsWith(".xml"))
-        {
-            throw new IllegalArgumentException("The file is not a xml file");
-        }
-
-        File xmlFile = new File(XMLPath);
-        if(!xmlFile.exists())
-        {
-            throw new IllegalArgumentException("The file does not exist");
-        }
-
-        return xmlFile;
     }
 }

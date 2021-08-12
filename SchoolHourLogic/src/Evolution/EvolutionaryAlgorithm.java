@@ -14,9 +14,11 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class EvolutionaryAlgorithm implements Serializable {
 
-    public EvolutionaryAlgorithmData eaData;
-    private boolean suspended=false;
-    private StopWatch stopWatch= new StopWatch();
+    protected EvolutionaryAlgorithmData eaData;
+    private boolean suspended = false;
+    private StopWatch stopWatch = new StopWatch();
+    private boolean isSettingAvailable = true;
+    //private List<EventListener> bestSolutionListeners;
 
     public  EvolutionaryAlgorithm(int _initialPopulation, Selection _selection, Crossover _crossover)
     {
@@ -31,6 +33,8 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
     public boolean isActivated(){ return eaData.getBestSolution()!=null;}
 
     public void runAlgorithm (List<EndCondition> endConditions, int printEveryThisNumberOfGenerations) {
+        isSettingAvailable = false;
+        //bestSolutionListeners = new ArrayList<>();
         LocalDateTime time1 = LocalDateTime.now();
         stopWatch.start();
         List<Evolutionary> generation = createFirstGeneration();
@@ -39,6 +43,7 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
         int currentGeneration = 0;
         eaData.setEndConditionAlgorithm(endConditions);
         boolean EndConditionIsMet=false;
+
         Evolutionary thisGenBestSolution;
 
         while (! EndConditionIsMet)
@@ -46,9 +51,11 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
             synchronized(this) {
                 while(suspended) {
                     try {
+                        isSettingAvailable = true;
                         stopWatch.suspend();
                         wait();
                         stopWatch.resume();
+                        isSettingAvailable = false;
                     } catch (InterruptedException e) {
                         suspended=false;
                         Thread.currentThread().interrupt();
@@ -95,6 +102,7 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
             EndConditionIsMet= eaData.getEndConditionAlgorithm().stream().anyMatch(t-> t.checkCondition(endConditionGetterClass));
 
         }
+        isSettingAvailable = true;
         LocalDateTime time2 = LocalDateTime.now();
 
         System.out.println("Minutes: " + Duration.between(time1, time2).toMinutes() + ", Seconds: " + (Duration.between(time1, time2).getSeconds() - Duration.between(time1, time2).toMinutes() * 60));
@@ -145,11 +153,6 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
         return children;
     }
 
-    protected abstract Evolutionary createEvolutionaryInstance();
-
-    protected abstract List<Evolutionary> crossover(Evolutionary parent1, Evolutionary parent2);
-
-
     public void suspend() {
         suspended = true;
     }
@@ -158,6 +161,90 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
         suspended = false;
         notifyAll();
     }
+
+    protected abstract Evolutionary createEvolutionaryInstance();
+
+    protected abstract List<Evolutionary> crossover(Evolutionary parent1, Evolutionary parent2);
+
+    public int getInitialPopulation() {
+        synchronized (eaData.getInitialPopulation())
+        {
+            return eaData.getInitialPopulation().intValue();
+        }
+    }
+
+    public void setInitialPopulation(int initialPopulation) {
+        synchronized (eaData.getInitialPopulation())
+        {
+            if(isSettingAvailable)
+            {
+                eaData.setInitialPopulation(initialPopulation);
+            }
+            else
+            {
+                throw new RuntimeException("can't set initialPopulation while the algorithm is running.");
+            }
+        }
+    }
+
+    public Selection getSelection() {
+        synchronized (eaData.getSelection())
+        {
+            return eaData.getSelection();
+        }
+    }
+
+    public void setSelection(Selection selection) {
+        synchronized (eaData.getSelection())
+        {
+            if(isSettingAvailable)
+            {
+                eaData.setSelection(selection);
+            }
+            else
+            {
+                throw new RuntimeException("can't set selection while the algorithm is running.");
+            }
+        }
+    }
+
+    public Crossover getCrossover() {
+        synchronized (eaData.getCrossover())
+        {
+            return eaData.getCrossover();
+        }
+    }
+
+    public void setCrossover(Crossover crossover) {
+        synchronized (eaData.getCrossover())
+        {
+            if(isSettingAvailable)
+            {
+                eaData.setCrossover(crossover);
+            }
+            else
+            {
+                throw new RuntimeException("can't set crossover while the algorithm is running.");
+            }
+        }
+    }
+
+    public Evolutionary getBestSolution() {
+        return eaData.getBestSolution();
+    }
+
+    public List<Pair<Integer, Double>> getEveryGenAndItsBestSolution() {
+        return eaData.getEveryGenAndItsBestSolution();
+    }
+
+    public List<EndCondition> getEndConditionAlgorithm() {
+        return eaData.getEndConditionAlgorithm();
+    }
+
+   // public void addBestSolutionListener(EventListener listener)
+    //{
+   //     bestSolutionListeners.add(listener);
+   // }
 }
 
 
