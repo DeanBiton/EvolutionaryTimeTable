@@ -151,7 +151,7 @@ public class Rule implements Serializable {
                     }
                 }
 
-                    return sumOfTeachersScore / numberOfTeachers;
+                return sumOfTeachersScore / numberOfTeachers;
             }
         }
         , Satisfactory{
@@ -222,16 +222,7 @@ public class Rule implements Serializable {
                             filter(tuple -> tuple.getTeacher() == teacher).
                             forEach(tuple -> teacherLearningDays.add(tuple.getDay()));
 
-                    if(numberOfDays == 1)
-                    {
-                        sumOfTeachersScore += (teacherLearningDays.size() == 0) ? 100 : 0;
-                    }
-                    else
-                    {
-                        sumOfTeachersScore += teacherLearningDays.size() == numberOfDays ?
-                                (double)(numberOfDays - 2) * 100 / (numberOfDays - 1) :
-                                (double)teacherLearningDays.size() * 100 / (numberOfDays - 1);
-                    }
+                    sumOfTeachersScore += teacherLearningDays.size() == numberOfDays? 0 : 100;
                 }
 
                 return sumOfTeachersScore / numberOfTeachers;
@@ -244,36 +235,48 @@ public class Rule implements Serializable {
                 int numberOfSubjects = group.getData().getSubjects().size();
                 int numberOfDays = group.getData().getNumberOfDays();
                 int numberOfHours = group.getData().getNumberOfHoursInADay();
+                int numberOfClassrooms = group.getData().getClassrooms().size();
 
                 for(Subject subject : group.getData().getSubjects().values())
                 {
-                    double sumOfDaysScore = 0;
+                    double sumOfClassroomsScore = 0;
+
                     List<Tuple> subjectTuples = group.getTuples().stream().
                             filter(tuple -> tuple.getSubject() == subject).
                             collect(Collectors.toList());
 
-                    for (int day = 1; day <= numberOfDays; day++)
+                    for(Classroom classroom : group.getData().getClassrooms().values())
                     {
-                        int finalDay = day;
-                        int longetsConsecutiveHoursInADay = findLLongetsConsecutiveHoursOfSubject(
-                                subjectTuples.stream()
-                                        .filter(tuple -> tuple.getDay() == finalDay)
-                                        .collect(Collectors.toList()));
+                        double sumOfDaysScore = 0;
+                        List<Tuple> classroomTuples = subjectTuples.stream().
+                                filter(tuple -> tuple.getClassroom() == classroom).
+                                collect(Collectors.toList());
 
-                        if((longetsConsecutiveHoursInADay <= totalHours) || longetsConsecutiveHoursInADay == 0)
+                        for (int day = 1; day <= numberOfDays; day++)
                         {
-                            sumOfDaysScore += 100;
+                            int finalDay = day;
+                            int longetsConsecutiveHoursInADay = findLLongetsConsecutiveHoursOfSubject(
+                                    classroomTuples.stream()
+                                            .filter(tuple -> tuple.getDay() == finalDay)
+                                            .collect(Collectors.toList()));
+
+                            if((longetsConsecutiveHoursInADay <= totalHours) || longetsConsecutiveHoursInADay == 0)
+                            {
+                                sumOfDaysScore += 100;
+                            }
+                            else
+                            {
+                                sumOfDaysScore += 100 - ((double) (longetsConsecutiveHoursInADay - totalHours) * 100 / (numberOfHours - totalHours));
+                            }
                         }
-                        else
-                        {
-                            sumOfDaysScore += 100 - ((double) (longetsConsecutiveHoursInADay - totalHours) * 100 / (numberOfHours - totalHours));
-                        }
+
+                        sumOfClassroomsScore += sumOfDaysScore / numberOfDays;
                     }
 
-                    sumOfSubjectsScore += sumOfDaysScore / numberOfDays;
+                    sumOfSubjectsScore += sumOfClassroomsScore / numberOfClassrooms;
                 }
 
-                    return sumOfSubjectsScore / numberOfSubjects;
+                return sumOfSubjectsScore / numberOfSubjects;
             }
 
             private int findLLongetsConsecutiveHoursOfSubject(List<Tuple> subjectTuples)

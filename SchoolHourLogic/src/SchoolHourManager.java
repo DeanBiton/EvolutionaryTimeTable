@@ -260,5 +260,9 @@ public class SchoolHourManager {
 
     public void setMutationProbability(Mutation mutation,Double probabilty){}
 
+    public boolean isSuspended() {
+        return isSuspended;
+    }
+
 }
 

@@ -1,6 +1,13 @@
 import Evolution.EndCondition.ByFitness;
 import Evolution.EndCondition.EndCondition;
 import Evolution.EndCondition.NumberOfGenerations;
+import Evolution.MySolution.Crossover.AspectOriented;
+import Evolution.MySolution.Crossover.Crossover;
+import Evolution.MySolution.Crossover.DayTimeOriented;
+import Evolution.Selection.RouletteWheel;
+import Evolution.Selection.Selection;
+import Evolution.Selection.Tournament;
+import Evolution.Selection.Truncation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,16 +23,16 @@ public class InputsFromUser {
 
         while (!validInput)
         {
-             optionNumber = getNumberFromUser(textWithOptions, Integer.class);
+            optionNumber = getNumberFromUser(textWithOptions, Integer.class);
 
-             if(optionNumber >= minOptionNumber && optionNumber <= maxOptionNumber)
-             {
-                 validInput = true;
-             }
-             else
-             {
-                    System.out.println("Please choose a number between " + minOptionNumber +" and " + maxOptionNumber);
-             }
+            if(optionNumber >= minOptionNumber && optionNumber <= maxOptionNumber)
+            {
+                validInput = true;
+            }
+            else
+            {
+                System.out.println("Please choose a number between " + minOptionNumber +" and " + maxOptionNumber);
+            }
         }
 
         return optionNumber;
@@ -97,7 +104,7 @@ public class InputsFromUser {
             Double n2 = 1.0;
             if(positiveNumber instanceof Integer)
             {
-                 n1 = (Integer) positiveNumber;
+                n1 = (Integer) positiveNumber;
             }
             else if(positiveNumber instanceof Double)
             {
@@ -281,5 +288,66 @@ public class InputsFromUser {
         message.append(System.lineSeparator());
 
         return getConfirmation(message.toString());
+    }
+
+    public static Selection getSelection()
+    {
+        int option;
+        Selection selection = null;
+        StringBuilder message = new StringBuilder();
+
+        message.append("choose selection:");
+        message.append(System.lineSeparator());
+        message.append("1. Truncation {Top percent = 10}");
+        message.append(System.lineSeparator());
+        message.append("2. RouletteWheel");
+        message.append(System.lineSeparator());
+        message.append("3. Tournament {pte = 0.5}");
+        message.append(System.lineSeparator());
+
+        option = getOptionNumber(1, 3, message.toString());
+
+        switch (option)
+        {
+            case 1:
+                selection = new Truncation(10, 0);
+                break;
+            case 2:
+                selection = new RouletteWheel(0);
+                break;
+            case 3:
+                selection = new Tournament(0, 0.5);
+                break;
+        }
+
+        return selection;
+    }
+
+    public static Crossover getCrossover()
+    {
+        int option;
+        Crossover crossover = null;
+        StringBuilder message = new StringBuilder();
+
+        message.append("choose crossover:");
+        message.append(System.lineSeparator());
+        message.append("1. DayTimeOriented {numberOfSeperators = 10}");
+        message.append(System.lineSeparator());
+        message.append("2. AspectOriented {numberOfSeperators = 10, orientationType = TEACHER}");
+        message.append(System.lineSeparator());
+
+        option = getOptionNumber(1, 2, message.toString());
+
+        switch (option)
+        {
+            case 1:
+                crossover = new DayTimeOriented(10);
+                break;
+            case 2:
+                crossover = new AspectOriented(10, AspectOriented.OrientationType.TEACHER);
+                break;
+        }
+
+        return crossover;
     }
 }
