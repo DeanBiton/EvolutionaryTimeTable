@@ -2,6 +2,8 @@ import DTO.DTODataAndAlgorithmSettings;
 import Evolution.EndCondition.ByFitness;
 import Evolution.EndCondition.EndCondition;
 import Evolution.EndCondition.NumberOfGenerations;
+import Evolution.MySolution.Crossover.Crossover;
+import Evolution.Selection.Selection;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -56,6 +58,19 @@ public class SchoolHourSystem {
 
         optionNumbers.add(7);
 
+        if(manager.isSuspended())
+        {
+            optionNumbers.add(9);
+        }
+        else if(manager.isEvolutionaryAlgurithmIsRunning())
+        {
+            optionNumbers.add(8);
+        }
+
+
+        optionNumbers.add(10);
+        optionNumbers.add(11);
+
         return optionNumbers;
     }
 
@@ -68,7 +83,11 @@ public class SchoolHourSystem {
         WATCHTHEBESTSOLUTION{String getName(){return "Watch the best solution"; }},
         WATCHALGORITHMPROCESS{String getName(){return "Watch Algorithm Process"; }},
         SAVE{String getName(){return "Save to file"; }},
-        LOAD{String getName(){return "Load from file"; }}
+        LOAD{String getName(){return "Load from file"; }},
+        PAUSEALGORITM{String getName(){return "Pause algorithm"; }},
+        RESUMEALGORITHM{String getName(){return "resume algorithm"; }},
+        SETSELECTION{String getName(){return "Set selection"; }},
+        SETCROSSOVER{String getName(){return "Set crossover"; }}
         ;
 
         abstract String getName();
@@ -122,7 +141,7 @@ public class SchoolHourSystem {
         }
 
         return option;
-}
+    }
 
     private static boolean runOption(eMenuOption option)
     {
@@ -154,6 +173,18 @@ public class SchoolHourSystem {
                     break;
                 case LOAD:
                     load();
+                    break;
+                case PAUSEALGORITM:
+                    pause();
+                    break;
+                case RESUMEALGORITHM:
+                    resume();
+                    break;
+                case SETSELECTION:
+                    setSelection();
+                    break;
+                case SETCROSSOVER:
+                    setCrossover();
                     break;
             }
         }
@@ -235,10 +266,10 @@ public class SchoolHourSystem {
     {
         boolean runAlgorithm = true;
 
-       if(manager.isEvolutionaryAlgurithmIsRunning())
-       {
+        if(manager.isEvolutionaryAlgurithmIsRunning())
+        {
             runAlgorithm = InputsFromUser.getConfirmationToRunAlgorithm();
-       }
+        }
 
         if(runAlgorithm)
         {
@@ -299,7 +330,7 @@ public class SchoolHourSystem {
             {
                 if(i % 10000 == 0)
                 {
-                    System.out.println(stringBuilder.toString());
+                    System.out.println(stringBuilder);
                     stringBuilder = new StringBuilder();
                 }
 
@@ -312,11 +343,11 @@ public class SchoolHourSystem {
                 stringBuilder.append(System.lineSeparator());
             }
 
-            System.out.println(stringBuilder.toString());
+            System.out.println(stringBuilder);
         }
     }
 
-    private static void save() throws Exception
+    private static void save()
     {
         boolean saveTheFile = true;
         if(manager.isEvolutionaryAlgurithmIsRunning())
@@ -340,10 +371,32 @@ public class SchoolHourSystem {
         }
     }
 
-    private static void load () throws Exception
+    private static void load ()
     {
         String loadPath = InputsFromUser.getSavingOrLoadingPath(manager.getSaveAndLoadFileEnding());
         manager.LoadFile(loadPath);
         System.out.println("File loaded");
+    }
+
+    private static void pause()
+    {
+        manager.suspend();
+    }
+
+    private static void resume()
+    {
+        manager.resume();
+    }
+
+    private static void setSelection()
+    {
+        Selection selection = InputsFromUser.getSelection();
+        manager.setSelection(selection);
+    }
+
+    private static void setCrossover()
+    {
+        Crossover crossover = InputsFromUser.getCrossover();
+        manager.setCrossover(crossover);
     }
 }

@@ -18,7 +18,6 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
     private boolean suspended = false;
     private StopWatch stopWatch = new StopWatch();
     private boolean isSettingAvailable = true;
-    //private List<EventListener> bestSolutionListeners;
 
     public  EvolutionaryAlgorithm(int _initialPopulation, Selection _selection, Crossover _crossover)
     {
@@ -34,8 +33,8 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
 
     public void runAlgorithm (List<EndCondition> endConditions, int printEveryThisNumberOfGenerations) {
         isSettingAvailable = false;
-        //bestSolutionListeners = new ArrayList<>();
         LocalDateTime time1 = LocalDateTime.now();
+        stopWatch.reset();
         stopWatch.start();
         List<Evolutionary> generation = createFirstGeneration();
         eaData.setBestSolution(null);
@@ -240,11 +239,4 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
     public List<EndCondition> getEndConditionAlgorithm() {
         return eaData.getEndConditionAlgorithm();
     }
-
-   // public void addBestSolutionListener(EventListener listener)
-    //{
-   //     bestSolutionListeners.add(listener);
-   // }
 }
-
-
