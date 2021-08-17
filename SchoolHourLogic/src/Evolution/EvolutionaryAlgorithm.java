@@ -31,7 +31,7 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
 
     public boolean isActivated(){ return eaData.getBestSolution()!=null;}
 
-    public void runAlgorithm (List<EndCondition> endConditions, int printEveryThisNumberOfGenerations) {
+    public void runAlgorithm (List<EndCondition> endConditions, int printEveryThisNumberOfGenerations, SchoolHourUIAdapter uiAdapter) {
         isSettingAvailable = false;
         LocalDateTime time1 = LocalDateTime.now();
         stopWatch.reset();
@@ -72,12 +72,14 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
             if(eaData.getBestSolution() == null)
             {
                 eaData.setBestSolution(thisGenBestSolution);
+                uiAdapter.updateBestFitness(thisGenBestSolution.fitness());
             }
             else
             {
                 if(thisGenBestSolution.fitness() > eaData.getBestSolution().fitness())
                 {
                     eaData.setBestSolution(thisGenBestSolution);
+                    uiAdapter.updateBestFitness(thisGenBestSolution.fitness());
                 }
             }
 

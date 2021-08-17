@@ -90,7 +90,7 @@ public class SchoolHourManager {
         return new DTODataAndAlgorithmSettings(dtoEvolutionaryAlgorithmSettings, dtoData);
     }
 
-    public void runEvolutionaryAlgorithm(List<EndCondition> endConditions, int printEveryThisNumberOfGenerations)
+    public void runEvolutionaryAlgorithm(List<EndCondition> endConditions, int printEveryThisNumberOfGenerations, SchoolHourUIAdapter uiAdapter)
     {
         if(!xmlFileLoadedSuccessfully)
         {
@@ -98,14 +98,16 @@ public class SchoolHourManager {
         }
         stopAlgorithm();
         currentThread=new Thread(() -> {
-            schoolHourEvolutionaryAlgorithm.runAlgorithm(endConditions, printEveryThisNumberOfGenerations);
+            schoolHourEvolutionaryAlgorithm.runAlgorithm(endConditions, printEveryThisNumberOfGenerations, uiAdapter);
             synchronized (evolutionaryAlgorithmRunned)
             {
                 evolutionaryAlgorithmRunned = true;
             }
+            uiAdapter.algorithmEnded();
         }
                 ,"EvolutionaryAlgorithm");
         currentThread.start();
+
     }
 
     public DTOTupleGroupWithFitnessDetails getBestSolution()
@@ -146,6 +148,7 @@ public class SchoolHourManager {
                 currentThread.interrupt();
                 try {
                     currentThread.join();
+                    isSuspended = false;
                 } catch (InterruptedException e) {}
             }
         }
@@ -165,6 +168,8 @@ public class SchoolHourManager {
     public void resume() {
         if(isSuspended)
             schoolHourEvolutionaryAlgorithm.resume();
+
+        isSuspended = false;
     }
 
     public void LoadFile(String filePath){

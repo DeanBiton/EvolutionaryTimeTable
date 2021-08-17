@@ -5,12 +5,14 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="503.0" prefWidth="692.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="503.0" prefWidth="692.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainController">
    <top>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
             <Button fx:id="loadXML" alignment="BOTTOM_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loadXML" text="LoadXML" HBox.hgrow="NEVER" />
             <Button fx:id="RunAlgorithm" mnemonicParsing="false" onAction="#RunAlgorithm" text="RunAlgorithm" />
+            <Button fx:id="PauseResume" mnemonicParsing="false" onAction="#PauseResume" text="Pause" />
+            <Button fx:id="BTNStop" mnemonicParsing="false" onAction="#Stop" text="Stop" />
          </children>
       </HBox>
    </top>

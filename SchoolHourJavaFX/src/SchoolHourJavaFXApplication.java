@@ -12,21 +12,22 @@ public class SchoolHourJavaFXApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader fxmlLoader = getFirstAppFXMLLoader();
+        FXMLLoader fxmlLoader = getSceneFXMLLoader("main");
         Parent root = getFirstAppRoot(fxmlLoader);
         Scene scene = new Scene(root,500, 400);
 
-        Controller controller = fxmlLoader.getController();
-        controller.setPrimaryStage(primaryStage);
+        MainController controller = fxmlLoader.getController();
+            controller.setPrimaryStage(primaryStage);
 
         primaryStage.setTitle("Players Manager");
         primaryStage.setScene(scene);
         primaryStage.show();
+
     }
 
-    private FXMLLoader getFirstAppFXMLLoader() {
+    private FXMLLoader getSceneFXMLLoader(String fxmlFileName) {
         FXMLLoader fxmlLoader = new FXMLLoader();
-        URL url = getClass().getResource("firstAPP.fxml");
+        URL url = getClass().getResource(fxmlFileName + ".fxml");
         fxmlLoader.setLocation(url);
         return fxmlLoader;
     }
