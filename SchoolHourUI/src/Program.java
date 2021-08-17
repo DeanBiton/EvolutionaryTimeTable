@@ -14,7 +14,7 @@ public class Program {
 
     public static void main(String[] args) {
         try{
-            //SchoolHourSystem.run();
+            SchoolHourSystem.run();
 
           /*  SchoolHourManager s=new SchoolHourManager();
             s.LoadXML("C:\\Users\\belik\\IdeaProjects\\EvolutionaryTimeTable\\SchoolHourLogic\\src\\Xml\\EX2-small.xml");

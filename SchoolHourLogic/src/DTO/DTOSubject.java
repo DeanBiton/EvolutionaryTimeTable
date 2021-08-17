@@ -6,9 +6,13 @@ import java.util.Objects;
 
 public class DTOSubject {
     private final Subject subject;
+    private final int id;
+    private final String name;
 
     public DTOSubject(Subject subject) {
         this.subject = subject;
+        this.id = subject.getId();
+        this.name = subject.getName();
     }
 
     public final int getId() {

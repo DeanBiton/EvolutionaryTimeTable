@@ -4,6 +4,7 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
 <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="503.0" prefWidth="692.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainController">
    <top>
@@ -17,6 +18,15 @@
       </HBox>
    </top>
    <center>
-      <TextArea fx:id="BestSolutionFitness" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <TextArea fx:id="BestSolutionFitness" prefHeight="403.0" prefWidth="541.0" BorderPane.alignment="CENTER" />
    </center>
+   <left>
+      <VBox fx:id="VBoxMenu" prefHeight="403.0" prefWidth="190.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="BTNSetConditions" mnemonicParsing="false" onAction="#ChooseEndConditionsButton" prefHeight="80.0" prefWidth="190.0" text="Set Conditions" />
+            <Button fx:id="BTNViewAlgorithm" mnemonicParsing="false" onAction="#ViewAlgorithmButton" prefHeight="92.0" prefWidth="193.0" text="View Algorithm" />
+            <Button fx:id="BTNShowSchoolData" mnemonicParsing="false" onAction="#ShowSchoolDataButton" prefHeight="84.0" prefWidth="191.0" text="Show School Data" />
+         </children>
+      </VBox>
+   </left>
 </BorderPane>
