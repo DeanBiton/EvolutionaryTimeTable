@@ -1,12 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 
-<Pane fx:id="pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ViewAlgorithmController">
+<Pane fx:id="pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="278.0" prefWidth="769.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ViewAlgorithmController">
    <children>
-      <Label fx:id="testgennum" layoutX="158.0" layoutY="129.0" text="Label" />
-      <Label fx:id="testfitness" layoutX="262.0" layoutY="129.0" text="Label" />
-      <Label fx:id="testtime" layoutX="415.0" layoutY="129.0" text="Label" />
+      <GridPane fx:id="gridEndCondtions" layoutX="129.0" layoutY="100.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label fx:id="generationValue" text="Label" GridPane.columnIndex="1" />
+            <Label fx:id="fitnessValue" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="timeValue" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Generations:" />
+            <Label text="Fitness:" GridPane.rowIndex="1" />
+            <Label text="Time:" GridPane.rowIndex="2" />
+         </children>
+      </GridPane>
    </children>
 </Pane>
