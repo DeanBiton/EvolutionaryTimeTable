@@ -4,12 +4,17 @@ import DTO.DTOSubject;
 import DTO.DTOTeacher;
 import Evolution.MySolution.Subject;
 import Evolution.MySolution.Teacher;
+import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.util.Callback;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -78,11 +83,6 @@ public class ShowSchoolDataController {
         tableView.setFixedCellSize(25);
         tableView.prefHeightProperty().bind(Bindings.size(tableView.getItems()).multiply(tableView.getFixedCellSize()).add(26));
 
-        // tableView.setFixedCellSize(26);
-        // tableView.setPrefHeight(tableView.getFixedCellSize() * (dtoSchoolHoursData.getSubjects().values().size() + 1));
-
-        //tableView.setPrefWidth(SPSubjects.cu);
-
         return tableView;
     }
 
@@ -103,7 +103,7 @@ public class ShowSchoolDataController {
             stringBuilder.append(dtoTeacher.getName());
             label.setText(stringBuilder.toString());
             gridPane.add(label, 0, teacherNumber[0]);
-            TableView tableView = getTeacherSubjects(dtoTeacher, dtoSchoolHoursData);
+            TableView tableView = getTeacherSubjectsTable(dtoTeacher, dtoSchoolHoursData);
 
             gridPane.add(tableView, 0, teacherNumber[0] + 1);
             gridPane.add(new Label(), 0, teacherNumber[0] + 2);
@@ -114,7 +114,7 @@ public class ShowSchoolDataController {
         SPTeachers.setContent(gridPane);
     }
 
-    private TableView getTeacherSubjects(DTOTeacher dtoTeacher, DTOSchoolHoursData dtoSchoolHoursData) {
+    private TableView getTeacherSubjectsTable(DTOTeacher dtoTeacher, DTOSchoolHoursData dtoSchoolHoursData) {
         List<DTOSubject> dtoSubjects = new ArrayList<>();
 
         dtoTeacher.getAllSubjectsTeaching().forEach(subjectID ->
@@ -142,7 +142,7 @@ public class ShowSchoolDataController {
             stringBuilder.append(dtoClassroom.getName());
             label.setText(stringBuilder.toString());
             gridPane.add(label, 0, classroomNumber[0]);
-            TableView tableView = getClassroomSubjects(dtoClassroom, dtoSchoolHoursData);
+            TableView tableView = getClassroomSubjectsTable(dtoClassroom, dtoSchoolHoursData);
 
             gridPane.add(tableView, 0, classroomNumber[0] + 1);
             gridPane.add(new Label(), 0, classroomNumber[0] + 2);
@@ -153,7 +153,32 @@ public class ShowSchoolDataController {
         SPClassrooms.setContent(gridPane);
     }
 
-    private TableView getClassroomSubjects(DTOClassroom dtoClassroom, DTOSchoolHoursData dtoSchoolHoursData) {
+    public class SubjectWithHoursDemanded
+    {
+        private Integer id;
+        private String name;
+        private Integer hoursDemanded;
+
+        public SubjectWithHoursDemanded(DTOSubject subject, Integer hoursDemanded) {
+            this.hoursDemanded = hoursDemanded;
+            this.id = subject.getId();
+            this.name = subject.getName();
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public Integer getHoursDemanded() {
+            return hoursDemanded;
+        }
+    }
+
+    private TableView getClassroomSubjectsTable(DTOClassroom dtoClassroom, DTOSchoolHoursData dtoSchoolHoursData) {
         List<DTOSubject> dtoSubjects = new ArrayList<>();
 
         dtoClassroom.getSubjectId2WeeklyHours().keySet().forEach(subjectID ->
@@ -161,10 +186,27 @@ public class ShowSchoolDataController {
             dtoSubjects.add(dtoSchoolHoursData.getSubjects().get(subjectID));
         });
 
-        TableView tableView = getSubjectsTable(dtoSubjects);
+        TableView tableView = new TableView();
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        //TableColumn<DTOClassroom, Integer> subjectsIDColumn = new TableColumn<>("Hours demanded");
-        //subjectsIDColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        TableColumn<SubjectWithHoursDemanded, Integer> subjectsIDColumn = new TableColumn<>("Subject ID");
+        subjectsIDColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+
+        TableColumn<SubjectWithHoursDemanded, String> nameColumn = new TableColumn<>("Name");
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        TableColumn<SubjectWithHoursDemanded, Integer> subjectsHoursColumn = new TableColumn<>("Hours demanded");
+        subjectsHoursColumn.setCellValueFactory(new PropertyValueFactory<>("hoursDemanded"));
+
+        tableView.getColumns().add(subjectsIDColumn);
+        tableView.getColumns().add(nameColumn);
+        tableView.getColumns().add(subjectsHoursColumn);
+
+        dtoSubjects.forEach(dtoSubject -> tableView.getItems().add(new SubjectWithHoursDemanded(dtoSubject, dtoClassroom.getSubjectId2WeeklyHours().get(dtoSubject.getId()))));
+        tableView.setFixedCellSize(25);
+        tableView.prefHeightProperty().bind(Bindings.size(tableView.getItems()).multiply(tableView.getFixedCellSize()).add(26));
+
+        tableView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
         return tableView;
     }
 }

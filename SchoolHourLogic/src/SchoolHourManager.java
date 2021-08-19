@@ -59,7 +59,7 @@ public class SchoolHourManager {
         ETTDescriptor discriptor = SchoolHourXMLLoader.LoadXML(XMLfile);
         data = new SchoolHourData(discriptor);
         dtoData = new DTOSchoolHoursData(data);
-        EvolutionaryAlgorithmData eaData=new EvolutionaryAlgorithmData(discriptor.getETTEvolutionEngine());
+        EvolutionaryAlgorithmData eaData=new EvolutionaryAlgorithmData(discriptor.getETTEvolutionEngine(), data.getMutations());
         schoolHourEvolutionaryAlgorithm = new SchoolHourEvolutionaryAlgorithm(eaData, data);
 
 
