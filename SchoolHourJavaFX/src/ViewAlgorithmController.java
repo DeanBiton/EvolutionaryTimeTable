@@ -19,14 +19,18 @@ public class ViewAlgorithmController {
 
     @FXML
     private Pane pane;
-    @FXML
-    private Label testgennum;
 
     @FXML
-    private Label testfitness;
+    private GridPane gridEndCondtions;
 
     @FXML
-    private Label testtime;
+    private Label generationValue;
+
+    @FXML
+    private Label fitnessValue;
+
+    @FXML
+    private Label timeValue;
 
     private ProgressBar progressBarFitness;
     private ProgressBar progressBarNumberOfGenerations;
@@ -57,10 +61,10 @@ public class ViewAlgorithmController {
 
     public void initialize()
     {
-        testgennum.textProperty().bind(generationNumber.asString());
-        testfitness.textProperty().bind(bestFitness.asString());
+        generationValue.textProperty().bind(generationNumber.asString());
+        fitnessValue.textProperty().bind(bestFitness.asString());
         //time.bind(timeMinutes.asString()+":"+timeSeconds.toString());
-       testtime.textProperty().bind(time);
+        timeValue.textProperty().bind(time);
        //progressbar.progressProperty().bind();
     }
     public void updateGenerationNUmber(Integer current)
@@ -106,25 +110,28 @@ public class ViewAlgorithmController {
 
     private void createProgressBars()
     {
+        double prefHeightPrograssBar= 250;
         //GridPane gridPane= new GridPane();
         if(conditionPairs.fitness!=null) {
             progressBarFitness = new ProgressBar();
+            gridEndCondtions.add(progressBarFitness,3,1);
+            progressBarFitness.setPrefWidth(prefHeightPrograssBar);
             progressBarFitness.progressProperty().bind(bestFitness.divide(conditionPairs.fitness));
-            pane.getChildren().add(progressBarFitness);
+            //pane.getChildren().add(progressBarFitness);
         }
 
         if(conditionPairs.numberOfGeneration!=null) {
             progressBarNumberOfGenerations = new ProgressBar();
-            progressBarNumberOfGenerations.setLayoutY(50);
+            gridEndCondtions.add(progressBarNumberOfGenerations,3,0);
+            progressBarNumberOfGenerations.setPrefWidth(prefHeightPrograssBar);
             progressBarNumberOfGenerations.progressProperty().bind(generationNumber.divide(conditionPairs.numberOfGeneration*1.0));
-            pane.getChildren().add(progressBarNumberOfGenerations);
         }
 
         if(conditionPairs.timeSeconds!=null) {
             progressBarTime = new ProgressBar();
-            progressBarTime.setLayoutY(100);
+            gridEndCondtions.add(progressBarTime,3,2);
+            progressBarTime.setPrefWidth(prefHeightPrograssBar);
             progressBarTime.progressProperty().bind(timeSeconds.divide(conditionPairs.timeSeconds*1.0));
-            pane.getChildren().add(progressBarTime);
         }
 
     }
