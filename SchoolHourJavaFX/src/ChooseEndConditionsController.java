@@ -166,15 +166,27 @@ public class ChooseEndConditionsController {
     private void setConditions()
     {
         List<EndCondition> endConditions = new ArrayList<>();
-
+        ConditionPairs conditionPairs=new ConditionPairs();
         if(CBByFitness.isSelected())
-          endConditions.add(new ByFitness(Double.parseDouble(TFByFitness.getText())));
+        {
+
+            endConditions.add(new ByFitness(Double.parseDouble(TFByFitness.getText())));
+            conditionPairs.setFitness(Double.parseDouble(TFByFitness.getText()));
+        }
         if(CBByGenerationNumber.isSelected())
+        {
             endConditions.add(new NumberOfGenerations(Integer.parseInt(TFByGenerationNumber.getText())));
+            conditionPairs.setNumberOfGeneration(Integer.parseInt(TFByGenerationNumber.getText()));
+        }
         if(CBByTime.isSelected())
+        {
             endConditions.add(new ByTime(Integer.parseInt(TFByTime.getText())));
+            conditionPairs.setTimeSeconds(Integer.parseInt(TFByTime.getText())*60);
+
+        }
 
         int printEveryThisNumberOfGenerations = Integer.parseInt(TFShowEveryGeneration.getText());
-        mainController.setAlgorithmParameters(endConditions, printEveryThisNumberOfGenerations);
+
+        mainController.setAlgorithmParameters(endConditions, printEveryThisNumberOfGenerations,conditionPairs);
     }
 }

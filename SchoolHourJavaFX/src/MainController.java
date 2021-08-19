@@ -6,13 +6,17 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -68,8 +72,6 @@ public class MainController {
 
     @FXML
     private void initialize() throws Exception{
-        initializeBoarderPain();
-
         // Algorithm Buttons
         RunAlgorithm.disableProperty().setValue(true);
         PauseResume.disableProperty().bind(isAlgorithmActive.not());
@@ -84,11 +86,6 @@ public class MainController {
         createChooseEndConditionsController();
         createViewAlgorithmController();
         createShowSchoolDataController();
-    }
-
-    private void initializeBoarderPain() {
-        borderPane.getCenter();
-        borderPane.getBottom();
     }
 
     private FXMLLoader getSceneFXMLLoader(String fxmlFileName) {
@@ -140,8 +137,9 @@ public class MainController {
         isAlgorithmAlive.setValue(true);
     }
 
-    public void setAlgorithmParameters(List<EndCondition> _endConditions, int _printEveryThisNumberOfGenerations)
+    public void setAlgorithmParameters(List<EndCondition> _endConditions, int _printEveryThisNumberOfGenerations,ConditionPairs conditionPairs)
     {
+        viewAlgorithmController.setConditionPairs(conditionPairs);
         endConditions = _endConditions;
         printEveryThisNumberOfGenerations = _printEveryThisNumberOfGenerations;
         RunAlgorithm.disableProperty().setValue(false);
@@ -172,7 +170,7 @@ public class MainController {
     {
         return new UIAdapter(
                 fitness-> {
-                    BestSolutionFitness.setText(fitness.toString());
+                    viewAlgorithmController.updateBestFitness(fitness);
                 },
 
                 () -> {
@@ -180,6 +178,12 @@ public class MainController {
                     RunAlgorithm.disableProperty().setValue(false);
                     isAlgorithmAlive.setValue(false);
                     PauseResume.setText("Pause");
+                },
+                current->{
+                    viewAlgorithmController.updateGenerationNUmber(current);
+                },
+                seconds->{
+                    viewAlgorithmController.updateTime(seconds);
                 }
         );
     }
@@ -189,6 +193,7 @@ public class MainController {
     {
         FXMLLoader fxmlLoader = getSceneFXMLLoader("ChooseEndConditions");
         chooseEndConditionsScene = fxmlLoader.load();
+        BorderPane.setAlignment(chooseEndConditionsScene, Pos.TOP_LEFT);
 
         chooseEndConditionsController = fxmlLoader.getController();
         chooseEndConditionsController.setMainController(this);
@@ -199,6 +204,7 @@ public class MainController {
     {
         FXMLLoader fxmlLoader = getSceneFXMLLoader("ShowSchoolData");
         showSchoolDataScene = fxmlLoader.load();
+        BorderPane.setAlignment(showSchoolDataScene, Pos.TOP_LEFT);
 
         showSchoolDataController = fxmlLoader.getController();
         showSchoolDataController.setMainController(this);
@@ -217,6 +223,7 @@ public class MainController {
             System.out.println(ex.getMessage());
         }
 
+        BorderPane.setAlignment(viewAlgorithmScene, Pos.TOP_LEFT);
         viewAlgorithmController = fxmlLoader.getController();
         viewAlgorithmController.setMainController(this);
         viewAlgorithmController.setManager(manager);
@@ -228,6 +235,10 @@ public class MainController {
     {
         borderPane.getChildren().remove(borderPane.getCenter());
         borderPane.setCenter(chooseEndConditionsScene);
+
+        //AnchorPane menuAnchorPane = new AnchorPane();
+        //menuAnchorPane.setBottomAnchor(chooseEndConditionsScene, 0.0);
+        //menuAnchorPane.setRightAnchor(chooseEndConditionsScene, 0.0);
     }
 
     @FXML
