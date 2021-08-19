@@ -11,10 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -47,6 +44,8 @@ public class MainController {
     @FXML
     private Button BTNShowSchoolData;
 
+    private BorderPane algorithmBorderPane;
+
     private SchoolHourManager manager;
     private Stage primaryStage;
     private List<EndCondition> endConditions;
@@ -58,6 +57,9 @@ public class MainController {
     private Node showSchoolDataScene;
     private ViewAlgorithmController viewAlgorithmController;
     private Node viewAlgorithmScene;
+    private AlgorithmSettingsController algorithmSettingsController;
+    private Node algorithmSettingsScene;
+
 
     private BooleanProperty isXMLLoaded;
     private BooleanProperty isAlgorithmActive;
@@ -213,6 +215,13 @@ public class MainController {
 
     private void createViewAlgorithmController()
     {
+        algorithmBorderPane = new BorderPane();
+        algorithmBorderPane.setMinHeight(Region.USE_COMPUTED_SIZE);
+        algorithmBorderPane.setMinWidth(Region.USE_COMPUTED_SIZE);
+        algorithmBorderPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        algorithmBorderPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
+        //algorithmBorderPane.setMaxHeight(Region.);
+
         FXMLLoader fxmlLoader = getSceneFXMLLoader("ViewAlgorithm");
 
         try {
@@ -227,6 +236,24 @@ public class MainController {
         viewAlgorithmController = fxmlLoader.getController();
         viewAlgorithmController.setMainController(this);
         viewAlgorithmController.setManager(manager);
+
+        fxmlLoader = getSceneFXMLLoader("AlgorithmSettings");
+
+        try {
+            algorithmSettingsScene = fxmlLoader.load();
+        }
+        catch (Exception ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+
+        BorderPane.setAlignment(algorithmSettingsScene, Pos.TOP_LEFT);
+        algorithmSettingsController = fxmlLoader.getController();
+        algorithmSettingsController.setMainController(this);
+        algorithmSettingsController.setManager(manager);
+
+        algorithmBorderPane.setTop(algorithmSettingsScene);
+        algorithmBorderPane.setBottom(viewAlgorithmScene);
     }
 
     // Menu Buttons
@@ -235,10 +262,6 @@ public class MainController {
     {
         borderPane.getChildren().remove(borderPane.getCenter());
         borderPane.setCenter(chooseEndConditionsScene);
-
-        //AnchorPane menuAnchorPane = new AnchorPane();
-        //menuAnchorPane.setBottomAnchor(chooseEndConditionsScene, 0.0);
-        //menuAnchorPane.setRightAnchor(chooseEndConditionsScene, 0.0);
     }
 
     @FXML
@@ -252,6 +275,8 @@ public class MainController {
     private void ViewAlgorithmButton(ActionEvent event)
     {
         borderPane.getChildren().remove(borderPane.getCenter());
-        borderPane.setCenter(viewAlgorithmScene);
+        borderPane.setCenter(algorithmBorderPane);
     }
+
+
 }
