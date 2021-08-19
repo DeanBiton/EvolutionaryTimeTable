@@ -3,6 +3,7 @@ package Evolution;
 import Evolution.EndCondition.EndCondition;
 import Evolution.MySolution.Crossover.Crossover;
 import Evolution.MySolution.Crossover.CrossoverSelector;
+import Evolution.MySolution.MyMutation.Mutation;
 import Evolution.Selection.Selection;
 import Evolution.Selection.SelectionSelector;
 import Xml.JAXBClasses.ETTCrossover;
@@ -21,40 +22,38 @@ public class EvolutionaryAlgorithmData implements Serializable {
     private Evolutionary bestSolution;
     private List<Pair<Integer, Double>> everyGenAndItsBestSolution;
     private List<EndCondition> endCondition;
+    private List<Mutation> mutations;
 
-    public EvolutionaryAlgorithmData(ETTEvolutionEngine ettEvolutionEngine)
-    {
-        initialPopulation=ettEvolutionEngine.getETTInitialPopulation().getSize();
-        selection=ETTgetSelection(ettEvolutionEngine);
-         crossover = ETTgetCrossover(ettEvolutionEngine.getETTCrossover());
+    public EvolutionaryAlgorithmData(ETTEvolutionEngine ettEvolutionEngine, List<Mutation> mutations) {
+        this.mutations = mutations;
+        initialPopulation = ettEvolutionEngine.getETTInitialPopulation().getSize();
+        selection = ETTgetSelection(ettEvolutionEngine);
+        crossover = ETTgetCrossover(ettEvolutionEngine.getETTCrossover());
         this.endCondition = new ArrayList<>();
-        bestSolution=null;
+        bestSolution = null;
     }
 
-    private Selection ETTgetSelection(ETTEvolutionEngine ettEvolutionEngine)
-    {
+    private Selection ETTgetSelection(ETTEvolutionEngine ettEvolutionEngine) {
         String name = ettEvolutionEngine.getETTSelection().getType();
-        String configuration= ettEvolutionEngine.getETTSelection().getConfiguration();
-        int elitism= ettEvolutionEngine.getETTSelection().getETTElitism()!=null? ettEvolutionEngine.getETTSelection().getETTElitism():0;
-        if(elitism>initialPopulation)
+        String configuration = ettEvolutionEngine.getETTSelection().getConfiguration();
+        int elitism = ettEvolutionEngine.getETTSelection().getETTElitism() != null ? ettEvolutionEngine.getETTSelection().getETTElitism() : 0;
+        if (elitism > initialPopulation)
             throw new RuntimeException("elitism is above initial population");
         Selection selection;
-        try{
-            SelectionSelector ss= SelectionSelector.valueOf(name);
-            selection=ss.create(configuration,elitism);
-        } catch (IllegalArgumentException e)
-        {
-            throw new RuntimeException("Selection "+ name+" doesnt exists");
+        try {
+            SelectionSelector ss = SelectionSelector.valueOf(name);
+            selection = ss.create(configuration, elitism);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Selection " + name + " doesnt exists");
         }
         return selection;
     }
 
-    private Crossover ETTgetCrossover(ETTCrossover ettCrossover)
-    {
-        String crossovername= ettCrossover.getName();
-        int cuttingPoints=ettCrossover.getCuttingPoints();
-        String configuration=ettCrossover.getConfiguration();
-        return CrossoverSelector.valueOf(crossovername).create(cuttingPoints,configuration);
+    private Crossover ETTgetCrossover(ETTCrossover ettCrossover) {
+        String crossovername = ettCrossover.getName();
+        int cuttingPoints = ettCrossover.getCuttingPoints();
+        String configuration = ettCrossover.getConfiguration();
+        return CrossoverSelector.valueOf(crossovername).create(cuttingPoints, configuration);
     }
 
     public EvolutionaryAlgorithmData(int initialPopulation, Selection selection, Crossover crossover) {
@@ -62,7 +61,7 @@ public class EvolutionaryAlgorithmData implements Serializable {
         this.selection = selection;
         this.crossover = crossover;
         this.endCondition = new ArrayList<>();
-        bestSolution=null;
+        bestSolution = null;
     }
 
     public Integer getInitialPopulation() {
@@ -111,5 +110,14 @@ public class EvolutionaryAlgorithmData implements Serializable {
 
     public void setEndConditionAlgorithm(List<EndCondition> endCondition) {
         this.endCondition = endCondition;
+    }
+
+    public List<Mutation> getMutations() {
+        return mutations;
+    }
+
+    public void setMutations(List<Mutation> mutations) {
+        this.mutations.clear();
+        this.mutations.addAll(mutations);
     }
 }
