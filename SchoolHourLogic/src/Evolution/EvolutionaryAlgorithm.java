@@ -66,6 +66,7 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
                 break;
             }
             currentGeneration++;
+            uiAdapter.updateGenerationNumber(currentGeneration);
 
             generation.get(0).fitness();
             thisGenBestSolution = generation.stream().max(Evolutionary::compare).get();
@@ -101,6 +102,7 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
 
             EndConditionGetterClass endConditionGetterClass=new EndConditionGetterClass(currentGeneration,eaData.getBestSolution().fitness(),(int)stopWatch.getTime(TimeUnit.MINUTES));
             EndConditionIsMet= eaData.getEndConditionAlgorithm().stream().anyMatch(t-> t.checkCondition(endConditionGetterClass));
+            uiAdapter.updateTime(stopWatch.getTime(TimeUnit.SECONDS));
 
         }
         isSettingAvailable = true;
