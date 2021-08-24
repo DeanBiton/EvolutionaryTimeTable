@@ -15,8 +15,6 @@ import java.util.List;
 
 public class ViewAlgorithmController {
 
-
-
     @FXML
     private Pane pane;
 

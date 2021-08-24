@@ -273,6 +273,7 @@ public class MainController {
         BTNShowSchoolData.disableProperty().setValue(false);
         algorithmSettingsController.resetScene(manager.getDataAndAlgorithmSettings().getDtoEvolutionaryAlgorithmSettings());
         showSchoolDataController.resetScene();
+        showBestSolutionController.resetScene();
     }
 
     @FXML
@@ -335,6 +336,9 @@ public class MainController {
                 },
                 seconds->{
                     viewAlgorithmController.updateTime(seconds);
+                },
+                bestSolution->{
+                    showBestSolutionController.setDTOTupleGroupWithFitnessDetails(bestSolution);
                 }
         );
     }
