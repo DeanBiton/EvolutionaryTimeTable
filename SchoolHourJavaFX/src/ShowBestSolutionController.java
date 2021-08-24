@@ -1,36 +1,49 @@
+import DTO.DTOSchoolHoursData;
+import DTO.DTOTuple;
 import DTO.DTOTupleGroupWithFitnessDetails;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TabPane;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-
-import java.sql.SQLOutput;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 
 public class ShowBestSolutionController {
     @FXML
     private Scene scene;
-
     @FXML
-    private BorderPane BPBestSolution;
-
+    private TabPane tabPane;
     @FXML
-    private ScrollPane SPTuples;
+    private Tab TabRaw;
     @FXML
-    private TabPane TPTuples;
-
+    private ScrollPane SPRaw;
     @FXML
-    private ScrollPane SPRules;
+    private Tab TabTeacher;
+    @FXML
+    private ScrollPane SPTeacher;
+    @FXML
+    private Tab TabClassroom;
+    @FXML
+    private ScrollPane SPClassroom;
+    @FXML
+    private Tab TabDiagram;
+    @FXML
+    private ScrollPane SPDiagram;
 
     private MainController mainController;
     private SchoolHourManager manager;
 
-    private double SPRulesHeightPercentage = 40.0; // number between 0 and 100
+    private int numberOfTeachers;
+    private int numberOfClassrooms;
+
+    private int currentTeacherID;
+    private int currentClassroomID;
+
+    DTOTupleGroupWithFitnessDetails bestSolution;
+    Object currentRawSolutionView;
 
     public void setMainController(MainController _mainController)
     {
@@ -42,49 +55,93 @@ public class ShowBestSolutionController {
         manager = _manager;
     }
 
-    public void initializeSizes()
-    {
+    ChangeListener<Number> TPWidthSet =  new ChangeListener<Number>() {
+        @Override
+        public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+            tabPane.setPrefWidth(mainController.getCenterPrefWidth());
+        }
+    };
+
+    ChangeListener<Number> TPHeightSet =  new ChangeListener<Number>() {
+        @Override
+        public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+            tabPane.setPrefHeight(mainController.getCenterPrefHeight());
+        }
+    };
+
+    public void initializeSizes() {
         scene = mainController.getScene();
-        //SPTuples.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        //SPTuples.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        //SPRules.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        //SPRules.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-
-        BPBestSolution.setPrefWidth(mainController.getCenterPrefWidth());
-        SPTuples.setPrefWidth(mainController.getCenterPrefWidth());
-        SPRules.setPrefWidth(mainController.getCenterPrefWidth());
-
-        BPBestSolution.setPrefHeight(mainController.getCenterPrefHeight());
-        SPRules.setPrefHeight(BPBestSolution.getPrefHeight() * SPRulesHeightPercentage / 100);
-        SPTuples.setPrefHeight(BPBestSolution.getPrefHeight() - SPRules.getPrefHeight());
-
-        scene.heightProperty().addListener(HeightSet);
-        scene.widthProperty().addListener(WidthSet);
-
-        BorderPane.setAlignment(SPTuples, Pos.TOP_LEFT);
-        BorderPane.setAlignment(SPRules, Pos.TOP_LEFT);
+        tabPane.setPrefWidth(mainController.getCenterPrefWidth());
+        tabPane.setPrefHeight(mainController.getCenterPrefHeight());
+        scene.heightProperty().addListener(TPHeightSet);
+        scene.widthProperty().addListener(TPWidthSet);
+        //scene.heightProperty().addListener(TVSubjectsHeightSet);
+        //scene.widthProperty().addListener(TVSubjectsWidthSet);
     }
 
-    ChangeListener<Number> WidthSet =  new ChangeListener<Number>() {
-        @Override
-        public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-            BPBestSolution.setPrefWidth(mainController.getCenterPrefWidth());
-            SPTuples.setPrefWidth(mainController.getCenterPrefWidth());
-            SPRules.setPrefWidth(mainController.getCenterPrefWidth());
-        }
-    };
+    public void resetScene()
+    {
+        DTOSchoolHoursData data = manager.getDataAndAlgorithmSettings().getDtoSchoolHoursData();
+        numberOfTeachers = data.getTeachers().size();
+        numberOfClassrooms = data.getClassrooms().size();
+    }
 
-    ChangeListener<Number> HeightSet =  new ChangeListener<Number>() {
-        @Override
-        public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-            BPBestSolution.setPrefHeight(mainController.getCenterPrefHeight());
-            SPRules.setPrefHeight(BPBestSolution.getPrefHeight() * SPRulesHeightPercentage / 100);
-            SPTuples.setPrefHeight(BPBestSolution.getPrefHeight() - SPRules.getPrefHeight());
-        }
-    };
+    public void setDTOTupleGroupWithFitnessDetails(DTOTupleGroupWithFitnessDetails dtoTupleGroupWithFitnessDetails)
+    {
+        this.bestSolution = dtoTupleGroupWithFitnessDetails;
+        presentRawBestSolution();
+    }
 
-    public void presentBestSolution(DTOTupleGroupWithFitnessDetails dtoTupleGroupWithFitnessDetails)
+    private void presentRawBestSolution()
+    {
+       GridPane gridPane =  new GridPane();
+       gridPane.add(getRawView(), 0, 0);
+       SPRaw.setContent(gridPane);
+    }
+
+    private VBox getRawView()
+    {
+        VBox vBox = new VBox();
+        vBox.fillWidthProperty().setValue(true);
+        vBox.setPrefWidth(1000);
+        bestSolution.getDtoTuples().sort((o1,o2)->{
+            if(false==o1.getDay().equals(o2.getDay()))
+                return o1.getDay()-o2.getDay();
+            else if(false==o1.getHour().equals(o2.getHour()))
+                return o1.getHour()-o2.getHour();
+            else if(false==o1.getClassroom().equals(o2.getClassroom()))
+                return o1.getClassroom().getId()-o2.getClassroom().getId();
+            else if(false==o1.getTeacher().equals(o2.getTeacher()))
+                return o1.getTeacher().getNameId()-o2.getTeacher().getNameId();
+            else
+                return 0;
+        });
+
+        bestSolution.getDtoTuples().forEach( dtoTuple ->{
+                    TextField textField = new TextField();
+                    StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.append("<Day=");
+                    stringBuilder.append(dtoTuple.getDay());
+                    stringBuilder.append(", Hour=");
+                    stringBuilder.append(dtoTuple.getHour());
+                    stringBuilder.append(", Classroom ID: ");
+                    stringBuilder.append(dtoTuple.getClassroom().getId());
+                    stringBuilder.append(", Teacher ID: ");
+                    stringBuilder.append(dtoTuple.getTeacher().getNameId());
+                    stringBuilder.append(", Subject ID: ");
+                    stringBuilder.append(dtoTuple.getSubject().getId());
+                    stringBuilder.append(">");
+                    textField.setText(stringBuilder.toString());
+                    vBox.getChildren().add(textField);
+                }
+        );
+
+        return vBox;
+    }
+
+    private void setupMBChooseID()
     {
 
     }
+
 }

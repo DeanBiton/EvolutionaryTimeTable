@@ -74,14 +74,14 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
             if(eaData.getBestSolution() == null)
             {
                 eaData.setBestSolution(thisGenBestSolution);
-                uiAdapter.updateBestFitness(thisGenBestSolution.fitness());
+                uiAdapter.updateBestSolution(thisGenBestSolution);
             }
             else
             {
                 if(thisGenBestSolution.fitness() > eaData.getBestSolution().fitness())
                 {
                     eaData.setBestSolution(thisGenBestSolution);
-                    uiAdapter.updateBestFitness(thisGenBestSolution.fitness());
+                    uiAdapter.updateBestSolution(thisGenBestSolution);
                 }
             }
 

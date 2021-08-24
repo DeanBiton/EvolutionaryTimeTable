@@ -4,6 +4,6 @@ public interface SchoolHourUIAdapter {
 
     void updateTime(Long seconds);
     void updateGenerationNumber(Integer current);
-    void updateBestFitness(Double fitness);
+    void updateBestSolution(Evolutionary bestSolution);
     void algorithmEnded();
 }
