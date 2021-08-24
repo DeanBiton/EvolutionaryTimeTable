@@ -274,6 +274,7 @@ public class MainController {
         algorithmSettingsController.resetScene(manager.getDataAndAlgorithmSettings().getDtoEvolutionaryAlgorithmSettings());
         showSchoolDataController.resetScene();
         showBestSolutionController.resetScene();
+
     }
 
     @FXML
@@ -286,6 +287,7 @@ public class MainController {
         BTNRunAlgorithm.disableProperty().setValue(true);
         BTNViewAlgorithm.disableProperty().setValue(false);
         ViewAlgorithmButton(new ActionEvent());
+        showBestSolutionController.createDiagram();
     }
 
     public void setAlgorithmParameters(List<EndCondition> _endConditions, int _printEveryThisNumberOfGenerations,ConditionPairs conditionPairs)
@@ -339,6 +341,9 @@ public class MainController {
                 },
                 bestSolution->{
                     showBestSolutionController.setDTOTupleGroupWithFitnessDetails(bestSolution);
+                },
+                (fitness,generation) -> {
+                    showBestSolutionController.addfitnesstochart(fitness, generation);
                 }
         );
     }

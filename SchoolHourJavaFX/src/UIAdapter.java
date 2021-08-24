@@ -5,6 +5,7 @@ import Evolution.MySolution.TupleGroup;
 import Evolution.SchoolHourUIAdapter;
 import javafx.application.Platform;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class UIAdapter implements SchoolHourUIAdapter {
@@ -14,20 +15,26 @@ public class UIAdapter implements SchoolHourUIAdapter {
     private Runnable algorithmEnded;
     private Consumer<Integer> updateGenerationNumber;
     private Consumer<Long> updateTime;
-
+    private BiConsumer<Double,Integer> addFitnessToChart;
     public UIAdapter(Consumer<Double> _updateFitness, Runnable _algorithmEnded, Consumer<Integer> _updateGenerationNumber,
-                     Consumer<Long> _updateTime, Consumer<DTOTupleGroupWithFitnessDetails> _updaterBestSolution)
+                     Consumer<Long> _updateTime, Consumer<DTOTupleGroupWithFitnessDetails> _updaterBestSolution,BiConsumer<Double,Integer> _addFitnessToChart)
     {
         updateBestFitness = _updateFitness;
         algorithmEnded = _algorithmEnded;
         updateGenerationNumber=_updateGenerationNumber;
         updateTime=_updateTime;
         updaterBestSolution = _updaterBestSolution;
+        addFitnessToChart=_addFitnessToChart;
     }
 
     public void updateTime(Long seconds)
     {
         Platform.runLater(()->updateTime.accept(seconds));
+    }
+
+    public void addFitnessToChart(Double fitness,Integer generation)
+    {
+        Platform.runLater(() -> addFitnessToChart.accept(fitness, generation));
     }
 
     public void updateGenerationNumber(Integer current)
