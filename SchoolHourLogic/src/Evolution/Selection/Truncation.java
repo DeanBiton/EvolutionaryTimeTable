@@ -10,7 +10,7 @@ public class Truncation extends Selection{
         super(_elitism);
         if(_topPercent > 100 || _topPercent < 0)
         {
-            throw new RuntimeException("topPercent must be between 0 and 100 in Selection Trunction");
+            throw new src.ShowException("topPercent must be between 0 and 100 in Selection Trunction");
         }
 
         this.topPercent = _topPercent;

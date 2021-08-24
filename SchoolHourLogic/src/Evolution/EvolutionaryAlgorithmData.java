@@ -38,13 +38,13 @@ public class EvolutionaryAlgorithmData implements Serializable {
         String configuration = ettEvolutionEngine.getETTSelection().getConfiguration();
         int elitism = ettEvolutionEngine.getETTSelection().getETTElitism() != null ? ettEvolutionEngine.getETTSelection().getETTElitism() : 0;
         if (elitism > initialPopulation)
-            throw new RuntimeException("elitism is above initial population");
+            throw new src.ShowException( "elitism is above initial population");
         Selection selection;
         try {
             SelectionSelector ss = SelectionSelector.valueOf(name);
             selection = ss.create(configuration, elitism);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Selection " + name + " doesnt exists");
+            throw new src.ShowException("Selection " + name + " doesnt exists");
         }
         return selection;
     }

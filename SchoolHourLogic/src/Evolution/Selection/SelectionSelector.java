@@ -10,13 +10,13 @@ public enum SelectionSelector {
         public Selection create(String configuration, int elitism) {
             ArrayList<String> parameters = HelperFunc.getParameters(configuration);
             if (parameters.size() != 1)
-                throw new RuntimeException("number of parametrs incorrect for Selection Truncation");
+                throw new src.ShowException("number of parametrs incorrect for Selection Truncation");
 
             int topPercent;
             try {
                 topPercent = Integer.parseInt(parameters.get(0));
             } catch (Exception e) {
-                throw new RuntimeException("parametrs incorrect for Selection Truncation");
+                throw new src.ShowException("parametrs incorrect for Selection Truncation");
             }
                 return new Truncation(topPercent, elitism);
         }
@@ -26,7 +26,7 @@ public enum SelectionSelector {
         @Override
         public Selection create(String configuration, int elitism) {
             if (configuration!=null)
-                throw new RuntimeException("number of parametrs incorrect for Selection RouletteWheel");
+                throw new src.ShowException("number of parametrs incorrect for Selection RouletteWheel");
 
             return new RouletteWheel(elitism);
         }
@@ -37,12 +37,12 @@ public enum SelectionSelector {
         public Selection create(String configuration, int elitism) {
             ArrayList<String> parameters = HelperFunc.getParameters(configuration);
             if (parameters.size() != 1)
-                throw new RuntimeException("number of parametrs incorrect for Selection Tournament");
+                throw new src.ShowException("number of parametrs incorrect for Selection Tournament");
             double pte;
             try {
                 pte = Double.parseDouble(parameters.get(0));
             } catch (Exception e) {
-                throw new RuntimeException("parametrs incorrect for Selection Tournament");
+                throw new src.ShowException("parametrs incorrect for Selection Tournament");
             }
             return new Tournament(elitism,pte);
         }

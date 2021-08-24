@@ -7,11 +7,11 @@ public class ByFitness implements EndCondition {
     public ByFitness(double fitness) {
         if(fitness <= 0)
         {
-            throw new RuntimeException("fitness must be positive.");
+            throw new src.ShowException("fitness must be positive.");
         }
         else if(fitness > 100)
         {
-            throw new RuntimeException("fitness can't be above 100.");
+            throw new src.ShowException("fitness can't be above 100.");
         }
 
         this.fitness = fitness;

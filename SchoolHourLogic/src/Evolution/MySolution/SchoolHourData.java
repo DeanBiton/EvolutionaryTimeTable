@@ -55,10 +55,10 @@ public class SchoolHourData implements Serializable {
     {
         for (ETTSubject s : ettSubjects.getETTSubject()) {
             if (null != subjects.putIfAbsent(s.getId(), new Subject(s.getId(), s.getName())))
-                throw new RuntimeException("subject with same id");
+                throw new src.ShowException("subject with same id");
         }
         if (false == checkOrder(subjects.keySet()))
-            throw new RuntimeException("subjects id are not in an ordered sequence starting from 1");
+            throw new src.ShowException("subjects id are not in an ordered sequence starting from 1");
 
     }
 
@@ -68,19 +68,19 @@ public class SchoolHourData implements Serializable {
             List<Integer> teacher_subjects = new ArrayList<>();
             for (ETTTeaches teach : t.getETTTeaching().getETTTeaches()) {
                 if (teacher_subjects.contains(teach.getSubjectId()))
-                    throw new RuntimeException("subject " + teach.getSubjectId() + " already exists in teacher" + t.getId());
+                    throw new src.ShowException("subject " + teach.getSubjectId() + " already exists in teacher" + t.getId());
 
                 if (false == subjects.containsKey(teach.getSubjectId()))
-                    throw new RuntimeException("subject" + teach.getSubjectId() + " doesnt exist in subjects, teacher id=" + t.getId());
+                    throw new src.ShowException("subject" + teach.getSubjectId() + " doesnt exist in subjects, teacher id=" + t.getId());
 
                 teacher_subjects.add(teach.getSubjectId());
             }
             if (null != teachers.putIfAbsent(t.getId(), new Teacher(t.getId(), t.getETTName(), teacher_subjects)))
-                throw new RuntimeException("teachers with same id "+t.getId());
+                throw new src.ShowException("teachers with same id "+t.getId());
 
         }
         if (false == checkOrder(teachers.keySet()))
-            throw new RuntimeException("teachers id are not in an ordered sequence starting from 1");
+            throw new src.ShowException("teachers id are not in an ordered sequence starting from 1");
     }
 
     private void createClassrooms(ETTClasses ettClasses)
@@ -91,22 +91,22 @@ public class SchoolHourData implements Serializable {
             for (ETTStudy study : c.getETTRequirements().getETTStudy()) {
                 countHours = countHours + study.getHours();
                 if (countHours > numberOfDays * numberOfHoursInADay)
-                    throw new RuntimeException("too many hours in class id" + c.getId());
+                    throw new src.ShowException("too many hours in class id" + c.getId());
 
                 if (false == subjects.containsKey(study.getSubjectId()))
-                    throw new RuntimeException("subject" + study.getSubjectId() + " doesnt exists in subjects, classroom id=" + c.getId());
+                    throw new src.ShowException("subject" + study.getSubjectId() + " doesnt exists in subjects, classroom id=" + c.getId());
 
                 if (null != class_sub2weekhrs.putIfAbsent(study.getSubjectId(), study.getHours()))
-                    throw new RuntimeException("subject" + study.getSubjectId() + " already exists in classroom id=" + c.getId());
+                    throw new src.ShowException("subject" + study.getSubjectId() + " already exists in classroom id=" + c.getId());
 
             }
 
             if (null != classrooms.putIfAbsent(c.getId(), new Classroom(c.getId(), c.getETTName(), class_sub2weekhrs)))
-                throw new RuntimeException("classrooms with same id "+ c.getId());
+                throw new src.ShowException("classrooms with same id "+ c.getId());
 
         }
         if (false == checkOrder(classrooms.keySet()))
-            throw new RuntimeException("classrooms id are not in an ordered sequence starting from 1");
+            throw new src.ShowException("classrooms id are not in an ordered sequence starting from 1");
 
     }
 
@@ -126,11 +126,11 @@ public class SchoolHourData implements Serializable {
                    rule = new Rule(Rule.RuleType.valueOf(r.getETTRuleId()), Rule.RuleImplementationLevel.valueOf(r.getType()));
                }
             } catch (IllegalArgumentException e) {
-                throw new RuntimeException(r.getETTRuleId()+ " - rule doesnt exist");
+                throw new src.ShowException(r.getETTRuleId()+ " - rule doesnt exist");
             }
 
             if (rules.contains(rule))
-                throw new RuntimeException("rule already exist");
+                throw new src.ShowException("rule already exist");
 
             rules.add(rule);
         }
@@ -145,7 +145,7 @@ public class SchoolHourData implements Serializable {
                 mutations.add(ms.create(mutation.getProbability(),mutation.getConfiguration()));
             }catch (IllegalArgumentException e)
             {
-                throw new RuntimeException("mutation "+ mutation.getName()+" doesnt exists");
+                throw new src.ShowException("mutation "+ mutation.getName()+" doesnt exists");
             }
 
         }
@@ -155,12 +155,12 @@ public class SchoolHourData implements Serializable {
         ETTTimeTable timeTable = descriptor.getETTTimeTable();
         numberOfDays = timeTable.getDays();//days
         if (numberOfDays <= 0)
-            throw new Exception("numberOfDays is too small");
+            throw new src.ShowException("numberOfDays is too small");
 
 
         numberOfHoursInADay = timeTable.getHours();//hours
         if (numberOfHoursInADay <= 0)
-            throw new Exception("numberOfHoursInADay is too small");
+            throw new src.ShowException("numberOfHoursInADay is too small");
 
         // keep it in this order
         createSubjects(timeTable.getETTSubjects());

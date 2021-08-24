@@ -11,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
@@ -19,6 +20,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -243,7 +245,7 @@ public class MainController {
 
     // Algorithm Buttons
     @FXML
-    private void loadXML(ActionEvent event) {
+    private void loadXML(ActionEvent event) throws Exception{
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add( new FileChooser.ExtensionFilter("xml files", "*.xml"));
 
@@ -257,7 +259,11 @@ public class MainController {
             BTNSetConditions.disableProperty().bind(isAlgorithmAlive);
             BTNViewAlgorithm.disableProperty().setValue(true);
             resetApp();
-        } catch (Exception e) {
+        } catch (src.ShowException e) {
+            error(e.getMessage());
+           // System.out.println(e.getMessage());
+        } catch (Exception e)
+        {
             System.out.println(e.getMessage());
         }
     }
@@ -458,8 +464,6 @@ public class MainController {
 
     public double getCenterPrefWidth()
     {
-        System.out.println(getScene().getWidth());
-        System.out.println(SPMenu.getWidth());
         return getScene().getWidth() - SPMenu.getWidth();
     }
 
@@ -476,5 +480,15 @@ public class MainController {
     public double getCenterWindowHeight()
     {
         return Screen.getPrimary().getBounds().getHeight() - APTop.getHeight();
+    }
+
+    private void error(String errorString)
+    {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error Dialog");
+        //alert.setHeaderText("Look, an Error Dialog");
+        alert.setContentText(errorString);
+
+        alert.showAndWait();
     }
 }

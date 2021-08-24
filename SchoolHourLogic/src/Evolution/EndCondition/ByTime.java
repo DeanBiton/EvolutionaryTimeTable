@@ -5,7 +5,7 @@ public class ByTime implements EndCondition{
 
     public ByTime(int minutes) {
         if(minutes<=0)
-            throw new RuntimeException("End condition byTime - parameter is not positive");
+            throw new src.ShowException("End condition byTime - parameter is not positive");
 
         this.minutes = minutes;
     }
