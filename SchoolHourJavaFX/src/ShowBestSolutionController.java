@@ -8,10 +8,16 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
 public class ShowBestSolutionController {
+
+
     @FXML
     private Scene scene;
     @FXML
@@ -32,6 +38,10 @@ public class ShowBestSolutionController {
     private Tab TabDiagram;
     @FXML
     private ScrollPane SPDiagram;
+    private XYChart.Series dataBestSeries;
+    private XYChart.Series dataCurrentSeries;
+    //AreaChart chartFitness;
+    private LineChart<Double, Integer> chartFitness;
 
     private MainController mainController;
     private SchoolHourManager manager;
@@ -144,4 +154,37 @@ public class ShowBestSolutionController {
 
     }
 
+    public void addfitnesstochart(double fitness,int generation)
+    {
+
+        dataCurrentSeries.getData().add(new XYChart.Data( generation, fitness));
+        dataBestSeries.getData().add(new XYChart.Data( generation,bestSolution.getFitness()));
+    }
+    public void createDiagram()
+    {
+        NumberAxis xAxis = new NumberAxis();
+        xAxis.setLabel("generations");
+
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("fitness");
+
+        chartFitness = new LineChart(xAxis, yAxis);
+        SPDiagram.setContent(chartFitness);
+        chartFitness.prefWidthProperty().bind(SPDiagram.widthProperty());
+        dataBestSeries = new XYChart.Series();
+        dataBestSeries.setName("best");
+
+        dataCurrentSeries = new XYChart.Series();
+        dataCurrentSeries.setName("current");
+
+        yAxis.setForceZeroInRange(false);
+
+        chartFitness.getData().add(dataBestSeries);
+        chartFitness.getData().add(dataCurrentSeries);
+    }
+    public void resetDiagram() {
+
+
+
+    }
 }
