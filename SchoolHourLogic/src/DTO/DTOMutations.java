@@ -9,6 +9,15 @@ public class DTOMutations {
     private List<DTOFlipping> flippings;
     private List<DTOSizer> sizers;
 
+
+    public List<DTOFlipping> getFlippings() {
+        return flippings;
+    }
+
+    public List<DTOSizer> getSizers() {
+        return sizers;
+    }
+
     public DTOMutations(List<Mutation> mutations) {
         flippings = new ArrayList<>();
         sizers = new ArrayList<>();
@@ -37,15 +46,15 @@ public class DTOMutations {
             }
         }
 
-       if(!sizers.isEmpty())
-       {
-           stringBuilder.append("Sizer Mutations:");
-           stringBuilder.append(System.lineSeparator());
-           for (DTOSizer dtoSizer : sizers)
-           {
-               stringBuilder.append(dtoSizer.toString());
-           }
-       }
+        if(!sizers.isEmpty())
+        {
+            stringBuilder.append("Sizer Mutations:");
+            stringBuilder.append(System.lineSeparator());
+            for (DTOSizer dtoSizer : sizers)
+            {
+                stringBuilder.append(dtoSizer.toString());
+            }
+        }
 
         return stringBuilder.toString();
     }

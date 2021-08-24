@@ -11,6 +11,16 @@ public class DTOAspectOriented implements DTOCrossover{
     }
 
     @Override
+    public String getName() {
+        return aspectOriented.getName();
+    }
+
+    public AspectOriented.OrientationType getOrientationType()
+    {
+        return aspectOriented.getOrientationType();
+    }
+
+    @Override
     public final int getNumberOfSeparators(){
         return aspectOriented.getNumberOfSeperators();
     }

@@ -23,6 +23,8 @@ public abstract class Crossover implements Serializable {
         return numberOfSeparators;
     }
 
+    public abstract String getName();
+
     public List<Evolutionary> crossover(TupleGroup parent1, TupleGroup parent2)
     {
         if(parent1.getData() != parent2.getData())
@@ -36,8 +38,8 @@ public abstract class Crossover implements Serializable {
         TupleGroup child1=new TupleGroup(parent1.getData());
         TupleGroup child2=new TupleGroup(parent1.getData());
 
-         List<Tuple>  child1Tuples= new ArrayList<>();
-         List<Tuple> child2Tuples= new ArrayList<>();
+        List<Tuple>  child1Tuples= new ArrayList<>();
+        List<Tuple> child2Tuples= new ArrayList<>();
 
         Set<Integer> separatorsIndexes= new TreeSet<>();
         while(separatorsIndexes.size()!=numberOfSeparators)

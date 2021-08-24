@@ -30,7 +30,12 @@ public class DayTimeOriented extends Crossover{
             tupleLists.get(location).add(tuple);
         }
 
-       return tupleLists;
+        return tupleLists;
+    }
+
+    @Override
+    public String getName() {
+        return "DayTimeOriented";
     }
 
     @Override

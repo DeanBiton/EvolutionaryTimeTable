@@ -52,5 +52,6 @@ public abstract class Selection implements Serializable {
         return selection(currentGen, numberOfParent);
     }
 
+    protected  abstract String getName();
     protected abstract List<Evolutionary> selection(List<Evolutionary> currentGen, int numberOfParents);
 }

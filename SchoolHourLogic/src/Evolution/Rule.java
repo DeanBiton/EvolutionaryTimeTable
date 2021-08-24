@@ -332,6 +332,10 @@ public class Rule implements Serializable {
             return (TupleGroup) evolutionary;
         }
 
+        public int getTotalHours() {
+            return totalHours;
+        }
+
         @Override
         public double fitnessRuleCalc(Evolutionary evolutionary) {
             return 0;

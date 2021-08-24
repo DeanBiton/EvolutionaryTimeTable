@@ -1,10 +1,14 @@
 package DTO;
 
+import Evolution.Selection.RouletteWheel;
 import Evolution.Selection.Selection;
+import Evolution.Selection.Tournament;
 import Evolution.Selection.Truncation;
 
 public interface DTOSelection {
 
+    public int getElitism();
+    public String getName();
     public static DTOSelection getDTOSelection(Selection selection)
     {
         DTOSelection dtoSelection = null;
@@ -12,6 +16,14 @@ public interface DTOSelection {
         if(selection instanceof Truncation)
         {
             dtoSelection = new DTOTruncation((Truncation) selection);
+        }
+        else if(selection instanceof Tournament)
+        {
+            dtoSelection = new DTOTournament((Tournament) selection);
+        }
+        else if(selection instanceof RouletteWheel)
+        {
+            dtoSelection = new DTORouletteWheel((RouletteWheel) selection);
         }
 
         return dtoSelection;
@@ -23,6 +35,14 @@ public interface DTOSelection {
         if(dtoSelection instanceof DTOTruncation)
         {
             stringBuilder.append(((DTOTruncation)dtoSelection).toString());
+        }
+        else if(dtoSelection instanceof DTOTournament)
+        {
+            stringBuilder.append(((DTOTournament)dtoSelection).toString());
+        }
+        else if(dtoSelection instanceof DTORouletteWheel)
+        {
+            stringBuilder.append(((DTORouletteWheel)dtoSelection).toString());
         }
 
         return stringBuilder.toString();

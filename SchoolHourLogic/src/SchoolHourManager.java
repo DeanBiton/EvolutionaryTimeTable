@@ -263,7 +263,7 @@ public class SchoolHourManager {
         schoolHourEvolutionaryAlgorithm.setSelection(selection);
     }
 
-    public void setMutationProbability(Mutation mutation,Double probabilty){}
+    public void setMutations(List<Mutation> mutations){schoolHourEvolutionaryAlgorithm.setMutations(mutations);}
 
     public boolean isSuspended() {
         return isSuspended;

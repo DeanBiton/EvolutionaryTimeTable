@@ -11,6 +11,11 @@ public class DTODayTimeOriented implements DTOCrossover {
     }
 
     @Override
+    public String getName() {
+        return dayTimeOriented.getName();
+    }
+
+    @Override
     public final int getNumberOfSeparators(){
         return dayTimeOriented.getNumberOfSeperators();
     }
