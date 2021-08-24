@@ -1,16 +1,19 @@
 import Evolution.EndCondition.EndCondition;
-import Evolution.EndCondition.NumberOfGenerations;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
@@ -19,22 +22,31 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainController {
     @FXML
     private BorderPane borderPane;
+
     @FXML
-    private Button loadXML;
+    private AnchorPane APTop;
     @FXML
-    private Button RunAlgorithm;
+    private GridPane GPCenter;
+
     @FXML
-    private TextArea BestSolutionFitness;
+    private Button BTNLoadXML;
     @FXML
-    private Button PauseResume;
+    private Button BTNRunAlgorithm;
+    @FXML
+    private Button BTNPauseResume;
     @FXML
     private Button BTNStop;
+
+    //Menu
+    @FXML
+    private ScrollPane SPMenu;
+    @FXML
+    private AnchorPane APMenu;
     @FXML
     private VBox VBoxMenu;
     @FXML
@@ -43,6 +55,8 @@ public class MainController {
     private Button BTNViewAlgorithm;
     @FXML
     private Button BTNShowSchoolData;
+    @FXML
+    private Button BTNBestSolution;
 
     private BorderPane algorithmBorderPane;
 
@@ -59,11 +73,19 @@ public class MainController {
     private Node viewAlgorithmScene;
     private AlgorithmSettingsController algorithmSettingsController;
     private Node algorithmSettingsScene;
-
+    private ShowBestSolutionController showBestSolutionController;
+    private Node showBestSolutionScene;
 
     private BooleanProperty isXMLLoaded;
     private BooleanProperty isAlgorithmActive;
     private BooleanProperty isAlgorithmAlive;
+
+    //screen size Related
+    double menuButtonHeight = 70;
+    double menuButtonWidth = 170;
+
+    double buttonsWidth;
+    ColumnConstraints emptyColumnConstraint;
 
     public MainController() throws Exception{
         manager = new SchoolHourManager();
@@ -74,20 +96,134 @@ public class MainController {
 
     @FXML
     private void initialize() throws Exception{
+
+        initializeAlgorithmButtons();
+
         // Algorithm Buttons
-        RunAlgorithm.disableProperty().setValue(true);
-        PauseResume.disableProperty().bind(isAlgorithmActive.not());
-        //PauseResume.visibleProperty().bind(isAlgorithmActive);
+        BTNRunAlgorithm.disableProperty().setValue(true);
+        BTNPauseResume.disableProperty().bind(isAlgorithmActive.not());
         BTNStop.disableProperty().bind(isAlgorithmAlive.not());
 
-        // Menu Buttons
-        BTNSetConditions.disableProperty().bind(Bindings.or(isXMLLoaded.not(), isAlgorithmAlive));
-        BTNShowSchoolData.disableProperty().setValue(true);
+        initializeMenu();
 
         //creating Controllers
         createChooseEndConditionsController();
         createViewAlgorithmController();
         createShowSchoolDataController();
+        createShowBestSolutionController();
+    }
+
+    private void initializeAlgorithmButtons()
+    {
+
+    }
+
+    public void initializeComponentsSizes()
+    {
+        initializeAPTopSizes();
+        initializeVBoxSizes();
+        showBestSolutionController.initializeSizes();
+    }
+
+    private void initializeAPTopSizes()
+    {
+        AnchorPane.setTopAnchor(BTNLoadXML, APTop.getHeight()/2 - BTNLoadXML.getHeight() / 2);
+        AnchorPane.setTopAnchor(BTNRunAlgorithm, APTop.getHeight()/2 - BTNRunAlgorithm.getHeight() / 2);
+        AnchorPane.setTopAnchor(BTNPauseResume, APTop.getHeight()/2 - BTNPauseResume.getHeight() / 2);
+        AnchorPane.setTopAnchor(BTNStop, APTop.getHeight()/2 - BTNStop.getHeight() / 2);
+
+        setLeftAPTop();
+        getScene().widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                setLeftAPTop();
+            }
+        });
+    }
+
+    private void setLeftAPTop()
+    {
+        APTop.setPrefWidth(getScene().getWidth());
+        double lenghtBetweenControlls = (getScene().getWidth() - (BTNLoadXML.getWidth() +
+                BTNRunAlgorithm.getWidth() + BTNPauseResume.getWidth() + BTNStop.getWidth()))/5;
+
+        AnchorPane.setLeftAnchor(BTNLoadXML, lenghtBetweenControlls);
+        AnchorPane.setLeftAnchor(BTNRunAlgorithm, AnchorPane.getLeftAnchor(BTNLoadXML) + BTNLoadXML.getWidth() + lenghtBetweenControlls);
+        AnchorPane.setLeftAnchor(BTNPauseResume, AnchorPane.getLeftAnchor(BTNRunAlgorithm) + BTNRunAlgorithm.getWidth() + lenghtBetweenControlls);
+        AnchorPane.setLeftAnchor(BTNStop, AnchorPane.getLeftAnchor(BTNPauseResume) + BTNPauseResume.getWidth() + lenghtBetweenControlls);
+    }
+
+    private void initializeVBoxSizes() {
+        BTNSetConditions.setPrefWidth(menuButtonWidth);
+        BTNViewAlgorithm.setPrefWidth(menuButtonWidth);
+        BTNShowSchoolData.setPrefWidth(menuButtonWidth);
+        BTNBestSolution.setPrefWidth(menuButtonWidth);
+        BTNSetConditions.setPrefHeight(menuButtonHeight);
+        BTNViewAlgorithm.setPrefHeight(menuButtonHeight);
+        BTNShowSchoolData.setPrefHeight(menuButtonHeight);
+        BTNBestSolution.setPrefHeight(menuButtonHeight);
+
+        VBoxMenu.setPrefHeight(menuButtonHeight * 4);
+
+        SPMenu.setPrefWidth(menuButtonWidth + 2);
+        SPMenu.setPrefWidth(400);
+        SPMenu.setPrefHeight(menuButtonHeight * 4);
+
+        APMenu.setPrefWidth(menuButtonWidth);
+        APMenu.setPrefHeight(menuButtonHeight * 4);
+
+        AnchorPane.setTopAnchor(VBoxMenu, 0.0);
+        setMenuButtonsWidth();
+
+        getScene().heightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                setMenuButtonsWidth();
+            }
+        });
+    }
+
+    public void setMenuButtonsWidth()
+    {
+        double currentMenuButtonWidth = menuButtonWidth + 2;
+        if(SPMenu.getHeight() < 283) // menuButtonHeight * 4
+        {
+           currentMenuButtonWidth += 13;
+        }
+
+
+       // BTNSetConditions.setPrefWidth(currentMenuButtonWidth);
+        //BTNViewAlgorithm.setPrefWidth(currentMenuButtonWidth);
+        //BTNShowSchoolData.setPrefWidth(currentMenuButtonWidth);
+        //BTNBestSolution.setPrefWidth(currentMenuButtonWidth);
+
+        //VBoxMenu.setPrefWidth(currentMenuButtonWidth); //*
+        SPMenu.setPrefWidth(currentMenuButtonWidth); // affects the actual width
+        //APMenu.setPrefWidth(currentMenuButtonWidth);
+        //SPMenu.setPrefWidth(menuButtonWidth + 2); // affects the actual width
+    }
+
+    private void initializeMenu()
+    {
+/*
+        //SPMenu initialize
+        SPMenu.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        SPMenu.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        SPMenu.setPrefSize(200, 60);
+        VBoxMenu.setMinSize(100,200);
+        VBoxMenu.setMinSize(100,200);
+
+        //SPMenu.setFitToHeight(true);
+        //SPMenu.setPrefSize(borderPane.getLeft().getLayout
+        // X(), borderPane.getLeft().getLayoutY());
+        BTNSetConditions.setMinSize(190, 60);
+        BTNSetConditions.setPrefSize(190, 60);
+        BTNSetConditions.setMaxSize(190, 60);
+*/
+        // Menu Buttons
+        BTNSetConditions.disableProperty().bind(Bindings.or(isXMLLoaded.not(), isAlgorithmAlive));
+        BTNShowSchoolData.disableProperty().setValue(true);
+        BTNViewAlgorithm.disableProperty().setValue(true);
     }
 
     private FXMLLoader getSceneFXMLLoader(String fxmlFileName) {
@@ -115,8 +251,11 @@ public class MainController {
         try {
             manager.LoadXML(fileToLoadFrom);
             isXMLLoaded.setValue(true);
-            borderPane.getChildren().remove(borderPane.getCenter());
-            borderPane.setCenter(chooseEndConditionsScene);
+            ChooseEndConditionsButton(new ActionEvent());
+            //borderPane.getChildren().remove(borderPane.getCenter());
+            //borderPane.setCenter(chooseEndConditionsScene);
+            BTNSetConditions.disableProperty().bind(isAlgorithmAlive);
+            BTNViewAlgorithm.disableProperty().setValue(true);
             resetApp();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -124,8 +263,9 @@ public class MainController {
     }
 
     private void resetApp() {
-        RunAlgorithm.disableProperty().setValue(true);
+        BTNRunAlgorithm.disableProperty().setValue(true);
         BTNShowSchoolData.disableProperty().setValue(false);
+        algorithmSettingsController.resetScene(manager.getDataAndAlgorithmSettings().getDtoEvolutionaryAlgorithmSettings());
         showSchoolDataController.resetScene();
     }
 
@@ -135,8 +275,10 @@ public class MainController {
 
         manager.runEvolutionaryAlgorithm(endConditions, printEveryThisNumberOfGenerations, uiAdapter);
         isAlgorithmActive.setValue(true);
-        RunAlgorithm.disableProperty().setValue(true);
         isAlgorithmAlive.setValue(true);
+        BTNRunAlgorithm.disableProperty().setValue(true);
+        BTNViewAlgorithm.disableProperty().setValue(false);
+        ViewAlgorithmButton(new ActionEvent());
     }
 
     public void setAlgorithmParameters(List<EndCondition> _endConditions, int _printEveryThisNumberOfGenerations,ConditionPairs conditionPairs)
@@ -144,7 +286,7 @@ public class MainController {
         viewAlgorithmController.setConditionPairs(conditionPairs);
         endConditions = _endConditions;
         printEveryThisNumberOfGenerations = _printEveryThisNumberOfGenerations;
-        RunAlgorithm.disableProperty().setValue(false);
+        BTNRunAlgorithm.disableProperty().setValue(false);
     }
 
     @FXML
@@ -152,13 +294,14 @@ public class MainController {
 
         if(manager.isSuspended())
         {
+            algorithmSettingsController.setNewSettings();
             manager.resume();
-            PauseResume.setText("Pause");
+            BTNPauseResume.setText("Pause");
         }
         else
         {
             manager.suspend();
-            PauseResume.setText("Resume");
+            BTNPauseResume.setText("Resume");
         }
     }
 
@@ -177,9 +320,9 @@ public class MainController {
 
                 () -> {
                     isAlgorithmActive.setValue(false);
-                    RunAlgorithm.disableProperty().setValue(false);
+                    BTNRunAlgorithm.disableProperty().setValue(false);
                     isAlgorithmAlive.setValue(false);
-                    PauseResume.setText("Pause");
+                    BTNPauseResume.setText("Pause");
                 },
                 current->{
                     viewAlgorithmController.updateGenerationNUmber(current);
@@ -211,6 +354,7 @@ public class MainController {
         showSchoolDataController = fxmlLoader.getController();
         showSchoolDataController.setMainController(this);
         showSchoolDataController.setManager(manager);
+        //showSchoolDataController.initializeSizes();
     }
 
     private void createViewAlgorithmController()
@@ -220,7 +364,6 @@ public class MainController {
         algorithmBorderPane.setMinWidth(Region.USE_COMPUTED_SIZE);
         algorithmBorderPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
         algorithmBorderPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
-        //algorithmBorderPane.setMaxHeight(Region.);
 
         FXMLLoader fxmlLoader = getSceneFXMLLoader("ViewAlgorithm");
 
@@ -256,6 +399,24 @@ public class MainController {
         algorithmBorderPane.setBottom(viewAlgorithmScene);
     }
 
+    private void createShowBestSolutionController()
+    {
+        FXMLLoader fxmlLoader = getSceneFXMLLoader("ShowBestSolution");
+
+        try {
+            showBestSolutionScene = fxmlLoader.load();
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        BorderPane.setAlignment(showBestSolutionScene, Pos.TOP_LEFT);
+
+        showBestSolutionController = fxmlLoader.getController();
+        showBestSolutionController.setMainController(this);
+        showBestSolutionController.setManager(manager);
+    }
+
     // Menu Buttons
     @FXML
     private void ChooseEndConditionsButton(ActionEvent event)
@@ -278,5 +439,42 @@ public class MainController {
         borderPane.setCenter(algorithmBorderPane);
     }
 
+    @FXML
+    private void ShowBestSolutionButton(ActionEvent event)
+    {
+        borderPane.getChildren().remove(borderPane.getCenter());
+        borderPane.setCenter(showBestSolutionScene);
+    }
 
+    // Gets
+    public Scene getScene()
+    {
+        return primaryStage.getScene();
+    }
+
+    public BorderPane getBorderPane() { return borderPane;}
+
+    public ScrollPane getSPMenu() {return SPMenu;}
+
+    public double getCenterPrefWidth()
+    {
+        System.out.println(getScene().getWidth());
+        System.out.println(SPMenu.getWidth());
+        return getScene().getWidth() - SPMenu.getWidth();
+    }
+
+    public double getCenterPrefHeight()
+    {
+        return getScene().getHeight() - APTop.getHeight();
+    }
+
+    public double getCenterWindowWidth()
+    {
+        return Screen.getPrimary().getBounds().getWidth() - SPMenu.getWidth();
+    }
+
+    public double getCenterWindowHeight()
+    {
+        return Screen.getPrimary().getBounds().getHeight() - APTop.getHeight();
+    }
 }

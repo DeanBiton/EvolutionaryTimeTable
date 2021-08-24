@@ -2,6 +2,7 @@ package Evolution;
 import Evolution.EndCondition.EndCondition;
 import Evolution.EndCondition.EndConditionGetterClass;
 import Evolution.MySolution.Crossover.Crossover;
+import Evolution.MySolution.MyMutation.Mutation;
 import Evolution.Selection.Selection;
 import javafx.util.Pair;
 import org.apache.commons.lang3.time.StopWatch;
@@ -152,7 +153,10 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
             children.remove(children.size() - 1);
         }
 
-        children.forEach(Evolutionary::mutation);
+        synchronized (eaData.getMutations()) {
+            children.forEach(Evolutionary::mutation);
+        }
+
         return children;
     }
 
@@ -228,6 +232,20 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
             else
             {
                 throw new RuntimeException("can't set crossover while the algorithm is running.");
+            }
+        }
+    }
+
+    public void setMutations(List<Mutation> mutations) {
+        synchronized (eaData.getMutations())
+        {
+            if(isSettingAvailable)
+            {
+                eaData.setMutations(mutations);
+            }
+            else
+            {
+                throw new RuntimeException("can't set mutations while the algorithm is running.");
             }
         }
     }

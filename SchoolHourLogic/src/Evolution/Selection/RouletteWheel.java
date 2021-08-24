@@ -11,6 +11,11 @@ public class RouletteWheel extends Selection{
     }
 
     @Override
+    public String getName() {
+        return "RouletteWheel";
+    }
+
+    @Override
     protected List<Evolutionary> selection(List<Evolutionary> currentGen, int numberOfParents) {
         double fitnessSum =currentGen.stream().mapToDouble(Evolutionary::fitness).sum();
         double randomNUmber;

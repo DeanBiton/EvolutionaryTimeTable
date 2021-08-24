@@ -21,6 +21,11 @@ public class Truncation extends Selection{
     }
 
     @Override
+    public String getName() {
+        return "Truncation";
+    }
+
+    @Override
     public List<Evolutionary> selection(List<Evolutionary> currentGen, int numberOfParents) {
 
         Collections.sort(currentGen, Collections.reverseOrder(Evolutionary::compare));

@@ -15,6 +15,16 @@ public class DTOTruncation implements DTOSelection{
     }
 
     @Override
+    public int getElitism() {
+        return truncation.getElitism();
+    }
+
+    @Override
+    public String getName() {
+        return truncation.getName();
+    }
+
+    @Override
     public String toString() {
         return truncation.toString();
     }

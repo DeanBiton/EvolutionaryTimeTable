@@ -7,6 +7,7 @@ import Evolution.Selection.Truncation;
 
 public interface DTOCrossover {
     public int getNumberOfSeparators();
+    public String getName();
 
     public static DTOCrossover getDTOCrossover(Crossover crossover)
     {

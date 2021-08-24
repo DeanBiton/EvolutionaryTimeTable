@@ -36,12 +36,12 @@ public class AspectOriented extends Crossover{
 
         parent.getTuples().sort((tuple1, tuple2) -> {
             int compare;
-                if(orientationType == OrientationType.TEACHER)
-                    compare = teacherComparator(tuple1.getTeacher(),tuple2.getTeacher());
-                else
-                    compare = classroomComparator(tuple1.getClassroom(), tuple2.getClassroom());
+            if(orientationType == OrientationType.TEACHER)
+                compare = teacherComparator(tuple1.getTeacher(),tuple2.getTeacher());
+            else
+                compare = classroomComparator(tuple1.getClassroom(), tuple2.getClassroom());
 
-                return compare;
+            return compare;
         });
 
         int location = 0;
@@ -58,6 +58,15 @@ public class AspectOriented extends Crossover{
         }
 
         return tupleLists;
+    }
+
+    @Override
+    public String getName() {
+        return "AspectOriented";
+    }
+
+    public OrientationType getOrientationType() {
+        return orientationType;
     }
 
     @Override

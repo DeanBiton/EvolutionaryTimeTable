@@ -9,11 +9,21 @@ import java.util.List;
 public class Tournament extends Selection{
     double pte;
 
+
+
     public Tournament(int elitism, double pte) {
         super(elitism);
         this.pte = pte;
     }
 
+    public double getPte() {
+        return pte;
+    }
+
+    @Override
+    public String getName() {
+        return "Tournament";
+    }
     @Override
     protected List<Evolutionary> selection(List<Evolutionary> currentGen, int numberOfParents) {
 

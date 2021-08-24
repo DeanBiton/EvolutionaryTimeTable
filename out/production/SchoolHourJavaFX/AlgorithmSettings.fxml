@@ -1,25 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Accordion?>
-<?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 
-<Accordion maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AlgorithmSettingsController">
-  <panes>
-    <TitledPane animated="false" text="untitled 1">
-      <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-      </content>
-    </TitledPane>
-    <TitledPane animated="false" text="untitled 2">
-      <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-      </content>
-    </TitledPane>
-    <TitledPane animated="false" text="untitled 3">
-      <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-      </content>
-    </TitledPane>
-  </panes>
-</Accordion>
+
+<Pane fx:id="pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="401.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AlgorithmSettingsController">
+   <children>
+      <GridPane fx:id="SettingsGridPane" hgap="5.0" layoutX="60.0" layoutY="96.0" vgap="5.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <MenuButton fx:id="SelectionMenuBTN" mnemonicParsing="false" prefWidth="130.0" text="MenuButton" GridPane.columnIndex="1">
+              <items>
+                <MenuItem fx:id="TruncationMenu" mnemonicParsing="false" text="Truncation" />
+                <MenuItem fx:id="RouletteMenu" mnemonicParsing="false" text="Roulette Wheel" />
+                  <MenuItem fx:id="TournamentMenu" mnemonicParsing="false" text="Tournament" />
+              </items>
+            </MenuButton>
+            <Label text="Selection:">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Label>
+            <Label alignment="TOP_CENTER" prefWidth="50.0" text="Elitism:" textAlignment="CENTER" GridPane.columnIndex="2" />
+            <Label fx:id="selectionSliderLabel" maxWidth="40.0" GridPane.columnIndex="6">
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </Label>
+            <Slider fx:id="selectionSlider" maxWidth="200.0" minWidth="200.0" GridPane.columnIndex="5" />
+            <Spinner fx:id="elitism" editable="true" prefWidth="60.0" GridPane.columnIndex="3" />
+            <Label fx:id="selectionParameter" alignment="TOP_CENTER" prefWidth="100.0" text="selectionParameter" GridPane.columnIndex="4" />
+            <Label text="Crossover:" GridPane.rowIndex="1" />
+            <MenuButton fx:id="CrossoverMenuBTN" mnemonicParsing="false" prefWidth="140.0" text="MenuButton" GridPane.columnIndex="1" GridPane.rowIndex="1">
+              <items>
+                  <MenuItem fx:id="DayTimeOrientedMenu" mnemonicParsing="false" text="Day Time Oriented" />
+                  <MenuItem fx:id="AspectOrientedMenu" mnemonicParsing="false" text="Aspect Oriented" />
+              </items>
+            </MenuButton>
+            <Label text="Separators:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Spinner fx:id="separators" editable="true" prefWidth="60.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Label fx:id="crossoverParameter" alignment="TOP_CENTER" prefWidth="100.0" text="crossoverParameter" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <MenuButton fx:id="OrientationMenuBTN" mnemonicParsing="false" text="MenuButton" GridPane.columnIndex="5" GridPane.rowIndex="1">
+               <items>
+                  <MenuItem fx:id="ClassMenu" mnemonicParsing="false" text="Class" />
+                  <MenuItem fx:id="TeacherMenu" mnemonicParsing="false" text="Teacher" />
+               </items>
+            </MenuButton>
+         </children>
+      </GridPane>
+      <GridPane fx:id="MutationsGP" hgap="5.0" layoutX="59.0" layoutY="209.0" vgap="5.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
+      <Label layoutX="60.0" layoutY="173.0" text="Mutations:" />
+   </children>
+</Pane>
