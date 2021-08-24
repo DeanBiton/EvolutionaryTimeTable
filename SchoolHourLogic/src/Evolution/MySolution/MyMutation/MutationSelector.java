@@ -14,7 +14,7 @@ public enum MutationSelector {
 
             ArrayList<String> parameters = HelperFunc.getParameters(configuration);
             if(parameters.size()!=2)
-                throw new RuntimeException("number of parameters incorrect for mutation Flipping");
+                throw new src.ShowException("number of parameters incorrect for mutation Flipping");
 
             int maxTupples;
             Flipping.FlippingComponent component;
@@ -23,7 +23,7 @@ public enum MutationSelector {
                 component = Evolution.MySolution.MyMutation.Flipping.FlippingComponent.valueOf(parameters.get(1));
             } catch (Exception e)
             {
-                throw new RuntimeException("parameters incorrect for mutation Flipping");
+                throw new src.ShowException("parameters incorrect for mutation Flipping");
             }
             return new Flipping(probability,maxTupples, component);
         }
@@ -34,7 +34,7 @@ public enum MutationSelector {
         {
             ArrayList<String> parameters = HelperFunc.getParameters(configuration);
             if(parameters.size()!=1)
-                throw new RuntimeException("number of parameters incorrect for mutation Flipping");
+                throw new src.ShowException("number of parameters incorrect for mutation Flipping");
 
             int totalTuples;
             try {
@@ -42,7 +42,7 @@ public enum MutationSelector {
             }
             catch (Exception e)
             {
-                throw new RuntimeException("parameters incorrect for mutation Sizer");
+                throw new src.ShowException("parameters incorrect for mutation Sizer");
             }
 
             return new Sizer(probability, totalTuples);

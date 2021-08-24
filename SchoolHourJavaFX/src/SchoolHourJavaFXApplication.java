@@ -40,8 +40,7 @@ public class SchoolHourJavaFXApplication extends Application {
             }
         });
 
-        primaryStage.show();
-
+            primaryStage.show();
     }
 
     private FXMLLoader getSceneFXMLLoader(String fxmlFileName) {

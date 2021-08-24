@@ -37,18 +37,18 @@ public class SchoolHourManager {
     private static File getXMLFile(String XMLPath) {
         if(XMLPath == null)
         {
-            throw new NullPointerException("The path given is null");
+            throw new src.ShowException("The path given is null");
         }
 
         if(!XMLPath.endsWith(".xml"))
         {
-            throw new IllegalArgumentException("The file is not a xml file");
+            throw new src.ShowException("The file is not a xml file");
         }
 
         File xmlFile = new File(XMLPath);
         if(!xmlFile.exists())
         {
-            throw new IllegalArgumentException("The file does not exist");
+            throw new src.ShowException("The file does not exist");
         }
 
         return xmlFile;
@@ -174,10 +174,10 @@ public class SchoolHourManager {
 
     public void LoadFile(String filePath){
         if(!CheckFileEndsWith(filePath,saveAndLoadFileEnding))
-            throw new RuntimeException("Load fail, doesnt end with "+saveAndLoadFileEnding);
+            throw new src.ShowException("Load fail, doesnt end with "+saveAndLoadFileEnding);
 
         if(!CheckFileExist(filePath))
-            throw new RuntimeException("file doesnt exist");
+            throw new src.ShowException("file doesnt exist");
 
         try{
             ObjectInputStream objectInputStream= new ObjectInputStream(new FileInputStream(filePath));
@@ -186,7 +186,7 @@ public class SchoolHourManager {
             schoolHourEvolutionaryAlgorithm=(SchoolHourEvolutionaryAlgorithm)objectInputStream.readObject();
             objectInputStream.close();
         } catch (Exception e) {
-            throw  new RuntimeException("File load failed");
+            throw  new src.ShowException("File load failed");
         }
 
         dtoData = new DTOSchoolHoursData(data);
@@ -208,7 +208,7 @@ public class SchoolHourManager {
 
     public void SaveFile(String filePath) {
         if(!CheckFileEndsWith(filePath,saveAndLoadFileEnding))
-            throw new RuntimeException("save fail, doesnt end with"+saveAndLoadFileEnding);
+            throw new src.ShowException("save fail, doesnt end with"+saveAndLoadFileEnding);
 
         stopAlgorithm();
 
@@ -221,7 +221,7 @@ public class SchoolHourManager {
             objectOutputStream.close();
         }
         catch (Exception e){
-            throw  new RuntimeException("File save failed");
+            throw  new src.ShowException("File save failed");
         }
     }
 

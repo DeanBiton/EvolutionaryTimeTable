@@ -9,7 +9,7 @@ public enum CrossoverSelector {
         @Override
         public Crossover create(int cuttingPoints, String configuration) {
             if(configuration!=null)
-                throw new RuntimeException("parametrs incorrect for crossover DayTimeOriented");
+                throw new src.ShowException("parametrs incorrect for crossover DayTimeOriented");
 
             return new DayTimeOriented(cuttingPoints);
         }
@@ -19,14 +19,14 @@ public enum CrossoverSelector {
         public Crossover create(int cuttingPoints, String configuration){
             if (configuration == null)
             {
-                throw new RuntimeException("parameters incorrect for crossover AspectOriented");
+                throw new src.ShowException("parameters incorrect for crossover AspectOriented");
             }
 
             ArrayList<String> parameters = HelperFunc.getParameters(configuration);
 
             if(parameters.size()!=1)
             {
-                throw new RuntimeException("number of parameters incorrect for mutation Flipping");
+                throw new src.ShowException("number of parameters incorrect for mutation Flipping");
             }
 
             Evolution.MySolution.Crossover.AspectOriented.OrientationType orientationType;
@@ -35,7 +35,7 @@ public enum CrossoverSelector {
             }
             catch (Exception ex)
             {
-                throw new RuntimeException("parameters incorrect for crossover AspectOriented");
+                throw new src.ShowException("parameters incorrect for crossover AspectOriented");
             }
 
             return new AspectOriented(cuttingPoints, orientationType);

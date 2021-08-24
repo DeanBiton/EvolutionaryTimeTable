@@ -12,7 +12,7 @@ public abstract class Selection implements Serializable {
     public Selection(int elitism) {
         if(elitism < 0)
         {
-            throw new RuntimeException("elitism must be a positive number");
+            throw new src.ShowException("elitism must be a positive number");
         }
 
         this.elitism = elitism;

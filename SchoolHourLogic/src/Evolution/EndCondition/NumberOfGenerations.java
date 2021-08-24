@@ -7,7 +7,7 @@ public class NumberOfGenerations implements EndCondition {
     public NumberOfGenerations(int _numberOfGenerations) {
         if(_numberOfGenerations < 0)
         {
-            throw new RuntimeException("Number of generations must be bigger then 0.");
+            throw new src.ShowException("Number of generations must be bigger then 0.");
         }
 
         this.numberOfGenerations = _numberOfGenerations;

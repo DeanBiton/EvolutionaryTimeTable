@@ -11,7 +11,7 @@ public Mutation(double _probability) {
 
     if(_probability < 0 || _probability > 1)
     {
-        throw new RuntimeException("Probability must be between 0 and 1");
+        throw new src.ShowException("Probability must be between 0 and 1");
     }
 
     probability = _probability;
