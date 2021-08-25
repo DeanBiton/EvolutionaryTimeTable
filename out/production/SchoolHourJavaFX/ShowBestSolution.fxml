@@ -34,6 +34,15 @@
             </ScrollPane>
          </content>
       </Tab>
+      <Tab fx:id="TabRules" text="Rules">
+         <content>
+            <ScrollPane fx:id="SPRules" prefHeight="200.0" prefWidth="268.0">
+               <content>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+               </content>
+            </ScrollPane>
+         </content>
+      </Tab>
       <Tab fx:id="TabDiagram" text="Diagram">
          <content>
             <ScrollPane fx:id="SPDiagram" prefHeight="200.0" prefWidth="268.0">
