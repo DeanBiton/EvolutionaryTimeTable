@@ -3,17 +3,23 @@ import DTO.DTOTuple;
 import DTO.DTOTupleGroupWithFitnessDetails;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ShowBestSolutionController {
 
@@ -52,8 +58,14 @@ public class ShowBestSolutionController {
     private int currentTeacherID;
     private int currentClassroomID;
 
-    DTOTupleGroupWithFitnessDetails bestSolution;
-    Object currentRawSolutionView;
+    private DTOTupleGroupWithFitnessDetails bestSolution;
+
+    private GridPane GPTeacher;
+    private GridPane GPClassroom;
+    private Object currentTeacherSolutionView;
+    private Object currentClassroomSolutionView;
+    private int cellWidth = 50;
+    private int cellHeight = 50;
 
     public void setMainController(MainController _mainController)
     {
@@ -92,8 +104,59 @@ public class ShowBestSolutionController {
     public void resetScene()
     {
         DTOSchoolHoursData data = manager.getDataAndAlgorithmSettings().getDtoSchoolHoursData();
-        numberOfTeachers = data.getTeachers().size();
-        numberOfClassrooms = data.getClassrooms().size();
+        SPRaw.setContent(null);
+        setupTeacherTab(data);
+        setupClassroomTab(data);
+        SPTeacher.setContent(GPTeacher);
+        SPClassroom.setContent(GPClassroom);
+    }
+
+    private void setupTeacherTab(DTOSchoolHoursData data)
+    {
+        GPTeacher = new GridPane();
+        MenuButton chooseID = new MenuButton();
+        chooseID.setText("Choose ID");
+        for (int i = 1; i <= data.getTeachers().size(); i++) {
+            String string = "  " + i + "  ";
+            MenuItem menuItem = new MenuItem(string);
+            int finalI = i;
+            menuItem.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    chooseID.setText(menuItem.getText());
+                    currentTeacherID = finalI;
+                    presentTeacherBestSolution();
+                }
+            });
+
+            chooseID.getItems().add(menuItem);
+        }
+
+        GPTeacher.add(chooseID,0,0);
+    }
+
+    private void setupClassroomTab(DTOSchoolHoursData data)
+    {
+        GPClassroom = new GridPane();
+        MenuButton chooseID = new MenuButton();
+        chooseID.setText("Choose ID");
+        for (int i = 1; i <= data.getClassrooms().size(); i++) {
+            String string = "  " + i + "  ";
+            MenuItem menuItem = new MenuItem(string);
+            int finalI = i;
+            menuItem.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    chooseID.setText(menuItem.getText());
+                    currentClassroomID = finalI;
+                    presentClassroomBestSolution();
+                }
+            });
+
+            chooseID.getItems().add(menuItem);
+        }
+
+        GPClassroom.add(chooseID,0,0);
     }
 
     public void setDTOTupleGroupWithFitnessDetails(DTOTupleGroupWithFitnessDetails dtoTupleGroupWithFitnessDetails)
@@ -149,11 +212,110 @@ public class ShowBestSolutionController {
         return vBox;
     }
 
-    private void setupMBChooseID()
+    private void presentTeacherBestSolution()
     {
-
+        GridPane gridPane = createTeacherTable(true);
+        if(currentTeacherSolutionView != null)
+        {
+            GPTeacher.getChildren().remove(1);
+        }
+        currentTeacherSolutionView = gridPane;
+        GPTeacher.add(gridPane,0,1);
     }
 
+    private GridPane createTeacherTable(boolean isTeacherTable)
+    {
+        GridPane gridPane = new GridPane();
+        gridPane.gridLinesVisibleProperty().setValue(true);
+        Label label = new Label();
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("DAY").append(System.lineSeparator()).append("----------").append(System.lineSeparator()).append("HOUR");
+        label.setText(stringBuilder.toString());
+        gridPane.add(label,0,0);
+        label.setMinSize(cellWidth,cellHeight);
+
+        for (int i = 1; i <= bestSolution.getSchoolHoursData().getNumberOfDays(); i++)
+        {
+            label = new Label();
+            stringBuilder  = new StringBuilder();
+            stringBuilder.append(System.lineSeparator()).append("       "+ i+ "      ").append(System.lineSeparator());
+            label.setText(stringBuilder.toString());
+            gridPane.add(label, i, 0);
+        }
+
+        for (int i = 1; i <= bestSolution.getSchoolHoursData().getNumberOfHoursInADay(); i++)
+        {
+            label = new Label();
+            stringBuilder  = new StringBuilder();
+            stringBuilder.append(System.lineSeparator()).append("       "+ i+ "      ").append(System.lineSeparator());
+            label.setText(stringBuilder.toString());
+            gridPane.add(label, 0, i);
+        }
+
+        List<DTOTuple> dtoTuples;
+
+        if(isTeacherTable)
+        {
+            System.out.println(currentTeacherID);
+            dtoTuples = bestSolution.getDtoTuples().stream().filter(dtoTuple -> dtoTuple.getTeacher().getNameId() == currentTeacherID).collect(Collectors.toList());
+        }
+        else
+        {
+            System.out.println(currentClassroomID);
+            dtoTuples = bestSolution.getDtoTuples().stream().filter(dtoTuple -> dtoTuple.getClassroom().getId() == currentClassroomID).collect(Collectors.toList());
+        }
+
+        for(int i = 1; i <= bestSolution.getSchoolHoursData().getNumberOfDays(); i++)
+        {
+            for (int j = 1; j <= bestSolution.getSchoolHoursData().getNumberOfHoursInADay(); j++)
+            {
+                VBox vBox = new VBox();
+                int finalI = i;
+                int finalJ = j;
+
+                 List<DTOTuple> cellDTOTuples = dtoTuples.stream().
+                        filter(dtoTuple -> dtoTuple.getDay() == finalI).
+                        filter(dtoTuple -> dtoTuple.getHour() == finalJ).
+                        collect(Collectors.toList());
+
+                for(int k = 0; k < cellDTOTuples.size(); k++)
+                {
+                    DTOTuple dtoTuple = cellDTOTuples.get(k);
+                    label = new Label();
+                    stringBuilder  = new StringBuilder();
+                    stringBuilder.append("    ");
+                    if(isTeacherTable)
+                    {
+                        stringBuilder.append(dtoTuple.getClassroom().getId());
+                    }
+                    else
+                    {
+                        stringBuilder.append(dtoTuple.getTeacher().getNameId());
+                    }
+
+                    stringBuilder.append(",").append(dtoTuple.getSubject().getId());
+                    label.setText(stringBuilder.toString());
+                    vBox.getChildren().add(label);
+                }
+
+                gridPane.add(vBox, i, j);
+            }
+        }
+
+        return gridPane;
+    }
+
+    private void presentClassroomBestSolution()
+    {
+        GridPane gridPane = createTeacherTable(false);
+        if(currentClassroomSolutionView != null)
+        {
+            GPClassroom.getChildren().remove(1);
+        }
+        currentClassroomSolutionView = gridPane;
+        GPClassroom.add(gridPane,0,1);
+    }
     public void addfitnesstochart(double fitness,int generation)
     {
 
