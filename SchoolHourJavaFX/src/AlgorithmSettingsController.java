@@ -15,9 +15,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +24,10 @@ import java.util.List;
 public class AlgorithmSettingsController {
 
 
+    @FXML
+    private VBox SettingVB;
+    @FXML
+    private ScrollPane SettingsSP;
     @FXML
     private GridPane MutationsGP;
     @FXML
@@ -208,6 +210,9 @@ public class AlgorithmSettingsController {
     {
         initializeSelection();
         initializeCrossover();
+        //SettingVB.prefWidthProperty().bind(mainController.getBorderPane().getCenter().);
+        //SettingsGridPane.maxWidthProperty().bind(SettingsSP.widthProperty());
+
     }
 
     private MenuButton createFlippingComponent(int numberforID)
@@ -240,7 +245,7 @@ public class AlgorithmSettingsController {
         slider.setMajorTickUnit(0.5);
         slider.setMinorTickCount(1);
         slider.setBlockIncrement(0.1);
-
+        slider.prefWidth(Region.USE_COMPUTED_SIZE);
         return slider;
     }
     private void initializeMutations(DTOMutations mutations)
@@ -253,23 +258,27 @@ public class AlgorithmSettingsController {
         int i=0;
         for (int nsizers=0;nsizers<mutations.getSizers().size();i++,nsizers++)
         {
-            MutationsGP.add(new Label("Type: Sizer"),0,i);
+            //MutationsGP.add(createLabel("",20),0,i);
+            MutationsGP.add(createLabel("Type: Sizer",80),0,i);
 
-            MutationsGP.add(new Label("Probability:"),1,i);
+
+            MutationsGP.add(createLabel("Probability:",70),1,i);
             Slider slider =createSlider(0,1);
             slider.setValue(mutations.getSizers().get(nsizers).getProbability());
+            GridPane.setHgrow(slider, Priority.ALWAYS);
 
-            Label valueSlider= new Label();
+            Label valueSlider= createLabel("",40);
             valueSlider.textProperty().bind(slider.valueProperty().asString());
-            valueSlider.setMaxWidth(40);
-            valueSlider.setMinWidth(40);
+
           // valueSlider.tooltipProperty().bind(valueSlider.);
             MutationsGP.add(valueSlider,3,i);
             sizerProbability.add(slider);
             MutationsGP.add(slider,2,i);
-            MutationsGP.add(new Label("Total tupples:"),4,i);
+            MutationsGP.add(createLabel("Total tupples:",70),4,i);
             Spinner spinner= createSpinner(-1000,1000);
             spinner.getValueFactory().setValue(mutations.getSizers().get(nsizers).getTotalTuples());
+            spinner.setPrefWidth(70);
+            spinner.setMinWidth(Region.USE_PREF_SIZE);
             sizerTotalTuples.add(spinner);
             MutationsGP.add(spinner,5,i);
         }
@@ -277,35 +286,45 @@ public class AlgorithmSettingsController {
         for (int nFlippings=0;nFlippings<mutations.getFlippings().size();i++,nFlippings++)
         {
 
-            MutationsGP.add(new Label("Type: Flipping"),0,i);
+            MutationsGP.add(createLabel("Type: Flipping",80),0,i);
 
-            Label label=new Label("Probability:");
             //label.setAlignment(Pos.TOP_CENTER);
-            MutationsGP.add(label,1,i);
+            MutationsGP.add(createLabel("Probability:",70),1,i);
             Slider slider = createSlider(0,1);
             slider.setValue(mutations.getFlippings().get(nFlippings).getProbability());
 
-            Label valueSlider= new Label();
+            Label valueSlider= createLabel("",40);
             valueSlider.textProperty().bind(slider.valueProperty().asString());
-            valueSlider.setMaxWidth(40);
-            valueSlider.setMinWidth(40);
+
             MutationsGP.add(valueSlider,3,i);
             flippingProbability.add(slider);
             MutationsGP.add(slider,2,i);
-            MutationsGP.add(new Label("Max tupples:"),4,i);
+            MutationsGP.add( createLabel("Max tupples:",70),4,i);
             Spinner spinner= createSpinner(0,Integer.MAX_VALUE);
             spinner.getValueFactory().setValue(mutations.getFlippings().get(nFlippings).getMaxTuples());
+            spinner.setPrefWidth(70);
+            spinner.setMinWidth(Region.USE_PREF_SIZE);
+
             flippingMaxTupples.add(spinner);
             MutationsGP.add(spinner,5,i);
-            MutationsGP.add(new Label("Component:"),6,i);
+            MutationsGP.add(createLabel("Component:",70),6,i);
             MenuButton component= createFlippingComponent(nFlippings);
+            component.setPrefWidth(60);
+            component.setMinWidth(Region.USE_PREF_SIZE);
             flippingComponnent.add(component);
             Integer finalNFlippings = nFlippings;
             component.getItems().stream().filter(comp-> comp.getText().equals(mutations.getFlippings().get(finalNFlippings).getFlippingComponent().toString())).forEach(MenuItem::fire);
 
             MutationsGP.add(component,7,i);
+
         }
-        MutationsGP.getColumnConstraints().get(0).setPrefWidth(80);
+        //MutationsGP.getColumnConstraints().get(0).setPrefWidth(80);
+
+        MutationsGP.getColumnConstraints().forEach(m->m.setHgrow(Priority.NEVER));
+        MutationsGP.getColumnConstraints().get(2).setHgrow(Priority.SOMETIMES);
+        MutationsGP.getColumnConstraints().get(2).setMinWidth(200);
+       // MutationsGP.getColumnConstraints().forEach(m->m.prefWidthProperty().bind(USE_));
+
 
     }
 
@@ -353,6 +372,14 @@ public class AlgorithmSettingsController {
 
     }
 
+    private Label createLabel(String text, double prefSize)
+    {
+        Label label=new Label(text);
+        label.setPrefWidth(prefSize);
+        label.setMinWidth(Region.USE_PREF_SIZE);
+        label.setAlignment(Pos.CENTER_LEFT);
+        return label;
+    }
 
 
 
@@ -409,6 +436,8 @@ public class AlgorithmSettingsController {
             TruncationMenu.setUserData("Truncation");
             RouletteMenu.setUserData("RouletteWheel");
             TournamentMenu.setUserData("Tournament");
+
+
         }
 
         public void setNewSettings()

@@ -1,0 +1,68 @@
+.root{
+    -fx-font-size: 16px;
+    -fx-font-family: "Gabriola";
+    -fx-base: 	#444444;
+    -fx-background: 	#222222;
+   // color:#ffffff;
+}
+.button{
+   // -fx-color-label-visible: #ffffff;
+    //-fx-border: none;
+    //-fx-color: white;
+    //-fx-padding: 20px;
+    -fx-text-align: center;
+    -fx-text-decoration: none;
+    -fx-display: inline-block;
+    //-fx-font-size: 16px;
+    -fx-margin: 8px 4px;
+    -fx-cursor: pointer;
+    -fx-border-radius:  50%;
+}
+#BTNLoadXML{
+}
+.SolutionGrid{
+    -fx-border-color: #ffffff;
+}
+.SolutionGrid Line {
+    -fx-stroke   : #ffffff;
+}
+.chart{
+    //-fx-background-image: url("https://media.istockphoto.com/photos/digital-vortex-picture-id545774730");
+
+}.chart-title {
+     -fx-text-fill: #4682b4;
+     -fx-font-size: 1.6em;
+ }
+
+.axis-label {
+    -fx-text-fill: #4682b4;
+    -fx-font-size: 20px;
+}
+
+.chart-legend {
+    -fx-background-color:  transparent;
+    -fx-padding: 20px;
+}
+
+.chart-legend-item-symbol{
+    -fx-background-radius: 0;
+}
+
+.chart-legend-item{
+    -fx-text-fill: #ffffff;
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+.chart-vertical-grid-lines {
+    -fx-stroke: #ffffff;
+}
+.chart-horizontal-grid-lines {
+    -fx-stroke: #ffffff;
+}
+.chart-alternative-row-fill {
+    -fx-fill: transparent;
+    -fx-stroke: transparent;
+    -fx-stroke-width: 0;
+}
