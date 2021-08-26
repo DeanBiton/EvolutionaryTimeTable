@@ -70,7 +70,7 @@ public class MainController {
     @FXML
     private Button BTNSetConditions;
     @FXML
-    private Button BTNViewAlgorithm;
+    private Button BTNAlgorithmSettings;
     @FXML
     private Button BTNShowSchoolData;
     @FXML
@@ -120,9 +120,10 @@ public class MainController {
 
         //creating Controllers
         createChooseEndConditionsController();
-        createViewAlgorithmController();
+        createAlgorithmSettingsController();
         createShowSchoolDataController();
         createShowBestSolutionController();
+        createViewAlgorithmController();
     }
 
     public void initializeComponentsSizes()
@@ -194,7 +195,7 @@ public class MainController {
 
     private void initializeVBoxSizes() {
         BTNSetConditions.setPrefSize(menuButtonWidth, menuButtonHeight);
-        BTNViewAlgorithm.setPrefSize(menuButtonWidth, menuButtonHeight);
+        BTNAlgorithmSettings.setPrefSize(menuButtonWidth, menuButtonHeight);
         BTNShowSchoolData.setPrefSize(menuButtonWidth, menuButtonHeight);
         BTNBestSolution.setPrefSize(menuButtonWidth, menuButtonHeight);
 
@@ -258,7 +259,7 @@ public class MainController {
         // Menu Buttons
         BTNSetConditions.disableProperty().bind(Bindings.or(isXMLLoaded.not(), isAlgorithmAlive));
         BTNShowSchoolData.disableProperty().setValue(true);
-        BTNViewAlgorithm.disableProperty().setValue(true);
+        BTNAlgorithmSettings.disableProperty().setValue(true);
         BTNBestSolution.disableProperty().setValue(true);
     }
 
@@ -289,7 +290,7 @@ public class MainController {
             isXMLLoaded.setValue(true);
             ChooseEndConditionsButton(new ActionEvent());
             BTNSetConditions.disableProperty().bind(isAlgorithmAlive);
-            BTNViewAlgorithm.disableProperty().setValue(true);
+            BTNAlgorithmSettings.disableProperty().setValue(true);
             resetApp();
         } catch (src.ShowException e) {
             error(e.getMessage());
@@ -307,6 +308,10 @@ public class MainController {
         showSchoolDataController.resetScene();
         showBestSolutionController.resetScene();
 
+        if(borderPane.getBottom() != null)
+        {
+            borderPane.getChildren().remove(viewAlgorithmScene);
+        }
     }
 
     @FXML
@@ -317,17 +322,18 @@ public class MainController {
         isAlgorithmActive.setValue(true);
         isAlgorithmAlive.setValue(true);
         BTNRunAlgorithm.disableProperty().setValue(true);
-        BTNViewAlgorithm.disableProperty().setValue(false);
+        BTNAlgorithmSettings.disableProperty().setValue(false);
         BTNBestSolution.disableProperty().setValue(false);
         if(borderPane.getCenter() == chooseEndConditionsScene)
         {
-            ViewAlgorithmButton(new ActionEvent());  //change scene to viewAlgorithm
+            AlgorithmSettingsButton(new ActionEvent());  //change scene to viewAlgorithm
         }
 
-        //if(borderPane.getBottom() == null)
-        //{
-        //   borderPane.setBottom(viewAlgorithmScene);
-        //}
+        if(borderPane.getBottom() == null)
+        {
+           borderPane.setBottom(viewAlgorithmScene);
+        }
+
         showBestSolutionController.createDiagram();
     }
 
@@ -413,31 +419,9 @@ public class MainController {
         //showSchoolDataController.initializeSizes();
     }
 
-    private void createViewAlgorithmController()
+    private void createAlgorithmSettingsController()
     {
-        /*
-        algorithmBorderPane = new BorderPane();
-        algorithmBorderPane.setMinHeight(Region.USE_COMPUTED_SIZE);
-        algorithmBorderPane.setMinWidth(Region.USE_COMPUTED_SIZE);
-        algorithmBorderPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
-        algorithmBorderPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
-*/
-        FXMLLoader fxmlLoader = getSceneFXMLLoader("ViewAlgorithm");
-
-        try {
-            viewAlgorithmScene = fxmlLoader.load();
-        }
-        catch (Exception ex)
-        {
-            System.out.println(ex.getMessage());
-        }
-
-        //BorderPane.setAlignment(viewAlgorithmScene, Pos.TOP_LEFT);
-        viewAlgorithmController = fxmlLoader.getController();
-        viewAlgorithmController.setMainController(this);
-        viewAlgorithmController.setManager(manager);
-
-        fxmlLoader = getSceneFXMLLoader("AlgorithmSettings");
+        FXMLLoader fxmlLoader = getSceneFXMLLoader("AlgorithmSettings");
 
         try {
             algorithmSettingsScene = fxmlLoader.load();
@@ -447,13 +431,9 @@ public class MainController {
             System.out.println(ex.getMessage());
         }
 
-        //BorderPane.setAlignment(algorithmSettingsScene, Pos.TOP_LEFT);
         algorithmSettingsController = fxmlLoader.getController();
         algorithmSettingsController.setMainController(this);
         algorithmSettingsController.setManager(manager);
-
-        //algorithmBorderPane.setTop(algorithmSettingsScene);
-        //algorithmBorderPane.setBottom(viewAlgorithmScene);
     }
 
     private void createShowBestSolutionController()
@@ -474,6 +454,24 @@ public class MainController {
         showBestSolutionController.setManager(manager);
     }
 
+    private void createViewAlgorithmController()
+    {
+        FXMLLoader fxmlLoader = getSceneFXMLLoader("ViewAlgorithm");
+
+        try {
+            viewAlgorithmScene = fxmlLoader.load();
+        }
+        catch (Exception ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+
+        //BorderPane.setAlignment(viewAlgorithmScene, Pos.TOP_LEFT);
+        viewAlgorithmController = fxmlLoader.getController();
+        viewAlgorithmController.setMainController(this);
+        viewAlgorithmController.setManager(manager);
+    }
+
     // Menu Buttons
     @FXML
     private void ChooseEndConditionsButton(ActionEvent event)
@@ -490,7 +488,7 @@ public class MainController {
     }
 
     @FXML
-    private void ViewAlgorithmButton(ActionEvent event)
+    private void AlgorithmSettingsButton(ActionEvent event)
     {
         borderPane.getChildren().remove(algorithmSettingsScene);
         borderPane.setCenter(algorithmSettingsScene);
@@ -520,7 +518,14 @@ public class MainController {
 
     public double getCenterPrefHeight()
     {
-        return getScene().getHeight() - SPTop.getHeight();
+        double height = getScene().getHeight() - SPTop.getHeight();
+
+        if(borderPane.getBottom() != null)
+        {
+            height -= viewAlgorithmController.getSPViewAlgorithm().getHeight();
+        }
+
+        return height;
     }
 
     public double getCenterWindowWidth()
