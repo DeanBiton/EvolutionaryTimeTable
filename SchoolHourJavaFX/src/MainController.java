@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -25,6 +26,14 @@ import java.util.List;
 public class MainController {
     @FXML
     private BorderPane borderPane;
+    @FXML
+    private MenuItem MIDefaultSkin;
+
+    @FXML
+    private MenuItem MIDarkSkin;
+
+    @FXML
+    private MenuItem MIUglySkin;
 
 
     @FXML
@@ -121,8 +130,22 @@ public class MainController {
         initializeAPTopSizes();
         initializeVBoxSizes();
         showBestSolutionController.initializeSizes();
+        initializeSkins();
     }
 
+    private void initializeSkins()
+    {
+        MBSkins.setText(MIDefaultSkin.getText());
+        MIDarkSkin.setOnAction(event -> {MBSkins.setText(MIDarkSkin.getText());
+            getScene().getStylesheets().clear();
+            getScene().getStylesheets().add("DarkTheme.css");
+        });
+
+        MIDefaultSkin.setOnAction(event -> { MBSkins.setText(MIDefaultSkin.getText());
+            getScene().getStylesheets().clear();
+            getScene().getStylesheets().add("DefaultTheme.css");
+           });
+    }
     private void initializeAPTopSizes()
     {
         AnchorPane.setTopAnchor(GPOptions, 5.0);
