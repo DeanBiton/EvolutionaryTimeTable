@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane fx:id="SettingsSP" fitToHeight="true" fitToWidth="true" minHeight="10.0" minWidth="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="AlgorithmSettingsController">
+<ScrollPane fx:id="SettingsSP" fitToHeight="true" fitToWidth="true" minHeight="10.0" minWidth="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AlgorithmSettingsController">
    <content>
       <VBox fx:id="SettingVB" alignment="TOP_CENTER" spacing="5.0">
          <children>
@@ -76,6 +76,7 @@
             <Label text="Mutations:" />
             <GridPane fx:id="MutationsGP" hgap="5.0" vgap="5.0">
                <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
                </columnConstraints>
