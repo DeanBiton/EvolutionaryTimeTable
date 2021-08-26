@@ -18,7 +18,8 @@
     -fx-cursor: pointer;
     -fx-border-radius:  50%;
 }
-#BTNLoadXML{
+.menu-button{
+
 }
 .SolutionGrid{
     -fx-border-color: #ffffff;
