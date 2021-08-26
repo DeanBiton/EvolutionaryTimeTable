@@ -11,16 +11,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollBar;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -30,11 +26,21 @@ public class MainController {
     @FXML
     private BorderPane borderPane;
 
-    @FXML
-    private AnchorPane APTop;
+
     @FXML
     private GridPane GPCenter;
 
+    // Algorithm Buttons
+    @FXML
+    private ScrollPane SPTop;
+    @FXML
+    private AnchorPane APTop;
+    @FXML
+    private GridPane GPOptions;
+    @FXML
+    private MenuButton MBSkins;
+    @FXML
+    private ToggleButton TBAnimation;
     @FXML
     private Button BTNLoadXML;
     @FXML
@@ -43,6 +49,7 @@ public class MainController {
     private Button BTNPauseResume;
     @FXML
     private Button BTNStop;
+    private double SPTopMinWidth;
 
     //Menu
     @FXML
@@ -86,9 +93,6 @@ public class MainController {
     double menuButtonHeight = 70;
     double menuButtonWidth = 170;
 
-    double buttonsWidth;
-    ColumnConstraints emptyColumnConstraint;
-
     public MainController() throws Exception{
         manager = new SchoolHourManager();
         isXMLLoaded = new SimpleBooleanProperty(false);
@@ -98,9 +102,6 @@ public class MainController {
 
     @FXML
     private void initialize() throws Exception{
-
-        initializeAlgorithmButtons();
-
         // Algorithm Buttons
         BTNRunAlgorithm.disableProperty().setValue(true);
         BTNPauseResume.disableProperty().bind(isAlgorithmActive.not());
@@ -115,11 +116,6 @@ public class MainController {
         createShowBestSolutionController();
     }
 
-    private void initializeAlgorithmButtons()
-    {
-
-    }
-
     public void initializeComponentsSizes()
     {
         initializeAPTopSizes();
@@ -129,10 +125,13 @@ public class MainController {
 
     private void initializeAPTopSizes()
     {
-        AnchorPane.setTopAnchor(BTNLoadXML, APTop.getHeight()/2 - BTNLoadXML.getHeight() / 2);
-        AnchorPane.setTopAnchor(BTNRunAlgorithm, APTop.getHeight()/2 - BTNRunAlgorithm.getHeight() / 2);
-        AnchorPane.setTopAnchor(BTNPauseResume, APTop.getHeight()/2 - BTNPauseResume.getHeight() / 2);
-        AnchorPane.setTopAnchor(BTNStop, APTop.getHeight()/2 - BTNStop.getHeight() / 2);
+        AnchorPane.setTopAnchor(GPOptions, 5.0);
+        AnchorPane.setRightAnchor(GPOptions, 5.0);
+
+        AnchorPane.setTopAnchor(BTNLoadXML, SPTop.getHeight()/2 - BTNLoadXML.getHeight() / 2);
+        AnchorPane.setTopAnchor(BTNRunAlgorithm, SPTop.getHeight()/2 - BTNRunAlgorithm.getHeight() / 2);
+        AnchorPane.setTopAnchor(BTNPauseResume, SPTop.getHeight()/2 - BTNPauseResume.getHeight() / 2);
+        AnchorPane.setTopAnchor(BTNStop, SPTop.getHeight()/2 - BTNStop.getHeight() / 2);
 
         setLeftAPTop();
         getScene().widthProperty().addListener(new ChangeListener<Number>() {
@@ -145,25 +144,36 @@ public class MainController {
 
     private void setLeftAPTop()
     {
-        APTop.setPrefWidth(getScene().getWidth());
-        double lenghtBetweenControlls = (getScene().getWidth() - (BTNLoadXML.getWidth() +
-                BTNRunAlgorithm.getWidth() + BTNPauseResume.getWidth() + BTNStop.getWidth()))/5;
+        SPTopMinWidth = BTNLoadXML.getWidth() + BTNRunAlgorithm.getWidth() + BTNPauseResume.getWidth() + BTNStop.getWidth() + GPOptions.getWidth();
+        SPTopMinWidth = SPTopMinWidth + SPTopMinWidth / 8;
+        double lengthBetweenControls;
 
-        AnchorPane.setLeftAnchor(BTNLoadXML, lenghtBetweenControlls);
-        AnchorPane.setLeftAnchor(BTNRunAlgorithm, AnchorPane.getLeftAnchor(BTNLoadXML) + BTNLoadXML.getWidth() + lenghtBetweenControlls);
-        AnchorPane.setLeftAnchor(BTNPauseResume, AnchorPane.getLeftAnchor(BTNRunAlgorithm) + BTNRunAlgorithm.getWidth() + lenghtBetweenControlls);
-        AnchorPane.setLeftAnchor(BTNStop, AnchorPane.getLeftAnchor(BTNPauseResume) + BTNPauseResume.getWidth() + lenghtBetweenControlls);
+        if (getScene().getWidth() <= SPTopMinWidth)
+        {
+            SPTop.setPrefWidth(getScene().getWidth());
+            APTop.setPrefWidth(SPTopMinWidth);
+            lengthBetweenControls = 5;
+        }
+        else
+        {
+            SPTop.setPrefWidth(getScene().getWidth() + 5);
+            APTop.setPrefWidth(getScene().getWidth());
+
+            lengthBetweenControls = (APTop.getPrefWidth() - (BTNLoadXML.getWidth() +
+                    BTNRunAlgorithm.getWidth() + BTNPauseResume.getWidth() + BTNStop.getWidth() + GPOptions.getWidth()))/5 - 5;
+        }
+
+        AnchorPane.setLeftAnchor(BTNLoadXML, lengthBetweenControls);
+        AnchorPane.setLeftAnchor(BTNRunAlgorithm, AnchorPane.getLeftAnchor(BTNLoadXML) + BTNLoadXML.getWidth() + lengthBetweenControls);
+        AnchorPane.setLeftAnchor(BTNPauseResume, AnchorPane.getLeftAnchor(BTNRunAlgorithm) + BTNRunAlgorithm.getWidth() + lengthBetweenControls);
+        AnchorPane.setLeftAnchor(BTNStop, AnchorPane.getLeftAnchor(BTNPauseResume) + BTNPauseResume.getWidth() + lengthBetweenControls);
     }
 
     private void initializeVBoxSizes() {
-        BTNSetConditions.setPrefWidth(menuButtonWidth);
-        BTNViewAlgorithm.setPrefWidth(menuButtonWidth);
-        BTNShowSchoolData.setPrefWidth(menuButtonWidth);
-        BTNBestSolution.setPrefWidth(menuButtonWidth);
-        BTNSetConditions.setPrefHeight(menuButtonHeight);
-        BTNViewAlgorithm.setPrefHeight(menuButtonHeight);
-        BTNShowSchoolData.setPrefHeight(menuButtonHeight);
-        BTNBestSolution.setPrefHeight(menuButtonHeight);
+        BTNSetConditions.setPrefSize(menuButtonWidth, menuButtonHeight);
+        BTNViewAlgorithm.setPrefSize(menuButtonWidth, menuButtonHeight);
+        BTNShowSchoolData.setPrefSize(menuButtonWidth, menuButtonHeight);
+        BTNBestSolution.setPrefSize(menuButtonWidth, menuButtonHeight);
 
         VBoxMenu.setPrefHeight(menuButtonHeight * 4);
 
@@ -226,6 +236,7 @@ public class MainController {
         BTNSetConditions.disableProperty().bind(Bindings.or(isXMLLoaded.not(), isAlgorithmAlive));
         BTNShowSchoolData.disableProperty().setValue(true);
         BTNViewAlgorithm.disableProperty().setValue(true);
+        BTNBestSolution.disableProperty().setValue(true);
     }
 
     private FXMLLoader getSceneFXMLLoader(String fxmlFileName) {
@@ -254,8 +265,6 @@ public class MainController {
             manager.LoadXML(fileToLoadFrom);
             isXMLLoaded.setValue(true);
             ChooseEndConditionsButton(new ActionEvent());
-            //borderPane.getChildren().remove(borderPane.getCenter());
-            //borderPane.setCenter(chooseEndConditionsScene);
             BTNSetConditions.disableProperty().bind(isAlgorithmAlive);
             BTNViewAlgorithm.disableProperty().setValue(true);
             resetApp();
@@ -286,7 +295,16 @@ public class MainController {
         isAlgorithmAlive.setValue(true);
         BTNRunAlgorithm.disableProperty().setValue(true);
         BTNViewAlgorithm.disableProperty().setValue(false);
-        ViewAlgorithmButton(new ActionEvent());
+        BTNBestSolution.disableProperty().setValue(false);
+        if(borderPane.getCenter() == chooseEndConditionsScene)
+        {
+            ViewAlgorithmButton(new ActionEvent());  //change scene to viewAlgorithm
+        }
+
+        //if(borderPane.getBottom() == null)
+        //{
+        //   borderPane.setBottom(viewAlgorithmScene);
+        //}
         showBestSolutionController.createDiagram();
     }
 
@@ -479,7 +497,7 @@ public class MainController {
 
     public double getCenterPrefHeight()
     {
-        return getScene().getHeight() - APTop.getHeight();
+        return getScene().getHeight() - SPTop.getHeight();
     }
 
     public double getCenterWindowWidth()
@@ -489,7 +507,7 @@ public class MainController {
 
     public double getCenterWindowHeight()
     {
-        return Screen.getPrimary().getBounds().getHeight() - APTop.getHeight();
+        return Screen.getPrimary().getBounds().getHeight() - SPTop.getHeight();
     }
 
     private void error(String errorString)
