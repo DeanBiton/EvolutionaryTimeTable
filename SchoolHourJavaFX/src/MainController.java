@@ -374,12 +374,13 @@ public class MainController {
 
     private void createViewAlgorithmController()
     {
+        /*
         algorithmBorderPane = new BorderPane();
         algorithmBorderPane.setMinHeight(Region.USE_COMPUTED_SIZE);
         algorithmBorderPane.setMinWidth(Region.USE_COMPUTED_SIZE);
         algorithmBorderPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
         algorithmBorderPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
-
+*/
         FXMLLoader fxmlLoader = getSceneFXMLLoader("ViewAlgorithm");
 
         try {
@@ -390,7 +391,7 @@ public class MainController {
             System.out.println(ex.getMessage());
         }
 
-        BorderPane.setAlignment(viewAlgorithmScene, Pos.TOP_LEFT);
+        //BorderPane.setAlignment(viewAlgorithmScene, Pos.TOP_LEFT);
         viewAlgorithmController = fxmlLoader.getController();
         viewAlgorithmController.setMainController(this);
         viewAlgorithmController.setManager(manager);
@@ -405,13 +406,13 @@ public class MainController {
             System.out.println(ex.getMessage());
         }
 
-        BorderPane.setAlignment(algorithmSettingsScene, Pos.TOP_LEFT);
+        //BorderPane.setAlignment(algorithmSettingsScene, Pos.TOP_LEFT);
         algorithmSettingsController = fxmlLoader.getController();
         algorithmSettingsController.setMainController(this);
         algorithmSettingsController.setManager(manager);
 
-        algorithmBorderPane.setTop(algorithmSettingsScene);
-        algorithmBorderPane.setBottom(viewAlgorithmScene);
+        //algorithmBorderPane.setTop(algorithmSettingsScene);
+        //algorithmBorderPane.setBottom(viewAlgorithmScene);
     }
 
     private void createShowBestSolutionController()
@@ -450,8 +451,8 @@ public class MainController {
     @FXML
     private void ViewAlgorithmButton(ActionEvent event)
     {
-        borderPane.getChildren().remove(borderPane.getCenter());
-        borderPane.setCenter(algorithmBorderPane);
+        borderPane.getChildren().remove(algorithmSettingsScene);
+        borderPane.setCenter(algorithmSettingsScene);
     }
 
     @FXML
