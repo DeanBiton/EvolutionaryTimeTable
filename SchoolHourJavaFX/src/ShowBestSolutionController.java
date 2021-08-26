@@ -67,6 +67,10 @@ public class ShowBestSolutionController {
     private final int teacherClassroomTableVGap = 10;
     private final int teacherClassroomTablePadding = 10;
 
+    public TabPane getTabPane() {
+        return tabPane;
+    }
+
     // first time created
     public void setMainController(MainController _mainController)
     {

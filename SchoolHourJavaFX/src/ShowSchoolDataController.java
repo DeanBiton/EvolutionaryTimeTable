@@ -70,10 +70,8 @@ public class ShowSchoolDataController {
     private MainController mainController;
     private SchoolHourManager manager;
 
-    @FXML
-    private void initialize()
-    {
-
+    public TabPane getTabPane() {
+        return tabPane;
     }
 
     public void setMainController(MainController _mainController)

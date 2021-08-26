@@ -59,6 +59,7 @@ public class MainController {
     @FXML
     private Button BTNStop;
     private double SPTopMinWidth;
+    private boolean bottomAppeared = false;
 
     //Menu
     @FXML
@@ -332,6 +333,10 @@ public class MainController {
         if(borderPane.getBottom() == null)
         {
            borderPane.setBottom(viewAlgorithmScene);
+           bottomAppeared = true;
+           showSchoolDataController.getTabPane().setPrefHeight(getCenterPrefHeight());
+           showBestSolutionController.getTabPane().setPrefHeight(getCenterPrefHeight());
+           bottomAppeared = false;
         }
 
         showBestSolutionController.createDiagram();
@@ -520,9 +525,9 @@ public class MainController {
     {
         double height = getScene().getHeight() - SPTop.getHeight();
 
-        if(borderPane.getBottom() != null)
+        if(borderPane.getBottom() != null || bottomAppeared)
         {
-            height -= viewAlgorithmController.getSPViewAlgorithm().getHeight();
+            height -= 63;
         }
 
         return height;
