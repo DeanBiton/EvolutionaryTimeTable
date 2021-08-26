@@ -1,34 +1,28 @@
 import Evolution.EndCondition.EndCondition;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import sun.text.resources.el.FormatData_el;
 
-import java.sql.Time;
-import java.time.Duration;
 import java.time.LocalTime;
 import java.util.List;
 
 public class ViewAlgorithmController {
 
     @FXML
-    private Pane pane;
-
+    private ScrollPane SPViewAlgorithm;
     @FXML
     private GridPane gridEndCondtions;
-
     @FXML
     private Label generationValue;
-
     @FXML
     private Label fitnessValue;
-
     @FXML
     private Label timeValue;
+
 
     private ProgressBar progressBarFitness;
     private ProgressBar progressBarNumberOfGenerations;
@@ -102,7 +96,7 @@ public class ViewAlgorithmController {
 
         this.conditionPairs= _conditionPairs;
 
-         pane.getChildren().removeAll(progressBarFitness,progressBarNumberOfGenerations,progressBarTime);
+        gridEndCondtions.getChildren().removeAll(progressBarFitness,progressBarNumberOfGenerations,progressBarTime);
         createProgressBars();
     }
 
@@ -132,5 +126,9 @@ public class ViewAlgorithmController {
             progressBarTime.progressProperty().bind(timeSeconds.divide(conditionPairs.timeSeconds*1.0));
         }
 
+    }
+
+    public ScrollPane getSPViewAlgorithm() {
+        return SPViewAlgorithm;
     }
 }
