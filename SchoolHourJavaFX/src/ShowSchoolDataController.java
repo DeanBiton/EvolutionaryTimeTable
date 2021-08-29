@@ -67,6 +67,35 @@ public class ShowSchoolDataController {
     private MainController mainController;
     private SchoolHourManager manager;
 
+    @FXML
+    private void initialize()
+    {
+        initTabAnimations();
+    }
+
+    private void initTabAnimations()
+    {
+        TabClassrooms.selectedProperty().addListener((observable, oldValue, isSelected) -> {
+            if(isSelected)
+                mainController.doFade(TabClassrooms.getContent());
+        });
+
+        TabRules.selectedProperty().addListener((observable, oldValue, isSelected) -> {
+            if(isSelected)
+                mainController.doFade(TabRules.getContent());
+        });
+
+        TabSubjects.selectedProperty().addListener((observable, oldValue, isSelected) -> {
+            if(isSelected)
+                mainController.doFade(TabSubjects.getContent());
+        });
+
+        TabTeachers.selectedProperty().addListener((observable, oldValue, isSelected) -> {
+            if(isSelected)
+                mainController.doFade(TabTeachers.getContent());
+        });
+    }
+
     public TabPane getTabPane() {
         return tabPane;
     }

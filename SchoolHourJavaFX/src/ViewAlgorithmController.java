@@ -127,7 +127,7 @@ public class ViewAlgorithmController {
             progressBarNumberOfGenerations.setPrefWidth(prefHeightPrograssBar);
             progressBarNumberOfGenerations.setMinWidth(Region.USE_PREF_SIZE);
             progressBarNumberOfGenerations.progressProperty().bind(generationNumber.divide(conditionPairs.numberOfGeneration*1.0));
-
+            mainController.progressBarAnimation(progressBarNumberOfGenerations);
         }
 
         if(conditionPairs.timeSeconds!=null) {
@@ -179,4 +179,6 @@ public class ViewAlgorithmController {
             progressBarTime.setPrefWidth(barWidth);
         }
     }
+
+
 }
