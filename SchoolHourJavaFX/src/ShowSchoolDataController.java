@@ -11,10 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import sun.util.resources.cldr.wae.CalendarData_wae_CH;
@@ -105,7 +102,6 @@ public class ShowSchoolDataController {
         AnchorPane.setLeftAnchor(TVSubjects,0.0);
         AnchorPane.setTopAnchor(TVSubjects,0.0);
         TVSubjectsHeight = TVSubjects.getPrefHeight();
-
         SPSubjects.setContent(TVSubjects);
     }
 
@@ -125,8 +121,10 @@ public class ShowSchoolDataController {
 
         dtoSubjects.forEach(dtoSubject -> tableView.getItems().add(dtoSubject));
 
-        tableView.setFixedCellSize(25);
-        tableView.prefHeightProperty().bind(Bindings.size(tableView.getItems()).multiply(tableView.getFixedCellSize()).add(26));
+        tableView.setFixedCellSize(30);
+        tableView.prefHeightProperty().bind(Bindings.size(tableView.getItems()).multiply(tableView.getFixedCellSize()).add(40));
+
+        tableView.setMaxHeight(Region.USE_PREF_SIZE);
         //TVSubjectsWidth = subjectsIDColumn.getWidth() + nameColumn.getWidth();
         //tableView.setMinWidth(TVSubjectsWidth);
         return tableView;
@@ -190,7 +188,9 @@ public class ShowSchoolDataController {
             label.setText(stringBuilder.toString());
             gridPane.add(label, 0, classroomNumber[0]);
             TableView tableView = getClassroomSubjectsTable(dtoClassroom, dtoSchoolHoursData);
-
+            resizeColumnWidth(tableView, 0, 1.2);
+            resizeColumnWidth(tableView, 1, 1.2);
+            resizeColumnWidth(tableView, 2, 1.8);
             gridPane.add(tableView, 0, classroomNumber[0] + 1);
             gridPane.add(new Label(), 0, classroomNumber[0] + 2);
 
@@ -241,7 +241,7 @@ public class ShowSchoolDataController {
         TableColumn<SubjectWithHoursDemanded, Integer> subjectsIDColumn = new TableColumn<>("Subject ID");
         subjectsIDColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
 
-        TableColumn<SubjectWithHoursDemanded, String> nameColumn = new TableColumn<>("Name");
+        TableColumn<SubjectWithHoursDemanded, String> nameColumn = new TableColumn<>("Name         ");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
         TableColumn<SubjectWithHoursDemanded, Integer> subjectsHoursColumn = new TableColumn<>("Hours demanded");
@@ -252,8 +252,8 @@ public class ShowSchoolDataController {
         tableView.getColumns().add(subjectsHoursColumn);
 
         dtoSubjects.forEach(dtoSubject -> tableView.getItems().add(new SubjectWithHoursDemanded(dtoSubject, dtoClassroom.getSubjectId2WeeklyHours().get(dtoSubject.getId()))));
-        tableView.setFixedCellSize(25);
-        tableView.prefHeightProperty().bind(Bindings.size(tableView.getItems()).multiply(tableView.getFixedCellSize()).add(26));
+        tableView.setFixedCellSize(30);
+        tableView.prefHeightProperty().bind(Bindings.size(tableView.getItems()).multiply(tableView.getFixedCellSize()).add(40));
 
         tableView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
         return tableView;
@@ -272,7 +272,7 @@ public class ShowSchoolDataController {
         GPRules.add(label,0,0);
 
         TVRules = getRulesTable(dtoSchoolHoursData);
-        resizeColumnsWidth(TVRules);
+        resizeColumnWidth(TVRules,0,  3.2);
         GPRules.add(TVRules,0,1);
 
         SPRules.setContent(GPRules);
@@ -298,17 +298,17 @@ public class ShowSchoolDataController {
 
         dtoSchoolHoursData.getRules().forEach(dtoRule -> tableView.getItems().add(dtoRule));
 
-        tableView.setFixedCellSize(25);
-        tableView.prefHeightProperty().bind(Bindings.size(tableView.getItems()).multiply(tableView.getFixedCellSize()).add(26));
+        tableView.setFixedCellSize(30);
+        tableView.prefHeightProperty().bind(Bindings.size(tableView.getItems()).multiply(tableView.getFixedCellSize()).add(40));
         //TVSubjectsWidth = subjectsIDColumn.getWidth() + nameColumn.getWidth();
         //tableView.setMinWidth(TVSubjectsWidth);
 
         return tableView;
     }
 
-    public static void resizeColumnsWidth( TableView<?> table )
+    public static void resizeColumnWidth( TableView<?> table ,int columnNumber, double sizeMultiplayer)
     {
-        table.getColumns().get(0).setPrefWidth(table.getColumns().get(0).getPrefWidth() * 2);
+        table.getColumns().get(columnNumber).setPrefWidth(table.getColumns().get(columnNumber).getPrefWidth() * sizeMultiplayer);
     }
 
     public static void autoResizeColumns( TableView<?> table )
@@ -377,6 +377,7 @@ public class ShowSchoolDataController {
     ChangeListener<Number> TPWidthSet =  new ChangeListener<Number>() {
         @Override
         public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+            //SPRules.setPrefWidth(mainController.getCenterPrefWidth());
             tabPane.setPrefWidth(mainController.getCenterPrefWidth());
         }
     };
@@ -384,6 +385,7 @@ public class ShowSchoolDataController {
     ChangeListener<Number> TPHeightSet =  new ChangeListener<Number>() {
         @Override
         public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+            //SPRules.setPrefHeight(mainController.getCenterPrefWidth());
             tabPane.setPrefHeight(mainController.getCenterPrefHeight());
         }
     };

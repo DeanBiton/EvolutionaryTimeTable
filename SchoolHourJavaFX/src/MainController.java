@@ -140,17 +140,20 @@ public class MainController {
         MIDarkSkin.setOnAction(event -> {MBSkins.setText(MIDarkSkin.getText());
             getScene().getStylesheets().clear();
             getScene().getStylesheets().add("DarkTheme.css");
+            updateSchoolDataAndBestSolutionHeight();
         });
 
         MIDefaultSkin.setOnAction(event -> { MBSkins.setText(MIDefaultSkin.getText());
             getScene().getStylesheets().clear();
             getScene().getStylesheets().add("DefaultTheme.css");
-           });
+            updateSchoolDataAndBestSolutionHeight();
+        });
 
         MIUglySkin.setOnAction(event -> {
             MBSkins.setText(MIUglySkin.getText());
             getScene().getStylesheets().clear();
             getScene().getStylesheets().add("UglyTheme.css");
+            updateSchoolDataAndBestSolutionHeight();
         });
         MIDefaultSkin.fire();
     }
@@ -338,13 +341,10 @@ public class MainController {
 
         if(borderPane.getBottom() == null)
         {
-           borderPane.setBottom(viewAlgorithmScene);
-           bottomAppeared = true;
-           showSchoolDataController.getTabPane().setPrefHeight(getCenterPrefHeight());
-           showBestSolutionController.getTabPane().setPrefHeight(getCenterPrefHeight());
-           bottomAppeared = false;
+            borderPane.setBottom(viewAlgorithmScene);
         }
 
+        updateSchoolDataAndBestSolutionHeight();
         if(!setBottomWidth)
         {
             viewAlgorithmController.initializeSizes();
@@ -355,6 +355,16 @@ public class MainController {
         showBestSolutionController.createDiagram();
     }
 
+    private void updateSchoolDataAndBestSolutionHeight()
+    {
+        if(borderPane.getBottom() != null)
+        {
+            bottomAppeared = true;
+            showSchoolDataController.getTabPane().setPrefHeight(getCenterPrefHeight());
+            showBestSolutionController.getTabPane().setPrefHeight(getCenterPrefHeight());
+            bottomAppeared = false;
+        }
+    }
     public void setAlgorithmParameters(List<EndCondition> _endConditions, int _printEveryThisNumberOfGenerations,ConditionPairs conditionPairs)
     {
         viewAlgorithmController.setConditionPairs(conditionPairs);
@@ -541,7 +551,15 @@ public class MainController {
 
         if(borderPane.getBottom() != null || bottomAppeared)
         {
-            height -= 63;
+            switch (MBSkins.getText())
+            {
+                case "Default":
+                    height -= 63;
+                case "Dark":
+                    height -= 10;
+                case "Ugly":
+                    height -= 83;
+            }
         }
 
         return height;
