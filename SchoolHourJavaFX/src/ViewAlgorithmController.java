@@ -1,5 +1,7 @@
 import Evolution.EndCondition.EndCondition;
 import javafx.beans.property.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -109,6 +111,7 @@ public class ViewAlgorithmController {
             gridEndCondtions.add(progressBarFitness,3,1);
             progressBarFitness.setPrefWidth(prefHeightPrograssBar);
             progressBarFitness.progressProperty().bind(bestFitness.divide(conditionPairs.fitness));
+
             //pane.getChildren().add(progressBarFitness);
         }
 
@@ -117,6 +120,7 @@ public class ViewAlgorithmController {
             gridEndCondtions.add(progressBarNumberOfGenerations,3,0);
             progressBarNumberOfGenerations.setPrefWidth(prefHeightPrograssBar);
             progressBarNumberOfGenerations.progressProperty().bind(generationNumber.divide(conditionPairs.numberOfGeneration*1.0));
+
         }
 
         if(conditionPairs.timeSeconds!=null) {
@@ -125,6 +129,7 @@ public class ViewAlgorithmController {
             progressBarTime.setPrefWidth(prefHeightPrograssBar);
             progressBarTime.progressProperty().bind(timeSeconds.divide(conditionPairs.timeSeconds*1.0));
         }
+
 
     }
 

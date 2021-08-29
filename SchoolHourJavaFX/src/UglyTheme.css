@@ -1,0 +1,82 @@
+.root{
+    -fx-font-size: 18px;
+    -fx-font-family: "Impact";
+    -fx-base: 	#58FF0A;
+    -fx-background: 	#FFB10A;
+// color:#ffffff;
+}
+.button{
+ -fx-color-label-visible: #ffffff;
+-fx-border: none;
+-fx-color: purple;
+//-fx-padding: 20px;
+    -fx-text-align: center;
+    -fx-text-decoration: none;
+    -fx-display: inline-block;
+-fx-font-size: 20px;
+    -fx-margin: 8px 4px;
+    -fx-cursor: pointer;
+    -fx-border-radius:  50%;
+}
+.spinner{
+    -fx-font-size: 14px;
+
+}
+.valueSliders{
+    -fx-color: brown;
+   // -fx-cell-size: 100px;
+    -fx-background-size: 100px;
+}
+#BTNShowSchoolData{
+    -fx-font-size: 18px;
+
+}
+.SolutionGrid{
+    -fx-border-color: #ffffff;
+}
+.SolutionGrid Line {
+    -fx-stroke   : #000000;
+}
+.chart{
+//-fx-background-image: url("https://media.istockphoto.com/photos/digital-vortex-picture-id545774730");
+
+}.chart-title {
+     -fx-text-fill: #4682b4;
+     -fx-font-size: 1.6em;
+ }
+
+.axis-label {
+    -fx-text-fill: #4682b4;
+    -fx-font-size: 20px;
+}
+
+.chart-legend {
+    -fx-background-color:  transparent;
+    -fx-padding: 20px;
+}
+
+.chart-legend-item-symbol{
+    -fx-background-radius: 0;
+}
+
+.chart-legend-item{
+    -fx-text-fill: #ffffff;
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+.chart-vertical-grid-lines {
+    -fx-stroke: #ffffff;
+}
+.chart-horizontal-grid-lines {
+    -fx-stroke: #ffffff;
+}
+.chart-alternative-row-fill {
+    -fx-fill: transparent;
+    -fx-stroke: transparent;
+    -fx-stroke-width: 0;
+}
+
+.default-color0.chart-series-line { -fx-stroke: #000000; }
+.default-color1.chart-series-line { -fx-stroke: #FF0AFB; }
