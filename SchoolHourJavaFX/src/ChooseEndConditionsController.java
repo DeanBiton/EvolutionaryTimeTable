@@ -15,6 +15,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,8 @@ public class ChooseEndConditionsController {
 
     @FXML
     private ScrollPane scrollPane;
+    @FXML
+    private GridPane gridPane;
     @FXML
     private Label LBChooseEndConditions;
     @FXML

@@ -1,5 +1,7 @@
 import Evolution.EndCondition.EndCondition;
 import javafx.beans.property.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -8,6 +10,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -61,6 +64,7 @@ public class ViewAlgorithmController {
         timeValue.textProperty().bind(time);
        //progressbar.progressProperty().bind();
     }
+
     public void updateGenerationNUmber(Integer current)
     {
         generationNumber.setValue(current);
@@ -110,6 +114,7 @@ public class ViewAlgorithmController {
             progressBarFitness = new ProgressBar();
             gridEndCondtions.add(progressBarFitness,3,1);
             progressBarFitness.setPrefWidth(prefHeightPrograssBar);
+            progressBarFitness.setMinWidth(Region.USE_PREF_SIZE);
             progressBarFitness.progressProperty().bind(bestFitness.divide(conditionPairs.fitness));
 
             //pane.getChildren().add(progressBarFitness);
@@ -119,6 +124,7 @@ public class ViewAlgorithmController {
             progressBarNumberOfGenerations = new ProgressBar();
             gridEndCondtions.add(progressBarNumberOfGenerations,3,0);
             progressBarNumberOfGenerations.setPrefWidth(prefHeightPrograssBar);
+            progressBarNumberOfGenerations.setMinWidth(Region.USE_PREF_SIZE);
             progressBarNumberOfGenerations.progressProperty().bind(generationNumber.divide(conditionPairs.numberOfGeneration*1.0));
 
         }
@@ -127,6 +133,7 @@ public class ViewAlgorithmController {
             progressBarTime = new ProgressBar();
             gridEndCondtions.add(progressBarTime,3,2);
             progressBarTime.setPrefWidth(prefHeightPrograssBar);
+            progressBarTime.setMinWidth(Region.USE_PREF_SIZE);
             progressBarTime.progressProperty().bind(timeSeconds.divide(conditionPairs.timeSeconds*1.0));
         }
 
@@ -135,5 +142,40 @@ public class ViewAlgorithmController {
 
     public ScrollPane getSPViewAlgorithm() {
         return SPViewAlgorithm;
+    }
+
+    public void initializeSizes()
+    {
+        initializeViewAlgorithmWidth();
+        mainController.getScene().widthProperty().addListener(SPWidthSet);
+    }
+
+    ChangeListener<Number> SPWidthSet =  new ChangeListener<Number>() {
+        @Override
+        public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+            initializeViewAlgorithmWidth();
+        }
+    };
+
+    public void initializeViewAlgorithmWidth()
+    {
+        SPViewAlgorithm.setPrefWidth(mainController.getScene().getWidth());
+        gridEndCondtions.setPrefWidth(mainController.getScene().getWidth() - 5);
+        double barWidth = SPViewAlgorithm.getPrefWidth() - 220;
+
+        if(progressBarFitness != null)
+        {
+            progressBarFitness.setPrefWidth(barWidth);
+        }
+
+        if(progressBarNumberOfGenerations != null)
+        {
+            progressBarNumberOfGenerations.setPrefWidth(barWidth);
+        }
+
+        if(progressBarTime != null)
+        {
+            progressBarTime.setPrefWidth(barWidth);
+        }
     }
 }

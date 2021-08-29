@@ -13,7 +13,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -26,15 +25,14 @@ import java.util.List;
 public class MainController {
     @FXML
     private BorderPane borderPane;
+
+    // Skins
     @FXML
     private MenuItem MIDefaultSkin;
-
     @FXML
     private MenuItem MIDarkSkin;
-
     @FXML
     private MenuItem MIUglySkin;
-
 
     @FXML
     private GridPane GPCenter;
@@ -60,6 +58,7 @@ public class MainController {
     private Button BTNStop;
     private double SPTopMinWidth;
     private boolean bottomAppeared = false;
+    private boolean setBottomWidth = false;
 
     //Menu
     @FXML
@@ -346,6 +345,13 @@ public class MainController {
            bottomAppeared = false;
         }
 
+        if(!setBottomWidth)
+        {
+            viewAlgorithmController.initializeSizes();
+            setBottomWidth = true;
+        }
+        viewAlgorithmController.initializeViewAlgorithmWidth();
+
         showBestSolutionController.createDiagram();
     }
 
@@ -379,6 +385,7 @@ public class MainController {
         manager.stopAlgorithm();
     }
 
+    // UI Adapter
     private UIAdapter createUIAdapter()
     {
         return new UIAdapter(
@@ -407,15 +414,12 @@ public class MainController {
         );
     }
 
-
-
-
     // Create Controllers
     private void createChooseEndConditionsController() throws Exception
     {
         FXMLLoader fxmlLoader = getSceneFXMLLoader("ChooseEndConditions");
         chooseEndConditionsScene = fxmlLoader.load();
-        BorderPane.setAlignment(chooseEndConditionsScene, Pos.TOP_LEFT);
+        BorderPane.setAlignment(chooseEndConditionsScene, Pos.CENTER);
 
         chooseEndConditionsController = fxmlLoader.getController();
         chooseEndConditionsController.setMainController(this);
