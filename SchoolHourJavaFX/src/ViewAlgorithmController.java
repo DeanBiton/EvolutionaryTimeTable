@@ -59,7 +59,8 @@ public class ViewAlgorithmController {
     public void initialize()
     {
         generationValue.textProperty().bind(generationNumber.asString());
-        fitnessValue.textProperty().bind(bestFitness.asString());
+        fitnessValue.textProperty().bind(bestFitness.asString("%.3f"));
+        //dsndjknadlsadsaljskds;
         //time.bind(timeMinutes.asString()+":"+timeSeconds.toString());
         timeValue.textProperty().bind(time);
        //progressbar.progressProperty().bind();
