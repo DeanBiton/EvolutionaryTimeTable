@@ -15,16 +15,16 @@ public class UIAdapter implements SchoolHourUIAdapter {
     private Runnable algorithmEnded;
     private Consumer<Integer> updateGenerationNumber;
     private Consumer<Long> updateTime;
-    private BiConsumer<Double,Integer> addFitnessToChart;
+    private BiConsumer<DTOTupleGroupWithFitnessDetails,Integer> addThisGenBestSolution;
     public UIAdapter(Consumer<Double> _updateFitness, Runnable _algorithmEnded, Consumer<Integer> _updateGenerationNumber,
-                     Consumer<Long> _updateTime, Consumer<DTOTupleGroupWithFitnessDetails> _updaterBestSolution,BiConsumer<Double,Integer> _addFitnessToChart)
+                     Consumer<Long> _updateTime, Consumer<DTOTupleGroupWithFitnessDetails> _updaterBestSolution,BiConsumer<DTOTupleGroupWithFitnessDetails,Integer> _addThisGenBestSolution)
     {
         updateBestFitness = _updateFitness;
         algorithmEnded = _algorithmEnded;
         updateGenerationNumber=_updateGenerationNumber;
         updateTime=_updateTime;
         updaterBestSolution = _updaterBestSolution;
-        addFitnessToChart=_addFitnessToChart;
+        addThisGenBestSolution = _addThisGenBestSolution;
     }
 
     public void updateTime(Long seconds)
@@ -32,9 +32,10 @@ public class UIAdapter implements SchoolHourUIAdapter {
         Platform.runLater(()->updateTime.accept(seconds));
     }
 
-    public void addFitnessToChart(Double fitness,Integer generation)
+    public void addThisGenBestSolution(Evolutionary bestSolution,Integer generation)
     {
-        Platform.runLater(() -> addFitnessToChart.accept(fitness, generation));
+        TupleGroup tupleGroup = (TupleGroup) bestSolution;
+        Platform.runLater(() -> addThisGenBestSolution.accept(new DTOTupleGroupWithFitnessDetails(tupleGroup, new DTOSchoolHoursData(tupleGroup.getData())), generation));
     }
 
     public void updateGenerationNumber(Integer current)
