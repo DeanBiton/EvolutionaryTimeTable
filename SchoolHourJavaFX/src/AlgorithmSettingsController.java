@@ -267,8 +267,8 @@ public class AlgorithmSettingsController {
             slider.setValue(mutations.getSizers().get(nsizers).getProbability());
             GridPane.setHgrow(slider, Priority.ALWAYS);
 
-            Label valueSlider= createLabel("",50);
-            valueSlider.textProperty().bind(slider.valueProperty().asString());
+            Label valueSlider= createLabel("",-1);
+            valueSlider.textProperty().bind(slider.valueProperty().asString("%.3f"));
           // valueSlider.tooltipProperty().bind(valueSlider.);
             MutationsGP.add(valueSlider,3,i);
             sizerProbability.add(slider);
@@ -292,8 +292,9 @@ public class AlgorithmSettingsController {
             Slider slider = createSlider(0,1);
             slider.setValue(mutations.getFlippings().get(nFlippings).getProbability());
 
-            Label valueSlider= createLabel("",50);
-            valueSlider.textProperty().bind(slider.valueProperty().asString());
+            Label valueSlider= createLabel("",-1);
+            valueSlider.textProperty().bind(slider.valueProperty().asString("%.3f"));
+
 
             MutationsGP.add(valueSlider,3,i);
             flippingProbability.add(slider);
@@ -388,7 +389,7 @@ public class AlgorithmSettingsController {
         private void initializeSelection()
         {
             setSpinnerSelection(0);
-            selectionSliderLabel.textProperty().bind(selectionSlider.valueProperty().asString());
+            selectionSliderLabel.textProperty().bind(selectionSlider.valueProperty().asString("%.3f"));
             selectionSliderLabel.visibleProperty().bind(selectionSlider.visibleProperty());
             // SettingsGridPane.add(selectionSlider,5,0);
             //selectionSliderLabel.textProperty().bind(selectionSlider.valueProperty().asString());
