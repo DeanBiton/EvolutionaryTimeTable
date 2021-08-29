@@ -137,7 +137,7 @@ public class MainController {
 
     private void initializeSkins()
     {
-        MBSkins.setText(MIDefaultSkin.getText());
+        //MBSkins.setText(MIDefaultSkin.getText());
         MIDarkSkin.setOnAction(event -> {MBSkins.setText(MIDarkSkin.getText());
             getScene().getStylesheets().clear();
             getScene().getStylesheets().add("DarkTheme.css");
@@ -147,6 +147,13 @@ public class MainController {
             getScene().getStylesheets().clear();
             getScene().getStylesheets().add("DefaultTheme.css");
            });
+
+        MIUglySkin.setOnAction(event -> {
+            MBSkins.setText(MIUglySkin.getText());
+            getScene().getStylesheets().clear();
+            getScene().getStylesheets().add("UglyTheme.css");
+        });
+        MIDefaultSkin.fire();
     }
     private void initializeAPTopSizes()
     {
@@ -399,6 +406,9 @@ public class MainController {
                 }
         );
     }
+
+
+
 
     // Create Controllers
     private void createChooseEndConditionsController() throws Exception

@@ -259,22 +259,21 @@ public class AlgorithmSettingsController {
         for (int nsizers=0;nsizers<mutations.getSizers().size();i++,nsizers++)
         {
             //MutationsGP.add(createLabel("",20),0,i);
-            MutationsGP.add(createLabel("Type: Sizer",80),0,i);
+            MutationsGP.add(createLabel("Type: Sizer",-1),0,i);
 
 
-            MutationsGP.add(createLabel("Probability:",70),1,i);
+            MutationsGP.add(createLabel("Probability:",-1),1,i);
             Slider slider =createSlider(0,1);
             slider.setValue(mutations.getSizers().get(nsizers).getProbability());
             GridPane.setHgrow(slider, Priority.ALWAYS);
 
-            Label valueSlider= createLabel("",40);
+            Label valueSlider= createLabel("",50);
             valueSlider.textProperty().bind(slider.valueProperty().asString());
-
           // valueSlider.tooltipProperty().bind(valueSlider.);
             MutationsGP.add(valueSlider,3,i);
             sizerProbability.add(slider);
             MutationsGP.add(slider,2,i);
-            MutationsGP.add(createLabel("Total tupples:",70),4,i);
+            MutationsGP.add(createLabel("Total tupples:",-1),4,i);
             Spinner spinner= createSpinner(-1000,1000);
             spinner.getValueFactory().setValue(mutations.getSizers().get(nsizers).getTotalTuples());
             spinner.setPrefWidth(70);
@@ -286,20 +285,20 @@ public class AlgorithmSettingsController {
         for (int nFlippings=0;nFlippings<mutations.getFlippings().size();i++,nFlippings++)
         {
 
-            MutationsGP.add(createLabel("Type: Flipping",80),0,i);
+            MutationsGP.add(createLabel("Type: Flipping",-1),0,i);
 
             //label.setAlignment(Pos.TOP_CENTER);
-            MutationsGP.add(createLabel("Probability:",70),1,i);
+            MutationsGP.add(createLabel("Probability:",-1),1,i);
             Slider slider = createSlider(0,1);
             slider.setValue(mutations.getFlippings().get(nFlippings).getProbability());
 
-            Label valueSlider= createLabel("",40);
+            Label valueSlider= createLabel("",50);
             valueSlider.textProperty().bind(slider.valueProperty().asString());
 
             MutationsGP.add(valueSlider,3,i);
             flippingProbability.add(slider);
             MutationsGP.add(slider,2,i);
-            MutationsGP.add( createLabel("Max tupples:",70),4,i);
+            MutationsGP.add( createLabel("Max tupples:",-1),4,i);
             Spinner spinner= createSpinner(0,Integer.MAX_VALUE);
             spinner.getValueFactory().setValue(mutations.getFlippings().get(nFlippings).getMaxTuples());
             spinner.setPrefWidth(70);
@@ -307,7 +306,7 @@ public class AlgorithmSettingsController {
 
             flippingMaxTupples.add(spinner);
             MutationsGP.add(spinner,5,i);
-            MutationsGP.add(createLabel("Component:",70),6,i);
+            MutationsGP.add(createLabel("Component:",-1),6,i);
             MenuButton component= createFlippingComponent(nFlippings);
             component.setPrefWidth(60);
             component.setMinWidth(Region.USE_PREF_SIZE);
@@ -375,7 +374,7 @@ public class AlgorithmSettingsController {
     private Label createLabel(String text, double prefSize)
     {
         Label label=new Label(text);
-        label.setPrefWidth(prefSize);
+        label.setPrefWidth(prefSize!=-1?prefSize:Region.USE_COMPUTED_SIZE);//prefSize!=0?prefSize:Region.USE_COMPUTED_SIZE
         label.setMinWidth(Region.USE_PREF_SIZE);
         label.setAlignment(Pos.CENTER_LEFT);
         return label;
