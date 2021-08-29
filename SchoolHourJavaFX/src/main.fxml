@@ -44,18 +44,18 @@
                   <Button fx:id="BTNRunAlgorithm" layoutX="67.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#RunAlgorithm" text="RunAlgorithm" />
                   <Button fx:id="BTNPauseResume" layoutX="159.0" layoutY="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#PauseResume" text="Pause" />
                   <Button fx:id="BTNStop" layoutX="211.0" layoutY="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#Stop" text="Stop" />
-                  <GridPane fx:id="GPOptions" layoutX="541.0" layoutY="13.0" prefHeight="62.0" prefWidth="164.0">
+                  <GridPane fx:id="GPOptions" layoutX="541.0" layoutY="13.0" prefHeight="62.0" prefWidth="200.0">
                      <columnConstraints>
-                        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="77.0" minWidth="10.0" prefWidth="63.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="101.0" minWidth="10.0" prefWidth="101.0" />
+                        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="93.0" minWidth="10.0" prefWidth="93.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="101.0" minWidth="10.0" prefWidth="85.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="74.0" minHeight="10.0" prefHeight="33.0" valignment="BASELINE" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Label fx:id="LSkins" prefHeight="17.0" prefWidth="34.0" text="Skins:" />
-                        <Label fx:id="LAnimation" alignment="TOP_RIGHT" text="Animation:" GridPane.rowIndex="1" />
+                        <Label fx:id="LSkins" alignment="CENTER_RIGHT" text="Skins:" />
+                        <Label fx:id="LAnimation" alignment="TOP_LEFT" text="Animation:" GridPane.rowIndex="1" />
                         <ToggleButton fx:id="TBAnimation" alignment="TOP_CENTER" mnemonicParsing="false" text="Off" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <MenuButton fx:id="MBSkins" alignment="TOP_RIGHT" mnemonicParsing="false" text="MenuButton" GridPane.columnIndex="1">
                            <items>
