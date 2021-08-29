@@ -62,7 +62,7 @@ public class ShowBestSolutionController {
     private GridPane GPClassroom;
     private Object currentTeacherSolutionView;
     private Object currentClassroomSolutionView;
-    private final int cellWidth = 50;
+    private final int cellWidth = 160;
     private final int cellHeight = 50;
     private final int teacherClassroomTableVGap = 10;
     private final int teacherClassroomTablePadding = 10;
@@ -121,7 +121,7 @@ public class ShowBestSolutionController {
     {
         GPTeacher = new GridPane();
         GridPane gridPane = new GridPane();
-        Label label = new Label("Teacher ID:    ");
+        Label label = new Label("Teacher:    ");
         MenuButton chooseID = getChooseIDMenuButton(data, true);
         GridPane cellExample = getCellExample(true);
 
@@ -137,7 +137,7 @@ public class ShowBestSolutionController {
     {
         GPClassroom = new GridPane();
         GridPane gridPane = new GridPane();
-        Label label = new Label("Classroom ID:    ");
+        Label label = new Label("Classroom:    ");
         MenuButton chooseID = getChooseIDMenuButton(data, false);
         GridPane cellExample = getCellExample(false);
 
@@ -158,21 +158,21 @@ public class ShowBestSolutionController {
         if(isTeacherTab)
         {
             chooseIDNumber = data.getTeachers().size();
-            setupTeacherChooseID(chooseID, chooseIDNumber);
+            setupTeacherChooseID(chooseID, chooseIDNumber, data);
         }
         else
         {
             chooseIDNumber = data.getClassrooms().size();
-            setupClassroomChooseID(chooseID, chooseIDNumber);
+            setupClassroomChooseID(chooseID, chooseIDNumber, data);
         }
 
         return chooseID;
     }
 
-    private void setupTeacherChooseID(MenuButton chooseID, int chooseIDNumber)
+    private void setupTeacherChooseID(MenuButton chooseID, int chooseIDNumber, DTOSchoolHoursData data)
     {
         for (int i = 1; i <= chooseIDNumber; i++) {
-            String string = "  " + i + "  ";
+            String string = "  " + i + "  " + data.getTeachers().get(i).getName();
             MenuItem menuItem = new MenuItem(string);
             int finalI = i;
             menuItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -188,10 +188,10 @@ public class ShowBestSolutionController {
         }
     }
 
-    private void setupClassroomChooseID(MenuButton chooseID, int chooseIDNumber)
+    private void setupClassroomChooseID(MenuButton chooseID, int chooseIDNumber, DTOSchoolHoursData data)
     {
         for (int i = 1; i <= chooseIDNumber; i++) {
-            String string = "  " + i + "  ";
+            String string = "  " + i + "  " + data.getClassrooms().get(i).getName();
             MenuItem menuItem = new MenuItem(string);
             int finalI = i;
             menuItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -216,11 +216,11 @@ public class ShowBestSolutionController {
         label.setMinSize(cellWidth, cellHeight);
         if(isTeacherTab)
         {
-            label.setText("< Classroom ID, Subject ID >");
+            label.setText("< Classroom ID Classroom Name, Subject ID Subject Name >");
         }
         else
         {
-            label.setText("< Teacher ID, Subject ID >");
+            label.setText("< Teacher ID Teacher Name, Subject ID Subject Name >");
         }
 
         gridPane.add(label,0,0);
@@ -503,14 +503,14 @@ public class ShowBestSolutionController {
                     stringBuilder  = new StringBuilder();
                     if(isTeacherTable)
                     {
-                        stringBuilder.append(dtoTuple.getClassroom().getId());
+                        stringBuilder.append(dtoTuple.getClassroom().getId()).append(" ").append(dtoTuple.getClassroom().getName());
                     }
                     else
                     {
-                        stringBuilder.append(dtoTuple.getTeacher().getNameId());
+                        stringBuilder.append(dtoTuple.getTeacher().getNameId()).append(" ").append(dtoTuple.getTeacher().getName());
                     }
 
-                    stringBuilder.append(",").append(dtoTuple.getSubject().getId());
+                    stringBuilder.append(", ").append(dtoTuple.getSubject().getId()).append(" ").append(dtoTuple.getSubject().getName());
                     label.setText(stringBuilder.toString());
                     vBox.getChildren().add(label);
                 }
