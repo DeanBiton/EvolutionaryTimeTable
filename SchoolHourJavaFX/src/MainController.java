@@ -1,10 +1,15 @@
 import Evolution.EndCondition.EndCondition;
+import javafx.animation.*;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.StringBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -12,10 +17,19 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.HLineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.Shape;
+import javafx.scene.transform.Rotate;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
@@ -124,8 +138,20 @@ public class MainController {
         createShowSchoolDataController();
         createShowBestSolutionController();
         createViewAlgorithmController();
-    }
 
+        initializeAnimations();
+    }
+    private void initializeAnimations()
+    {
+       TBAnimation.setSelected(false);
+       //TBAnimation.textProperty().setValue(TBAnimation.isSelected()?"On":"Off");
+        //TBAnimation.textProperty().setValue(TBAnimation.textProperty().getValue().equals("On")?"Off":"On");
+       TBAnimation.textProperty().bind(Bindings.createStringBinding(() ->
+               TBAnimation.selectedProperty().get() ? "On" : "Off",
+               TBAnimation.selectedProperty()
+               )
+       );
+    }
     public void initializeComponentsSizes()
     {
         initializeAPTopSizes();
@@ -291,6 +317,7 @@ public class MainController {
     // Algorithm Buttons
     @FXML
     private void loadXML(ActionEvent event) throws Exception{
+        spinButtonAnimation(BTNLoadXML);
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add( new FileChooser.ExtensionFilter("xml files", "*.xml"));
 
@@ -301,6 +328,7 @@ public class MainController {
             ChooseEndConditionsButton(new ActionEvent());
             BTNSetConditions.disableProperty().bind(isAlgorithmAlive);
             BTNAlgorithmSettings.disableProperty().setValue(true);
+
             resetApp();
         } catch (src.ShowException e) {
             error(e.getMessage());
@@ -326,8 +354,8 @@ public class MainController {
 
     @FXML
     private void RunAlgorithm(ActionEvent event) {
+        spinButtonAnimation(BTNRunAlgorithm);
         UIAdapter uiAdapter = createUIAdapter();
-
         manager.runEvolutionaryAlgorithm(endConditions, printEveryThisNumberOfGenerations, uiAdapter);
         isAlgorithmActive.setValue(true);
         isAlgorithmAlive.setValue(true);
@@ -387,12 +415,15 @@ public class MainController {
             manager.suspend();
             BTNPauseResume.setText("Resume");
         }
+        spinButtonAnimation(BTNPauseResume);
     }
 
     @FXML
     private void Stop(ActionEvent event)
     {
+        spinButtonAnimation(BTNStop);
         manager.stopAlgorithm();
+
     }
 
     // UI Adapter
@@ -505,6 +536,7 @@ public class MainController {
     @FXML
     private void ChooseEndConditionsButton(ActionEvent event)
     {
+        spinButtonAnimation(BTNSetConditions);
         borderPane.getChildren().remove(borderPane.getCenter());
         borderPane.setCenter(chooseEndConditionsScene);
     }
@@ -512,13 +544,16 @@ public class MainController {
     @FXML
     private void ShowSchoolDataButton(ActionEvent event)
     {
+        spinButtonAnimation(BTNShowSchoolData);
         borderPane.getChildren().remove(borderPane.getCenter());
         borderPane.setCenter(showSchoolDataScene);
+        doFade(showSchoolDataScene);
     }
 
     @FXML
     private void AlgorithmSettingsButton(ActionEvent event)
     {
+        spinButtonAnimation(BTNAlgorithmSettings);
         borderPane.getChildren().remove(algorithmSettingsScene);
         borderPane.setCenter(algorithmSettingsScene);
     }
@@ -526,6 +561,7 @@ public class MainController {
     @FXML
     private void ShowBestSolutionButton(ActionEvent event)
     {
+        spinButtonAnimation(BTNBestSolution);
         borderPane.getChildren().remove(borderPane.getCenter());
         borderPane.setCenter(showBestSolutionScene);
     }
@@ -563,6 +599,41 @@ public class MainController {
         }
 
         return height;
+    }
+
+    public void spinButtonAnimation(Button button)
+    {
+
+        if(TBAnimation.isSelected())
+        {
+            RotateTransition rotateTransition = new RotateTransition(Duration.millis(1500), button);
+            rotateTransition.setFromAngle(0.0);
+            rotateTransition.setToAngle(360.0);
+            rotateTransition.setCycleCount(1);
+            rotateTransition.setAxis(Rotate.X_AXIS);
+
+            rotateTransition.play();
+        }
+    }
+
+
+    public void doFade(Node node)
+    {
+        if(TBAnimation.isSelected())
+        {
+            FadeTransition ft = new FadeTransition(Duration.millis(2000), node);
+            ft.setFromValue(0.0);
+            ft.setToValue(1.0);
+            ft.play();
+        }
+
+    }
+
+    public void progressBarAnimation(ProgressBar progressBar)
+    {
+
+
+
     }
 
     public double getCenterWindowWidth()
