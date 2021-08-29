@@ -379,6 +379,7 @@ public class MainController {
             setBottomWidth = true;
         }
         viewAlgorithmController.initializeViewAlgorithmWidth();
+        showBestSolutionController.newRun();
 
         showBestSolutionController.createDiagram();
     }
@@ -389,10 +390,11 @@ public class MainController {
         {
             bottomAppeared = true;
             showSchoolDataController.getTabPane().setPrefHeight(getCenterPrefHeight());
-            showBestSolutionController.getTabPane().setPrefHeight(getCenterPrefHeight());
+            showBestSolutionController.setGridPaneHeight();
             bottomAppeared = false;
         }
     }
+
     public void setAlgorithmParameters(List<EndCondition> _endConditions, int _printEveryThisNumberOfGenerations,ConditionPairs conditionPairs)
     {
         viewAlgorithmController.setConditionPairs(conditionPairs);
@@ -439,6 +441,7 @@ public class MainController {
                     BTNRunAlgorithm.disableProperty().setValue(false);
                     isAlgorithmAlive.setValue(false);
                     BTNPauseResume.setText("Pause");
+                    showBestSolutionController.finishedRun();
                 },
                 current->{
                     viewAlgorithmController.updateGenerationNUmber(current);
@@ -447,10 +450,11 @@ public class MainController {
                     viewAlgorithmController.updateTime(seconds);
                 },
                 bestSolution->{
-                    showBestSolutionController.setDTOTupleGroupWithFitnessDetails(bestSolution);
+                    showBestSolutionController.setNewBestSolution(bestSolution);
                 },
-                (fitness,generation) -> {
-                    showBestSolutionController.addfitnesstochart(fitness, generation);
+                (dtoTupleGroupWithFitnessDetails,generation) -> {
+                    showBestSolutionController.addfitnesstochart(dtoTupleGroupWithFitnessDetails.getFitness(), generation);
+                    showBestSolutionController.addSolutionToList(dtoTupleGroupWithFitnessDetails);
                 }
         );
     }
@@ -564,6 +568,7 @@ public class MainController {
         spinButtonAnimation(BTNBestSolution);
         borderPane.getChildren().remove(borderPane.getCenter());
         borderPane.setCenter(showBestSolutionScene);
+
     }
 
     // Gets
@@ -590,9 +595,9 @@ public class MainController {
             switch (MBSkins.getText())
             {
                 case "Default":
-                    height -= 63;
+                    height += 10;
                 case "Dark":
-                    height -= 10;
+                    height += 10;
                 case "Ugly":
                     height -= 83;
             }
@@ -644,6 +649,10 @@ public class MainController {
     public double getCenterWindowHeight()
     {
         return Screen.getPrimary().getBounds().getHeight() - SPTop.getHeight();
+    }
+
+    public int getPrintEveryThisNumberOfGenerations() {
+        return printEveryThisNumberOfGenerations;
     }
 
     private void error(String errorString)

@@ -6,24 +6,18 @@ import Evolution.Rule;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -35,7 +29,11 @@ public class ShowBestSolutionController {
     @FXML
     private Scene scene;
     @FXML
+    private GridPane gridPane;
+    @FXML
     private TabPane tabPane;
+    @FXML
+    private GridPane GPBestSolutionButtons;
     @FXML
     private ScrollPane SPRaw;
     @FXML
@@ -56,7 +54,7 @@ public class ShowBestSolutionController {
     private int currentTeacherID;
     private int currentClassroomID;
 
-    private DTOTupleGroupWithFitnessDetails bestSolution;
+    private DTOTupleGroupWithFitnessDetails presentedSolution;
 
     private GridPane GPTeacher;
     private GridPane GPClassroom;
@@ -66,6 +64,23 @@ public class ShowBestSolutionController {
     private final int cellHeight = 50;
     private final int teacherClassroomTableVGap = 10;
     private final int teacherClassroomTablePadding = 10;
+
+    //show all solutions related
+    @FXML
+    private Button BTNFirst;
+    @FXML
+    private Button BTNPrev;
+    @FXML
+    private Button BTNNext;
+    @FXML
+    private Button BTNLast;
+    @FXML
+    private Label LBestSolution;
+
+    List<DTOTupleGroupWithFitnessDetails> bestSolutions;
+    int currentBestSolutionNumber = 0;
+    DTOTupleGroupWithFitnessDetails bestSolution;
+    boolean isGPBestSolutionButtonsExist;
 
     public TabPane getTabPane() {
         return tabPane;
@@ -92,16 +107,32 @@ public class ShowBestSolutionController {
     ChangeListener<Number> TPHeightSet =  new ChangeListener<Number>() {
         @Override
         public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-            tabPane.setPrefHeight(mainController.getCenterPrefHeight());
+            setGridPaneHeight();
         }
     };
+
+    public void setGridPaneHeight()
+    {
+        double height = mainController.getCenterPrefHeight();
+
+        if(isGPBestSolutionButtonsExist)
+        {
+            height -= GPBestSolutionButtons.getHeight();
+        }
+
+        tabPane.setPrefHeight(height);
+    }
 
     public void initializeSizes() {
         scene = mainController.getScene();
         tabPane.setPrefWidth(mainController.getCenterPrefWidth());
-        tabPane.setPrefHeight(mainController.getCenterPrefHeight());
+        setGridPaneHeight();
         scene.heightProperty().addListener(TPHeightSet);
         scene.widthProperty().addListener(TPWidthSet);
+
+        RowConstraints rowConstraint = new RowConstraints();
+        rowConstraint.maxHeightProperty().bind(gridPane.heightProperty().subtract(GPBestSolutionButtons.heightProperty()));
+        gridPane.getRowConstraints().add(0, rowConstraint);
     }
 
     // Every Load
@@ -115,6 +146,9 @@ public class ShowBestSolutionController {
         SPClassroom.setContent(GPClassroom);
         currentTeacherID = 0;
         currentClassroomID = 0;
+        GPBestSolutionButtons.setVisible(false);
+        isGPBestSolutionButtonsExist = false;
+        bestSolutions = new ArrayList<>();
     }
 
     private void setupTeacherTab(DTOSchoolHoursData data)
@@ -230,9 +264,15 @@ public class ShowBestSolutionController {
     }
 
     // every new best solution
-    public void setDTOTupleGroupWithFitnessDetails(DTOTupleGroupWithFitnessDetails dtoTupleGroupWithFitnessDetails)
+    public void setNewBestSolution(DTOTupleGroupWithFitnessDetails dtoTupleGroupWithFitnessDetails)
     {
-        this.bestSolution = dtoTupleGroupWithFitnessDetails;
+        this.presentedSolution = dtoTupleGroupWithFitnessDetails;
+        bestSolution = presentedSolution;
+        presentSolution();
+    }
+
+    private void presentSolution()
+    {
         presentRawBestSolution();
         if(currentTeacherID != 0)
         {
@@ -258,8 +298,8 @@ public class ShowBestSolutionController {
     {
         VBox vBox = new VBox();
         vBox.fillWidthProperty().setValue(true);
-        vBox.setPrefWidth(1000);
-        bestSolution.getDtoTuples().sort((o1,o2)->{
+        vBox.setPrefWidth(500);
+        presentedSolution.getDtoTuples().sort((o1, o2)->{
             if(false==o1.getDay().equals(o2.getDay()))
                 return o1.getDay()-o2.getDay();
             else if(false==o1.getHour().equals(o2.getHour()))
@@ -272,7 +312,7 @@ public class ShowBestSolutionController {
                 return 0;
         });
 
-        bestSolution.getDtoTuples().forEach( dtoTuple ->{
+        presentedSolution.getDtoTuples().forEach(dtoTuple ->{
                     Label label = new Label();
                     StringBuilder stringBuilder = new StringBuilder();
                     stringBuilder.append("<Day=");
@@ -356,7 +396,7 @@ public class ShowBestSolutionController {
         tableView.getColumns().add(scoreColumn);
 
         List<RuleView> rulesView = new ArrayList<>();
-        bestSolution.getRulesScores().forEach((dtoRule, score) -> rulesView.add(new RuleView(dtoRule, score)));
+        presentedSolution.getRulesScores().forEach((dtoRule, score) -> rulesView.add(new RuleView(dtoRule, score)));
         rulesView.sort(new Comparator<RuleView>() {
             @Override
             public int compare(RuleView o1, RuleView o2) {
@@ -418,20 +458,13 @@ public class ShowBestSolutionController {
         Label label = new Label();
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append("DAY").append(System.lineSeparator()).append("----------").append(System.lineSeparator()).append("HOUR");
+        stringBuilder.append("                                       DAY").append(System.lineSeparator()).
+                append("--------------------------------").append(System.lineSeparator()).append("HOUR");
 
         label.setText(stringBuilder.toString());
         label.setAlignment(Pos.CENTER);
         gridPane.add(label,0,0);
         label.setMinSize(cellWidth,cellHeight);
-
-      /*//INSERT LINE CODE HERE
-        Line line = new Line();
-        line.setStartX(label.getLayoutX());
-        line.setStartY(label.getLayoutY());
-        line.setEndX(label.getLayoutX());
-        line.setEndY(label.getLayoutY() + cellHeight / 2);
-        Group group = new Group(line);*/
     }
 
     private void addUpperRow(GridPane gridPane)
@@ -439,7 +472,7 @@ public class ShowBestSolutionController {
         Label label;
         StringBuilder stringBuilder;
 
-        for (int i = 1; i <= bestSolution.getSchoolHoursData().getNumberOfDays(); i++)
+        for (int i = 1; i <= presentedSolution.getSchoolHoursData().getNumberOfDays(); i++)
         {
             label = new Label();
             label.setMinSize(cellWidth,cellHeight);
@@ -456,7 +489,7 @@ public class ShowBestSolutionController {
         Label label;
         StringBuilder stringBuilder;
 
-        for (int i = 1; i <= bestSolution.getSchoolHoursData().getNumberOfHoursInADay(); i++)
+        for (int i = 1; i <= presentedSolution.getSchoolHoursData().getNumberOfHoursInADay(); i++)
         {
             label = new Label();
             label.setMinSize(cellWidth,cellHeight);
@@ -476,16 +509,16 @@ public class ShowBestSolutionController {
 
         if(isTeacherTable)
         {
-            dtoTuples = bestSolution.getDtoTuples().stream().filter(dtoTuple -> dtoTuple.getTeacher().getNameId() == currentTeacherID).collect(Collectors.toList());
+            dtoTuples = presentedSolution.getDtoTuples().stream().filter(dtoTuple -> dtoTuple.getTeacher().getNameId() == currentTeacherID).collect(Collectors.toList());
         }
         else
         {
-            dtoTuples = bestSolution.getDtoTuples().stream().filter(dtoTuple -> dtoTuple.getClassroom().getId() == currentClassroomID).collect(Collectors.toList());
+            dtoTuples = presentedSolution.getDtoTuples().stream().filter(dtoTuple -> dtoTuple.getClassroom().getId() == currentClassroomID).collect(Collectors.toList());
         }
 
-        for(int i = 1; i <= bestSolution.getSchoolHoursData().getNumberOfDays(); i++)
+        for(int i = 1; i <= presentedSolution.getSchoolHoursData().getNumberOfDays(); i++)
         {
-            for (int j = 1; j <= bestSolution.getSchoolHoursData().getNumberOfHoursInADay(); j++)
+            for (int j = 1; j <= presentedSolution.getSchoolHoursData().getNumberOfHoursInADay(); j++)
             {
                 VBox vBox = new VBox();
                 int finalI = i;
@@ -528,7 +561,7 @@ public class ShowBestSolutionController {
     public void addfitnesstochart(double fitness,int generation)
     {
         dataCurrentSeries.getData().add(new XYChart.Data( generation, fitness));
-        dataBestSeries.getData().add(new XYChart.Data( generation,bestSolution.getFitness()));
+        dataBestSeries.getData().add(new XYChart.Data( generation, presentedSolution.getFitness()));
     }
 
     public void createDiagram()
@@ -552,5 +585,146 @@ public class ShowBestSolutionController {
 
         chartFitness.getData().add(dataBestSeries);
         chartFitness.getData().add(dataCurrentSeries);
+    }
+
+    //show all best solutions
+    public GridPane getGPBestSolutionButtons() {
+        return GPBestSolutionButtons;
+    }
+
+    public boolean isGPBestSolutionButtonsExist() {
+        return isGPBestSolutionButtonsExist;
+    }
+
+    public void addSolutionToList(DTOTupleGroupWithFitnessDetails dtoTupleGroupWithFitnessDetails)
+    {
+        bestSolutions.add(dtoTupleGroupWithFitnessDetails);
+        currentBestSolutionNumber = bestSolutions.size() - 1;
+    }
+
+    public void newRun()
+    {
+        GPBestSolutionButtons.setVisible(false);
+        isGPBestSolutionButtonsExist = false;
+        setGridPaneHeight();
+        bestSolutions = new ArrayList<>();
+    }
+
+    public void finishedRun()
+    {
+        if(bestSolutions.isEmpty() && bestSolution != null)
+        {
+            GPBestSolutionButtons.setVisible(true);
+            isGPBestSolutionButtonsExist = true;
+            setGridPaneHeight();
+            best();
+        }
+        else if(bestSolutions.size() == 1)
+        {
+            GPBestSolutionButtons.setVisible(true);
+            isGPBestSolutionButtonsExist = true;
+            setGridPaneHeight();
+            singleSolution();
+        }
+        else if(bestSolutions.size() > 1)
+        {
+            GPBestSolutionButtons.setVisible(true);
+            isGPBestSolutionButtonsExist = true;
+            setGridPaneHeight();
+            last();
+        }
+    }
+
+    private void singleSolution()
+    {
+        currentBestSolutionNumber = 0;
+        presentedSolution = bestSolutions.get(currentBestSolutionNumber);
+        BTNFirst.setDisable(true);
+        BTNPrev.setDisable(true);
+        BTNNext.setDisable(true);
+        BTNLast.setDisable(true);
+        updateBestSolutionLabel(false);
+        presentSolution();
+    }
+
+    public void first()
+    {
+        currentBestSolutionNumber = 0;
+        presentedSolution = bestSolutions.get(currentBestSolutionNumber);
+        BTNFirst.setDisable(true);
+        BTNPrev.setDisable(true);
+        BTNNext.setDisable(false);
+        BTNLast.setDisable(false);
+        updateBestSolutionLabel(false);
+        presentSolution();
+    }
+
+    public void prev()
+    {
+        currentBestSolutionNumber--;
+        presentedSolution = bestSolutions.get(currentBestSolutionNumber);
+        if(currentBestSolutionNumber == 0)
+        {
+            BTNFirst.setDisable(true);
+            BTNPrev.setDisable(true);
+        }
+
+        BTNNext.setDisable(false);
+        BTNLast.setDisable(false);
+        updateBestSolutionLabel(false);
+        presentSolution();
+    }
+
+    public void next()
+    {
+        currentBestSolutionNumber++;
+        presentedSolution = bestSolutions.get(currentBestSolutionNumber);
+        BTNFirst.setDisable(false);
+        BTNPrev.setDisable(false);
+        if(currentBestSolutionNumber == bestSolutions.size() - 1)
+        {
+            BTNNext.setDisable(true);
+            BTNLast.setDisable(true);
+        }
+
+        updateBestSolutionLabel(false);
+        presentSolution();
+    }
+
+    public void last()
+    {
+        currentBestSolutionNumber = bestSolutions.size() - 1;
+        presentedSolution = bestSolutions.get(currentBestSolutionNumber);
+        BTNFirst.setDisable(false);
+        BTNPrev.setDisable(false);
+        BTNNext.setDisable(true);
+        BTNLast.setDisable(true);
+        updateBestSolutionLabel(false);
+        presentSolution();
+    }
+
+    private void updateBestSolutionLabel(boolean isBestSolution)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        if(isBestSolution)
+        {
+            stringBuilder.append("Best solution");
+        }
+        else
+        {
+            stringBuilder.append("Best solution number: ").append(currentBestSolutionNumber + 1).append("/").append(bestSolutions.size()).append(System.lineSeparator())
+                    .append("Generation number: ").append((currentBestSolutionNumber + 1) * mainController.getPrintEveryThisNumberOfGenerations()).append(System.lineSeparator())
+                    .append("Fitness: ").append(presentedSolution.getFitness());
+        }
+
+        LBestSolution.setText(stringBuilder.toString());
+    }
+
+    public void best()
+    {
+        presentedSolution = bestSolution;
+        presentSolution();
+        updateBestSolutionLabel(true);
     }
 }
