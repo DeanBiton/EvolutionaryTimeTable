@@ -94,7 +94,6 @@ public class MainController {
     private BooleanProperty isXMLLoaded;
     private BooleanProperty isAlgorithmActive;
     private BooleanProperty isAlgorithmAlive;
-
     //screen size Related
     double menuButtonHeight = 70;
     double menuButtonWidth = 170;
@@ -330,7 +329,6 @@ public class MainController {
             ChooseEndConditionsButton(new ActionEvent());
             BTNSetConditions.disableProperty().bind(isAlgorithmAlive);
             BTNAlgorithmSettings.disableProperty().setValue(true);
-
             resetApp();
         } catch (src.ShowException e) {
             error(e.getMessage());
@@ -344,6 +342,7 @@ public class MainController {
     private void resetApp() {
         BTNRunAlgorithm.disableProperty().setValue(true);
         BTNShowSchoolData.disableProperty().setValue(false);
+        BTNBestSolution.disableProperty().setValue(true);
         algorithmSettingsController.resetScene(manager.getDataAndAlgorithmSettings().getDtoEvolutionaryAlgorithmSettings());
         showSchoolDataController.resetScene();
         showBestSolutionController.resetScene();
@@ -356,6 +355,7 @@ public class MainController {
 
     @FXML
     private void RunAlgorithm(ActionEvent event) {
+        algorithmSettingsController.setNewSettings();
         spinButtonAnimation(BTNRunAlgorithm);
         UIAdapter uiAdapter = createUIAdapter();
         manager.runEvolutionaryAlgorithm(endConditions, printEveryThisNumberOfGenerations, uiAdapter);
@@ -386,6 +386,7 @@ public class MainController {
         showBestSolutionController.newRun();
         showBestSolutionController.createDiagram();
         algorithmSettingsController.disableScreen();
+
     }
 
     private void updateSchoolDataAndBestSolutionHeight()
@@ -405,6 +406,11 @@ public class MainController {
         endConditions = _endConditions;
         printEveryThisNumberOfGenerations = _printEveryThisNumberOfGenerations;
         BTNRunAlgorithm.disableProperty().setValue(false);
+
+        if(borderPane.getBottom() != null)
+        {
+            borderPane.getChildren().remove(viewAlgorithmScene);
+        }
     }
 
     @FXML

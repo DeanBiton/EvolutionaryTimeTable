@@ -130,9 +130,18 @@ public class Rule implements Serializable {
                 for(Teacher teacher : group.getData().getTeachers().values())
                 {
                     int teacherNumberOfTupleCollisions = 0;
-                    List<Tuple> teacherTuples = group.getTuples().stream().
-                            filter(tuple -> tuple.getTeacher() == teacher).
-                            collect(Collectors.toList());
+
+                    List<Tuple> teacherTuples = new ArrayList<>();
+                    try {
+                        teacherTuples = group.getTuples().stream().
+                                filter(tuple -> tuple.getTeacher() == teacher).
+                                collect(Collectors.toList());
+                    }
+                    catch (Exception ex)
+                    {
+                        System.out.println(ex.getMessage());
+                    }
+
 
                     teacherNumberOfTupleCollisions = teacherTuples.stream().mapToInt((tuple) -> {
                         if(!tuple.getTeacher().getAllSubjectsTeaching().contains(tuple.getSubject().getId()))
