@@ -14,7 +14,7 @@ public class SchoolHourJavaFXApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        int windowMinHeight = 300;
+        int windowMinHeight = 500;
         int windowMinWidth = 300;
 
         FXMLLoader fxmlLoader = getSceneFXMLLoader("main");

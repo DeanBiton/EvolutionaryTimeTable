@@ -442,6 +442,10 @@ public class MainController {
                     isAlgorithmAlive.setValue(false);
                     BTNPauseResume.setText("Pause");
                     showBestSolutionController.finishedRun();
+                    if(borderPane.getBottom() == showBestSolutionScene)
+                    {
+                        showBestSolutionController.setFirstFinishedRun(false);
+                    }
                 },
                 current->{
                     viewAlgorithmController.updateGenerationNUmber(current);
@@ -480,7 +484,6 @@ public class MainController {
         showSchoolDataController = fxmlLoader.getController();
         showSchoolDataController.setMainController(this);
         showSchoolDataController.setManager(manager);
-        //showSchoolDataController.initializeSizes();
     }
 
     private void createAlgorithmSettingsController()
@@ -568,7 +571,7 @@ public class MainController {
         spinButtonAnimation(BTNBestSolution);
         borderPane.getChildren().remove(borderPane.getCenter());
         borderPane.setCenter(showBestSolutionScene);
-
+        showBestSolutionController.firstStop();
     }
 
     // Gets
@@ -621,7 +624,6 @@ public class MainController {
         }
     }
 
-
     public void doFade(Node node)
     {
         if(TBAnimation.isSelected())
@@ -631,13 +633,6 @@ public class MainController {
             ft.setToValue(1.0);
             ft.play();
         }
-
-    }
-
-    public void progressBarAnimation(ProgressBar progressBar)
-    {
-
-
 
     }
 
