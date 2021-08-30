@@ -463,8 +463,8 @@ public class MainController {
                     showBestSolutionController.setNewBestSolution(bestSolution);
                 },
                 (dtoTupleGroupWithFitnessDetails,generation) -> {
-                    showBestSolutionController.addfitnesstochart(dtoTupleGroupWithFitnessDetails.getFitness(), generation);
                     showBestSolutionController.addSolutionToList(dtoTupleGroupWithFitnessDetails);
+
                 }
         );
     }
@@ -580,6 +580,7 @@ public class MainController {
         {
             showBestSolutionController.firstStop();
         }
+        doFade(showBestSolutionScene);
     }
 
     // Animation

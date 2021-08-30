@@ -64,25 +64,11 @@ public class ShowSchoolDataController {
 
     private void initTabAnimations()
     {
-        TabClassrooms.selectedProperty().addListener((observable, oldValue, isSelected) -> {
+        tabPane.getTabs().forEach(t->t.selectedProperty().addListener((observable, oldValue, isSelected) -> {
             if(isSelected)
-                mainController.doFade(TabClassrooms.getContent());
-        });
+                mainController.doFade(t.getContent());
+        }));
 
-        TabRules.selectedProperty().addListener((observable, oldValue, isSelected) -> {
-            if(isSelected)
-                mainController.doFade(TabRules.getContent());
-        });
-
-        TabSubjects.selectedProperty().addListener((observable, oldValue, isSelected) -> {
-            if(isSelected)
-                mainController.doFade(TabSubjects.getContent());
-        });
-
-        TabTeachers.selectedProperty().addListener((observable, oldValue, isSelected) -> {
-            if(isSelected)
-                mainController.doFade(TabTeachers.getContent());
-        });
     }
 
     public TabPane getTabPane() {

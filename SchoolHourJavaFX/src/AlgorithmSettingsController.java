@@ -142,6 +142,8 @@ public class AlgorithmSettingsController {
 
 
     }
+
+
     private double getSelectionExtraValue(DTOSelection selection)
     {
         switch (selection.getName()) {
@@ -250,6 +252,8 @@ public class AlgorithmSettingsController {
     }
     private void initializeMutations(DTOMutations mutations)
     {
+        MutationsGP.getChildren().clear();
+
         sizerProbability=new ArrayList<>(mutations.getSizers().size());
         sizerTotalTuples= new ArrayList<>(mutations.getSizers().size());
         flippingProbability=new ArrayList<>(mutations.getFlippings().size());
