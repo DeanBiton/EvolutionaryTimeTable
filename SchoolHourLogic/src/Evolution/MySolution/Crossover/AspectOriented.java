@@ -27,14 +27,16 @@ public class AspectOriented extends Crossover{
     public List<List<Tuple>> crossoverInitialize(TupleGroup parent) {
         int DH = parent.getData().getNumberOfDays()*parent.getData().getNumberOfHoursInADay();
         List<List<Tuple>> tupleLists = new ArrayList<>(DH);
+        List<Tuple> parentTuples = new ArrayList<>();
 
+        parentTuples.addAll(parent.getTuples());
         for(int i = 0; i < DH; i++)
         {
             List<Tuple> lst = new ArrayList<>();
             tupleLists.add(lst);
         }
 
-        parent.getTuples().sort((tuple1, tuple2) -> {
+        parentTuples.sort((tuple1, tuple2) -> {
             int compare;
             if(orientationType == OrientationType.TEACHER)
                 compare = teacherComparator(tuple1.getTeacher(),tuple2.getTeacher());
@@ -46,7 +48,7 @@ public class AspectOriented extends Crossover{
 
         int location = 0;
 
-        for(Tuple tuple : parent.getTuples())
+        for(Tuple tuple : parentTuples)
         {
             tupleLists.get(location).add(tuple);
             location++;
