@@ -29,9 +29,9 @@ public class ShowBestSolutionController {
     @FXML
     private Scene scene;
     @FXML
-    private GridPane gridPane;
-    @FXML
     private TabPane tabPane;
+    @FXML
+    private ScrollPane SPBestSolutionButtons;
     @FXML
     private GridPane GPBestSolutionButtons;
     @FXML
@@ -75,12 +75,15 @@ public class ShowBestSolutionController {
     @FXML
     private Button BTNLast;
     @FXML
+    private Button BTNBest;
+    @FXML
     private Label LBestSolution;
 
     List<DTOTupleGroupWithFitnessDetails> bestSolutions;
     int currentBestSolutionNumber = 0;
     DTOTupleGroupWithFitnessDetails bestSolution;
-    boolean isGPBestSolutionButtonsExist;
+    boolean isSPBestSolutionButtonsExist;
+    boolean firstFinishedRun;
 
     public TabPane getTabPane() {
         return tabPane;
@@ -101,6 +104,7 @@ public class ShowBestSolutionController {
         @Override
         public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
             tabPane.setPrefWidth(mainController.getCenterPrefWidth());
+            SPBestSolutionButtons.setPrefWidth(mainController.getCenterPrefWidth());
         }
     };
 
@@ -115,9 +119,9 @@ public class ShowBestSolutionController {
     {
         double height = mainController.getCenterPrefHeight();
 
-        if(isGPBestSolutionButtonsExist)
+        if(isSPBestSolutionButtonsExist)
         {
-            height -= GPBestSolutionButtons.getHeight();
+            height -= SPBestSolutionButtons.getHeight();
         }
 
         tabPane.setPrefHeight(height);
@@ -129,10 +133,11 @@ public class ShowBestSolutionController {
         setGridPaneHeight();
         scene.heightProperty().addListener(TPHeightSet);
         scene.widthProperty().addListener(TPWidthSet);
-
-        RowConstraints rowConstraint = new RowConstraints();
-        rowConstraint.maxHeightProperty().bind(gridPane.heightProperty().subtract(GPBestSolutionButtons.heightProperty()));
-        gridPane.getRowConstraints().add(0, rowConstraint);
+        GPBestSolutionButtons.prefWidthProperty().bind(tabPane.widthProperty());
+        firstFinishedRun = true;
+        //RowConstraints rowConstraint = new RowConstraints();
+        //rowConstraint.maxHeightProperty().bind(gridPane.heightProperty().subtract(GPBestSolutionButtons.heightProperty()));
+        //gridPane.getRowConstraints().add(0, rowConstraint);
     }
 
     // Every Load
@@ -146,8 +151,8 @@ public class ShowBestSolutionController {
         SPClassroom.setContent(GPClassroom);
         currentTeacherID = 0;
         currentClassroomID = 0;
-        GPBestSolutionButtons.setVisible(false);
-        isGPBestSolutionButtonsExist = false;
+        SPBestSolutionButtons.setVisible(false);
+        isSPBestSolutionButtonsExist = false;
         bestSolutions = new ArrayList<>();
     }
 
@@ -405,15 +410,15 @@ public class ShowBestSolutionController {
         });
         rulesView.forEach(ruleView -> tableView.getItems().add(ruleView));
 
-        tableView.setFixedCellSize(25);
-        tableView.prefHeightProperty().bind(Bindings.size(tableView.getItems()).multiply(tableView.getFixedCellSize()).add(26));
+        tableView.setFixedCellSize(30);
+        tableView.prefHeightProperty().bind(Bindings.size(tableView.getItems()).multiply(tableView.getFixedCellSize()).add(39));
         resizeColumnsWidth(tableView);
         return tableView;
     }
 
     public static void resizeColumnsWidth( TableView<?> table )
     {
-        table.getColumns().get(0).setPrefWidth(table.getColumns().get(0).getPrefWidth() * 2);
+        table.getColumns().get(0).setPrefWidth(table.getColumns().get(0).getPrefWidth() * 4);
     }
 
     // every new best solution and new click on choose ID
@@ -592,8 +597,16 @@ public class ShowBestSolutionController {
         return GPBestSolutionButtons;
     }
 
-    public boolean isGPBestSolutionButtonsExist() {
-        return isGPBestSolutionButtonsExist;
+    public boolean isSPBestSolutionButtonsExist() {
+        return isSPBestSolutionButtonsExist;
+    }
+
+    public boolean isFirstFinishedRun() {
+        return firstFinishedRun;
+    }
+
+    public void setFirstFinishedRun(boolean firstFinishedRun) {
+        this.firstFinishedRun = firstFinishedRun;
     }
 
     public void addSolutionToList(DTOTupleGroupWithFitnessDetails dtoTupleGroupWithFitnessDetails)
@@ -604,32 +617,33 @@ public class ShowBestSolutionController {
 
     public void newRun()
     {
-        GPBestSolutionButtons.setVisible(false);
-        isGPBestSolutionButtonsExist = false;
+        SPBestSolutionButtons.setVisible(false);
+        isSPBestSolutionButtonsExist = false;
         setGridPaneHeight();
         bestSolutions = new ArrayList<>();
+        BTNBest.setDisable(false);
     }
 
     public void finishedRun()
     {
         if(bestSolutions.isEmpty() && bestSolution != null)
         {
-            GPBestSolutionButtons.setVisible(true);
-            isGPBestSolutionButtonsExist = true;
+            SPBestSolutionButtons.setVisible(true);
+            isSPBestSolutionButtonsExist = true;
             setGridPaneHeight();
             best();
         }
         else if(bestSolutions.size() == 1)
         {
-            GPBestSolutionButtons.setVisible(true);
-            isGPBestSolutionButtonsExist = true;
+            SPBestSolutionButtons.setVisible(true);
+            isSPBestSolutionButtonsExist = true;
             setGridPaneHeight();
             singleSolution();
         }
         else if(bestSolutions.size() > 1)
         {
-            GPBestSolutionButtons.setVisible(true);
-            isGPBestSolutionButtonsExist = true;
+            SPBestSolutionButtons.setVisible(true);
+            isSPBestSolutionButtonsExist = true;
             setGridPaneHeight();
             last();
         }
@@ -709,13 +723,14 @@ public class ShowBestSolutionController {
 
         if(isBestSolution)
         {
-            stringBuilder.append("Best solution");
+            stringBuilder.append("Best solution").append(System.lineSeparator())
+                    .append("Fitness: ").append(String.format("%.3f", presentedSolution.getFitness()));
         }
         else
         {
             stringBuilder.append("Best solution number: ").append(currentBestSolutionNumber + 1).append("/").append(bestSolutions.size()).append(System.lineSeparator())
                     .append("Generation number: ").append((currentBestSolutionNumber + 1) * mainController.getPrintEveryThisNumberOfGenerations()).append(System.lineSeparator())
-                    .append("Fitness: ").append(presentedSolution.getFitness());
+                    .append("Fitness: ").append(String.format("%.3f", presentedSolution.getFitness()));
         }
 
         LBestSolution.setText(stringBuilder.toString());
@@ -723,8 +738,51 @@ public class ShowBestSolutionController {
 
     public void best()
     {
-        presentedSolution = bestSolution;
-        presentSolution();
-        updateBestSolutionLabel(true);
+        if(BTNBest.getText().equals("Best"))
+        {
+            presentedSolution = bestSolution;
+            presentSolution();
+            updateBestSolutionLabel(true);
+            BTNFirst.setDisable(true);
+            BTNPrev.setDisable(true);
+            BTNNext.setDisable(true);
+            BTNLast.setDisable(true);
+            BTNBest.setText("Return to all solutions");
+            if(bestSolutions.isEmpty())
+            {
+                BTNBest.setDisable(true);
+                BTNBest.setText("Best");
+            }
+        }
+        else
+        {
+            presentedSolution = bestSolutions.get(currentBestSolutionNumber);
+            presentSolution();
+            updateBestSolutionLabel(false);
+            if(currentBestSolutionNumber != 0)
+            {
+                BTNFirst.setDisable(false);
+                BTNPrev.setDisable(false);
+            }
+
+            if(currentBestSolutionNumber != bestSolutions.size() - 1)
+            {
+                BTNNext.setDisable(false);
+                BTNLast.setDisable(false);
+            }
+
+            BTNBest.setText("Best");
+        }
+
+
+    }
+
+    public void firstStop()
+    {
+        if(firstFinishedRun)
+        {
+            tabPane.setPrefHeight(mainController.getCenterPrefHeight() - 100);
+            firstFinishedRun = false;
+        }
     }
 }
