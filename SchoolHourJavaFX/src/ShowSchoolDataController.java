@@ -1,10 +1,5 @@
 import DTO.*;
-import Evolution.MySolution.Subject;
-import Evolution.MySolution.Teacher;
-import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -12,9 +7,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
-import javafx.scene.text.Text;
-import javafx.util.Callback;
-import sun.util.resources.cldr.wae.CalendarData_wae_CH;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -59,10 +51,7 @@ public class ShowSchoolDataController {
     @FXML
     private TableView TVRules;
 
-    @FXML
     private double TVSubjectsHeight;
-    private double TVSubjectsWidth;
-
 
     private MainController mainController;
     private SchoolHourManager manager;
@@ -126,6 +115,7 @@ public class ShowSchoolDataController {
         initializeSizes();
     }
 
+    // Subjects
     private void updateSubjects(DTOSchoolHoursData dtoSchoolHoursData) {
         TVSubjects = getSubjectsTable(dtoSchoolHoursData.getSubjects().values());
         AnchorPane.setLeftAnchor(TVSubjects,0.0);
@@ -154,11 +144,10 @@ public class ShowSchoolDataController {
         tableView.prefHeightProperty().bind(Bindings.size(tableView.getItems()).multiply(tableView.getFixedCellSize()).add(40));
 
         tableView.setMaxHeight(Region.USE_PREF_SIZE);
-        //TVSubjectsWidth = subjectsIDColumn.getWidth() + nameColumn.getWidth();
-        //tableView.setMinWidth(TVSubjectsWidth);
         return tableView;
     }
 
+    // Teachers
     private void updateTeachers(DTOSchoolHoursData dtoSchoolHoursData)
     {
         GPTeachers = new GridPane();
@@ -199,6 +188,7 @@ public class ShowSchoolDataController {
         return getSubjectsTable(dtoSubjects);
     }
 
+    // Classrooms
     private void updateClassrooms(DTOSchoolHoursData dtoSchoolHoursData)
     {
         GridPane gridPane = new GridPane();
@@ -288,6 +278,7 @@ public class ShowSchoolDataController {
         return tableView;
     }
 
+    // Rules
     private void updateRules(DTOSchoolHoursData dtoSchoolHoursData)
     {
         GPRules = new GridPane();
@@ -329,84 +320,19 @@ public class ShowSchoolDataController {
 
         tableView.setFixedCellSize(30);
         tableView.prefHeightProperty().bind(Bindings.size(tableView.getItems()).multiply(tableView.getFixedCellSize()).add(40));
-        //TVSubjectsWidth = subjectsIDColumn.getWidth() + nameColumn.getWidth();
-        //tableView.setMinWidth(TVSubjectsWidth);
 
         return tableView;
     }
 
+    // sizes
     public static void resizeColumnWidth( TableView<?> table ,int columnNumber, double sizeMultiplayer)
     {
         table.getColumns().get(columnNumber).setPrefWidth(table.getColumns().get(columnNumber).getPrefWidth() * sizeMultiplayer);
     }
 
-    public static void autoResizeColumns( TableView<?> table )
-    {
-        //Set the right policy
-        table.setColumnResizePolicy( TableView.UNCONSTRAINED_RESIZE_POLICY);
-        table.getColumns().stream().forEach( (column) ->
-        {
-            //Minimal width = columnheader
-            Text t = new Text( column.getText() );
-            double max = t.getLayoutBounds().getWidth();
-            for ( int i = 0; i < table.getItems().size(); i++ )
-            {
-                //cell must not be empty
-                if ( column.getCellData( i ) != null )
-                {
-                    t = new Text( column.getCellData( i ).toString() );
-                    double calcwidth = t.getLayoutBounds().getWidth();
-                    //remember new max-width
-                    if ( calcwidth > max )
-                    {
-                        max = calcwidth;
-                    }
-                }
-            }
-            //set the new max-widht with some extra space
-            column.setPrefWidth( max + 10.0d );
-        } );
-    }
-
-    ChangeListener<Number> TVSubjectsWidthSet =  new ChangeListener<Number>() {
-        @Override
-        public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-            //if(newValue.doubleValue() >= TVSubjectsWidth + mainController.getSPMenu().getWidth())
-            SPSubjects.setPrefWidth(mainController.getCenterPrefWidth());
-            if(mainController.getCenterPrefWidth() >= TVSubjectsWidth)
-            {
-                TVSubjects.setPrefWidth(mainController.getCenterPrefWidth());
-            }
-            /*else
-            {
-                TVSubjects.setPrefWidth(TVSubjectsWidth);
-            }
-                System.out.println("scene width: " + newValue.doubleValue());
-                System.out.println("menu width: " + mainController.getSPMenu().getWidth());
-                System.out.println("TVSubjectsWidthPref: " + TVSubjectsWidth);
-            System.out.println("TVSubjectsRealWidth: " + TVSubjects.getWidth());*/
-          //  }
-        }
-    };
-
-    ChangeListener<Number> TVSubjectsHeightSet =  new ChangeListener<Number>() {
-        @Override
-        public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-            if(newValue.doubleValue() >= TVSubjectsHeight + 130)
-            {
-                SPSubjects.setPrefHeight(newValue.doubleValue());
-            }
-            else
-            {
-                SPSubjects.setPrefHeight(newValue.doubleValue() - 130);
-            }
-        }
-    };
-
     ChangeListener<Number> TPWidthSet =  new ChangeListener<Number>() {
         @Override
         public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-            //SPRules.setPrefWidth(mainController.getCenterPrefWidth());
             tabPane.setPrefWidth(mainController.getCenterPrefWidth());
         }
     };
@@ -414,7 +340,6 @@ public class ShowSchoolDataController {
     ChangeListener<Number> TPHeightSet =  new ChangeListener<Number>() {
         @Override
         public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-            //SPRules.setPrefHeight(mainController.getCenterPrefWidth());
             tabPane.setPrefHeight(mainController.getCenterPrefHeight());
         }
     };
@@ -424,8 +349,6 @@ public class ShowSchoolDataController {
         tabPane.setPrefHeight(mainController.getCenterPrefHeight());
         scene.heightProperty().addListener(TPHeightSet);
         scene.widthProperty().addListener(TPWidthSet);
-        //scene.heightProperty().addListener(TVSubjectsHeightSet);
-        //scene.widthProperty().addListener(TVSubjectsWidthSet);
     }
 }
 
