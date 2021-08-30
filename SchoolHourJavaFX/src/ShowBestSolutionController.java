@@ -135,9 +135,6 @@ public class ShowBestSolutionController {
         scene.widthProperty().addListener(TPWidthSet);
         GPBestSolutionButtons.prefWidthProperty().bind(tabPane.widthProperty());
         firstFinishedRun = true;
-        //RowConstraints rowConstraint = new RowConstraints();
-        //rowConstraint.maxHeightProperty().bind(gridPane.heightProperty().subtract(GPBestSolutionButtons.heightProperty()));
-        //gridPane.getRowConstraints().add(0, rowConstraint);
     }
 
     // Every Load
@@ -593,17 +590,6 @@ public class ShowBestSolutionController {
     }
 
     //show all best solutions
-    public GridPane getGPBestSolutionButtons() {
-        return GPBestSolutionButtons;
-    }
-
-    public boolean isSPBestSolutionButtonsExist() {
-        return isSPBestSolutionButtonsExist;
-    }
-
-    public boolean isFirstFinishedRun() {
-        return firstFinishedRun;
-    }
 
     public void setFirstFinishedRun(boolean firstFinishedRun) {
         this.firstFinishedRun = firstFinishedRun;
@@ -622,6 +608,7 @@ public class ShowBestSolutionController {
         setGridPaneHeight();
         bestSolutions = new ArrayList<>();
         BTNBest.setDisable(false);
+        BTNBest.setText("Best");
     }
 
     public void finishedRun()
