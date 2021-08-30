@@ -13,6 +13,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
 
 public class ViewAlgorithmController {
@@ -27,7 +29,12 @@ public class ViewAlgorithmController {
     private Label fitnessValue;
     @FXML
     private Label timeValue;
-
+    @FXML
+    private Label generationCapacity;
+    @FXML
+    private Label fitnessCapacity;
+    @FXML
+    private Label timeCapacity;
 
     private ProgressBar progressBarFitness;
     private ProgressBar progressBarNumberOfGenerations;
@@ -60,7 +67,6 @@ public class ViewAlgorithmController {
     {
         generationValue.textProperty().bind(generationNumber.asString());
         fitnessValue.textProperty().bind(bestFitness.asString("%.3f"));
-        //dsndjknadlsadsaljskds;
         //time.bind(timeMinutes.asString()+":"+timeSeconds.toString());
         timeValue.textProperty().bind(time);
        //progressbar.progressProperty().bind();
@@ -79,15 +85,10 @@ public class ViewAlgorithmController {
 
     public void updateTime(Long seconds)
     {
-        //System.out.println(Duration.ofSeconds(seconds).getSeconds());
         timeSeconds.setValue(seconds);
-
         LocalTime timeOfDay = LocalTime.ofSecondOfDay(seconds);
-         time.setValue(timeOfDay.toString());
-
-       // time.setValue((seconds/60)+":"+(seconds%60));
-       // System.out.println(timeSeconds.getValue());
-       // timeMinutes.setValue(Duration.ofSeconds(seconds).toMinutes());
+        String timeString = timeOfDay.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+         time.setValue(timeString);
     }
     public void setMainController(MainController _mainController)
     {
@@ -104,6 +105,9 @@ public class ViewAlgorithmController {
         this.conditionPairs= _conditionPairs;
 
         gridEndCondtions.getChildren().removeAll(progressBarFitness,progressBarNumberOfGenerations,progressBarTime);
+        fitnessCapacity.setText("");
+        generationCapacity.setText("");
+        timeCapacity.setText("");
         createProgressBars();
     }
 
@@ -117,8 +121,7 @@ public class ViewAlgorithmController {
             progressBarFitness.setPrefWidth(prefHeightPrograssBar);
             progressBarFitness.setMinWidth(Region.USE_PREF_SIZE);
             progressBarFitness.progressProperty().bind(bestFitness.divide(conditionPairs.fitness));
-
-            //pane.getChildren().add(progressBarFitness);
+            fitnessCapacity.setText("/ " + String.format("%.3f", conditionPairs.fitness));
         }
 
         if(conditionPairs.numberOfGeneration!=null) {
@@ -127,6 +130,7 @@ public class ViewAlgorithmController {
             progressBarNumberOfGenerations.setPrefWidth(prefHeightPrograssBar);
             progressBarNumberOfGenerations.setMinWidth(Region.USE_PREF_SIZE);
             progressBarNumberOfGenerations.progressProperty().bind(generationNumber.divide(conditionPairs.numberOfGeneration*1.0));
+            generationCapacity.setText("/ " + conditionPairs.numberOfGeneration.toString());
         }
 
         if(conditionPairs.timeSeconds!=null) {
@@ -135,13 +139,12 @@ public class ViewAlgorithmController {
             progressBarTime.setPrefWidth(prefHeightPrograssBar);
             progressBarTime.setMinWidth(Region.USE_PREF_SIZE);
             progressBarTime.progressProperty().bind(timeSeconds.divide(conditionPairs.timeSeconds*1.0));
+            LocalTime timeOfDay = LocalTime.ofSecondOfDay(conditionPairs.timeSeconds);
+            String timeString = timeOfDay.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+            timeCapacity.setText("/ " + timeString);
         }
 
 
-    }
-
-    public ScrollPane getSPViewAlgorithm() {
-        return SPViewAlgorithm;
     }
 
     public void initializeSizes()
@@ -162,6 +165,7 @@ public class ViewAlgorithmController {
         SPViewAlgorithm.setPrefWidth(mainController.getScene().getWidth());
         gridEndCondtions.setPrefWidth(mainController.getScene().getWidth() - 5);
         double barWidth = SPViewAlgorithm.getPrefWidth() - 220;
+        //double barWidth = SPViewAlgorithm.getPrefWidth() - 300;
 
         if(progressBarFitness != null)
         {

@@ -125,7 +125,7 @@ public class AlgorithmSettingsController {
                         for(MenuItem o: OrientationMenuBTN.getItems())
                         {
                             //System.out.println(((AspectOriented)(DTOeaData.getDtoCrossover())).getOrientationType());
-                            if(o.getUserData()==((AspectOriented)(DTOeaData.getDtoCrossover())).getOrientationType())
+                            if(o.getUserData()==((DTOAspectOriented)(DTOeaData.getDtoCrossover())).getOrientationType())
                             {
                                 o.fire();
                             }

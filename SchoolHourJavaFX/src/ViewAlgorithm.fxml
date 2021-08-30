@@ -13,7 +13,7 @@
          <columnConstraints>
             <ColumnConstraints hgrow="NEVER" minWidth="-Infinity" />
             <ColumnConstraints hgrow="NEVER" minWidth="-Infinity" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
          </columnConstraints>
@@ -29,6 +29,9 @@
             <Label text="Generations:" />
             <Label text="Fitness:" GridPane.rowIndex="1" />
             <Label text="Time:" GridPane.rowIndex="2" />
+            <Label fx:id="generationCapacity" GridPane.columnIndex="2" />
+            <Label fx:id="fitnessCapacity" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Label fx:id="timeCapacity" GridPane.columnIndex="2" GridPane.rowIndex="2" />
          </children>
          <padding>
             <Insets left="10.0" top="10.0" />
