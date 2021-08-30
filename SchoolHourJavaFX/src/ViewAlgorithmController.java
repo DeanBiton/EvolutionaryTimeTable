@@ -50,7 +50,7 @@ public class ViewAlgorithmController {
         timeMinutes=new SimpleLongProperty(0);
         timeSeconds=new SimpleLongProperty(0);
         bestFitness=new SimpleDoubleProperty(0);
-        time=new SimpleStringProperty("00:00:00");
+            time=new SimpleStringProperty("00:00:00");
         progressBarFitness=null;
         progressBarNumberOfGenerations=null;
         progressBarTime=null;

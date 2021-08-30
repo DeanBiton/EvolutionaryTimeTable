@@ -45,7 +45,7 @@ public class ShowBestSolutionController {
     @FXML
     private ScrollPane SPDiagram;
     private XYChart.Series dataBestSeries;
-    private XYChart.Series dataCurrentSeries;
+    //private XYChart.Series dataCurrentSeries;
     private LineChart<Double, Integer> chartFitness;
 
     private MainController mainController;
@@ -100,6 +100,18 @@ public class ShowBestSolutionController {
         manager = _manager;
     }
 
+    private void initTabAnimations()
+    {
+
+        tabPane.getTabs().forEach(t->t.selectedProperty().addListener((observable, oldValue, isSelected) -> {
+            if(isSelected)
+                mainController.doFade(t.getContent());
+        }));
+
+
+
+    }
+
     ChangeListener<Number> TPWidthSet =  new ChangeListener<Number>() {
         @Override
         public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -135,6 +147,7 @@ public class ShowBestSolutionController {
         scene.widthProperty().addListener(TPWidthSet);
         GPBestSolutionButtons.prefWidthProperty().bind(tabPane.widthProperty());
         firstFinishedRun = true;
+        initTabAnimations();
     }
 
     // Every Load
@@ -560,9 +573,9 @@ public class ShowBestSolutionController {
     /// Diagram
 
     // activates every Run
-    public void addfitnesstochart(double fitness,int generation)
+    public void addfitnesstochart(int generation)
     {
-        dataCurrentSeries.getData().add(new XYChart.Data( generation, fitness));
+        //dataCurrentSeries.getData().add(new XYChart.Data( generation, fitness));
         dataBestSeries.getData().add(new XYChart.Data( generation, presentedSolution.getFitness()));
     }
 
@@ -580,13 +593,13 @@ public class ShowBestSolutionController {
         dataBestSeries = new XYChart.Series();
         dataBestSeries.setName("best");
 
-        dataCurrentSeries = new XYChart.Series();
-        dataCurrentSeries.setName("current");
+        //dataCurrentSeries = new XYChart.Series();
+       // dataCurrentSeries.setName("current");
 
         yAxis.setForceZeroInRange(false);
 
         chartFitness.getData().add(dataBestSeries);
-        chartFitness.getData().add(dataCurrentSeries);
+        //chartFitness.getData().add(dataCurrentSeries);
     }
 
     //show all best solutions
@@ -599,6 +612,7 @@ public class ShowBestSolutionController {
     {
         bestSolutions.add(dtoTupleGroupWithFitnessDetails);
         currentBestSolutionNumber = bestSolutions.size() - 1;
+        addfitnesstochart(bestSolutions.size() * mainController.getPrintEveryThisNumberOfGenerations());
     }
 
     public void newRun()
