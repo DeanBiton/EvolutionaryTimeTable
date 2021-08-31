@@ -31,6 +31,10 @@
     -fx-font-size: 18px;
 
 }
+#BTNAlgorithmSettings{
+    -fx-font-size: 18px;
+
+}
 .SolutionGrid{
     -fx-border-color: #ffffff;
 }

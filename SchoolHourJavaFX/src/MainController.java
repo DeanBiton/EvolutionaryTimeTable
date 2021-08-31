@@ -306,6 +306,11 @@ public class MainController {
         return height;
     }
 
+    public MenuButton getSkinsButton()
+    {
+        return MBSkins;
+    }
+
     public int getPrintEveryThisNumberOfGenerations() {
         return printEveryThisNumberOfGenerations;
     }
@@ -328,7 +333,7 @@ public class MainController {
             isXMLLoaded.setValue(true);
             ChooseEndConditionsButton(new ActionEvent());
             BTNSetConditions.disableProperty().bind(isAlgorithmAlive);
-            BTNAlgorithmSettings.disableProperty().setValue(true);
+            BTNAlgorithmSettings.disableProperty().setValue(false);
             resetApp();
         } catch (src.ShowException e) {
             error(e.getMessage());
@@ -396,6 +401,7 @@ public class MainController {
             bottomAppeared = true;
             showSchoolDataController.getTabPane().setPrefHeight(getCenterPrefHeight());
             showBestSolutionController.setGridPaneHeight();
+            viewAlgorithmController.initializeViewAlgorithmWidth();
             bottomAppeared = false;
         }
     }

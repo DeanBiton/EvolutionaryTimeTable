@@ -113,8 +113,8 @@ public class ChooseEndConditionsController {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 try{
                     Integer time= Integer.parseInt(newValue);
-                    isTimeParameterGood.setValue((time>0)?true:false);
-                    TFByTime.setStyle((time>0)?"-fx-text-inner-color: green;":"-fx-text-inner-color: red;");
+                    isTimeParameterGood.setValue((time>0&&time<1440)?true:false);
+                    TFByTime.setStyle((time>0&&time<1440)?"-fx-text-inner-color: green;":"-fx-text-inner-color: red;");
                 }catch (NumberFormatException e){
                     isTimeParameterGood.setValue(false);
                     TFByTime.setStyle("-fx-text-inner-color: red;");
