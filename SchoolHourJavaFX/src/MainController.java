@@ -433,7 +433,7 @@ public class MainController {
     }
 
     @FXML
-    private void Stop(ActionEvent event)
+    public void Stop(ActionEvent event)
     {
         spinButtonAnimation(BTNStop);
         manager.stopAlgorithm();
