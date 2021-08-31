@@ -40,8 +40,8 @@
          <content>
             <AnchorPane fx:id="APTop" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="719.0">
                <children>
-                  <Button fx:id="BTNLoadXML" alignment="BOTTOM_RIGHT" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#loadXML" text="LoadXML" />
-                  <Button fx:id="BTNRunAlgorithm" layoutX="67.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#RunAlgorithm" text="RunAlgorithm" />
+                  <Button fx:id="BTNLoadXML" alignment="BOTTOM_RIGHT" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#loadXML" text="Load XML" />
+                  <Button fx:id="BTNRunAlgorithm" layoutX="67.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#RunAlgorithm" text="Run Algorithm" />
                   <Button fx:id="BTNPauseResume" layoutX="159.0" layoutY="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#PauseResume" text="Pause" />
                   <Button fx:id="BTNStop" layoutX="211.0" layoutY="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#Stop" text="Stop" />
                   <GridPane fx:id="GPOptions" layoutX="541.0" layoutY="13.0" prefHeight="62.0" prefWidth="200.0">

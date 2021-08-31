@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -36,7 +37,14 @@ public class SchoolHourJavaFXApplication extends Application {
             }
         });
 
-            primaryStage.show();
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                controller.Stop(new ActionEvent());
+            }
+        });
+
+        primaryStage.show();
     }
 
     private FXMLLoader getSceneFXMLLoader(String fxmlFileName) {
