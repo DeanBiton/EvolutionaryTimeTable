@@ -21,9 +21,9 @@
                <children>
                   <VBox fx:id="VBoxMenu" layoutY="-1.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="403.0" prefWidth="100.0">
                      <children>
-                        <Button fx:id="BTNSetConditions" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#ChooseEndConditionsButton" prefHeight="70.0" prefWidth="170.0" text="Set Conditions" />
-                        <Button fx:id="BTNAlgorithmSettings" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#AlgorithmSettingsButton" prefHeight="92.0" prefWidth="193.0" text="View Algorithm" />
-                        <Button fx:id="BTNShowSchoolData" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#ShowSchoolDataButton" prefHeight="84.0" prefWidth="191.0" text="Show School Data" />
+                        <Button fx:id="BTNSetConditions" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#ChooseEndConditionsButton" prefHeight="70.0" prefWidth="170.0" text="End Conditions" />
+                        <Button fx:id="BTNAlgorithmSettings" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#AlgorithmSettingsButton" prefHeight="92.0" prefWidth="193.0" text="Algorithm Settings" />
+                        <Button fx:id="BTNShowSchoolData" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#ShowSchoolDataButton" prefHeight="84.0" prefWidth="191.0" text="School Data" />
                         <Button fx:id="BTNBestSolution" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#ShowBestSolutionButton" prefHeight="85.0" prefWidth="209.0" text="Best Solution" />
                      </children>
                   </VBox>

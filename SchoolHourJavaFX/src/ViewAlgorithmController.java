@@ -164,8 +164,19 @@ public class ViewAlgorithmController {
     {
         SPViewAlgorithm.setPrefWidth(mainController.getScene().getWidth());
         gridEndCondtions.setPrefWidth(mainController.getScene().getWidth() - 5);
-        double barWidth = SPViewAlgorithm.getPrefWidth() - 220;
-        //double barWidth = SPViewAlgorithm.getPrefWidth() - 300;
+
+        double barWidth;
+
+        if(mainController.getSkinsButton().getText().equals("Ugly"))
+        {
+            barWidth = SPViewAlgorithm.getPrefWidth() - 290;
+        }
+        else
+        {
+            barWidth = SPViewAlgorithm.getPrefWidth() - 220;
+        }
+
+
 
         if(progressBarFitness != null)
         {
@@ -182,6 +193,4 @@ public class ViewAlgorithmController {
             progressBarTime.setPrefWidth(barWidth);
         }
     }
-
-
 }
