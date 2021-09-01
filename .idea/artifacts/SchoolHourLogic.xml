@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SchoolHourLogic">
+    <output-path>$PROJECT_DIR$/out/artifacts/hello</output-path>
+    <root id="archive" name="SchoolHourLogic.jar">
+      <element id="module-output" name="SchoolHourLogic" />
+    </root>
+  </artifact>
+</component>

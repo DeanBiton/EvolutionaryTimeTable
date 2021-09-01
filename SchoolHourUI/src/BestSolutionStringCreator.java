@@ -1,6 +1,4 @@
-import DTO.*;
-import Evolution.MySolution.Tuple;
-import Evolution.MySolution.TupleGroup;
+import Engine.DTO.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
