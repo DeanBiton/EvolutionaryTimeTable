@@ -1,7 +1,4 @@
-import DTO.*;
-import Evolution.MySolution.Classroom;
-import Evolution.MySolution.Subject;
-import Evolution.MySolution.Teacher;
+import Engine.DTO.*;
 
 import java.util.Map;
 

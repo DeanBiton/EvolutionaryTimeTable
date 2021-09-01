@@ -1,23 +1,11 @@
-import Evolution.EndCondition.ByTime;
-import Evolution.EndCondition.EndCondition;
-import Evolution.EndCondition.NumberOfGenerations;
-import Evolution.Evolutionary;
-import Evolution.MySolution.Crossover.AspectOriented;
-import Evolution.MySolution.Crossover.Crossover;
-import Evolution.MySolution.TupleGroup;
-import Evolution.Rule;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Program {
 
     public static void main(String[] args) {
         try{
             SchoolHourSystem.run();
 
-          /*  SchoolHourManager s=new SchoolHourManager();
-            s.LoadXML("C:\\Users\\belik\\IdeaProjects\\EvolutionaryTimeTable\\SchoolHourLogic\\src\\Xml\\EX2-small.xml");
+          /*  Engine.SchoolHourManager s=new Engine.SchoolHourManager();
+            s.LoadXML("C:\\Users\\belik\\IdeaProjects\\EvolutionaryTimeTable\\SchoolHourLogic\\src\\Engine.Xml\\EX2-small.xml");
 
 
 
@@ -38,7 +26,7 @@ public class Program {
            // Thread.sleep(5000);
             //s.resume();*/
 
-/*            SchoolHourManager s = new SchoolHourManager();
+/*            Engine.SchoolHourManager s = new Engine.SchoolHourManager();
             s.LoadXML("C:\\Users\\user\\Desktop\\EX2-small.xml");
 
             TupleGroup tupleGroup = new TupleGroup(s.data);

@@ -1,9 +1,10 @@
-import DTO.DTODataAndAlgorithmSettings;
-import Evolution.EndCondition.ByFitness;
-import Evolution.EndCondition.EndCondition;
-import Evolution.EndCondition.NumberOfGenerations;
-import Evolution.MySolution.Crossover.Crossover;
-import Evolution.Selection.Selection;
+import Engine.DTO.DTODataAndAlgorithmSettings;
+import Engine.SchoolHourManager;
+import Engine.Evolution.EndCondition.ByFitness;
+import Engine.Evolution.EndCondition.EndCondition;
+import Engine.Evolution.EndCondition.NumberOfGenerations;
+import Engine.Evolution.MySolution.Crossover.Crossover;
+import Engine.Evolution.Selection.Selection;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -77,7 +78,7 @@ public class SchoolHourSystem {
     private enum eMenuOption
     {
         EXIT{ String getName(){return "Exit"; }},
-        LOADXML{ String getName(){return "Load Xml"; }},
+        LOADXML{ String getName(){return "Load Engine.Xml"; }},
         SHOWSETTINGS{String getName(){return "Show settings"; }},
         RUNEVOLUTIONARYALGORITHM{String getName(){return "Run evolutionary algorithm"; }},
         WATCHTHEBESTSOLUTION{String getName(){return "Watch the best solution"; }},

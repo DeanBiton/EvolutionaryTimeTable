@@ -1,13 +1,13 @@
-import Evolution.EndCondition.ByFitness;
-import Evolution.EndCondition.EndCondition;
-import Evolution.EndCondition.NumberOfGenerations;
-import Evolution.MySolution.Crossover.AspectOriented;
-import Evolution.MySolution.Crossover.Crossover;
-import Evolution.MySolution.Crossover.DayTimeOriented;
-import Evolution.Selection.RouletteWheel;
-import Evolution.Selection.Selection;
-import Evolution.Selection.Tournament;
-import Evolution.Selection.Truncation;
+import Engine.Evolution.EndCondition.ByFitness;
+import Engine.Evolution.EndCondition.EndCondition;
+import Engine.Evolution.EndCondition.NumberOfGenerations;
+import Engine.Evolution.MySolution.Crossover.AspectOriented;
+import Engine.Evolution.MySolution.Crossover.Crossover;
+import Engine.Evolution.MySolution.Crossover.DayTimeOriented;
+import Engine.Evolution.Selection.RouletteWheel;
+import Engine.Evolution.Selection.Selection;
+import Engine.Evolution.Selection.Tournament;
+import Engine.Evolution.Selection.Truncation;
 
 import java.util.ArrayList;
 import java.util.List;
