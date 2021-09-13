@@ -58,7 +58,7 @@ public class SchoolHourManager {
         ETTDescriptor discriptor = SchoolHourXMLLoader.LoadXML(XMLfile);
         data = new SchoolHourData(discriptor);
         dtoData = new DTOSchoolHoursData(data);
-        EvolutionaryAlgorithmData eaData=new EvolutionaryAlgorithmData(discriptor.getETTEvolutionEngine(), data.getMutations());
+        EvolutionaryAlgorithmData eaData=new EvolutionaryAlgorithmData(data.getMutations());
         schoolHourEvolutionaryAlgorithm = new SchoolHourEvolutionaryAlgorithm(eaData, data);
 
 
@@ -263,6 +263,11 @@ public class SchoolHourManager {
     }
 
     public void setMutations(List<Mutation> mutations){schoolHourEvolutionaryAlgorithm.setMutations(mutations);}
+
+    public void setInitialPopulation(int initialPopulation)
+    {
+        schoolHourEvolutionaryAlgorithm.setInitialPopulation(initialPopulation);
+    }
 
     public boolean isSuspended() {
         return isSuspended;

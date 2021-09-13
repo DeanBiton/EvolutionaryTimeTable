@@ -7,11 +7,13 @@ public class Teacher implements Serializable {
     private final int id;
     private final String name;
     private final List<Integer> teaching;
+    private final int workingHours;
 
-    Teacher(int _id, String _name, List<Integer> _teaching) {
+    Teacher(int _id, String _name, List<Integer> _teaching, int _workingHours) {
         this.id = _id;
         this.name = _name;
         this.teaching = _teaching;
+        workingHours = _workingHours;
     }
 
     public int getId() {
@@ -24,6 +26,10 @@ public class Teacher implements Serializable {
 
     public List<Integer> getAllSubjectsTeaching() {
         return teaching;
+    }
+
+    public int getWorkingHours() {
+        return workingHours;
     }
 
     @Override
