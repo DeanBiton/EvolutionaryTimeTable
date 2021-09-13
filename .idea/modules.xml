@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/SchoolHourJavaFX/SchoolHourJavaFX.iml" filepath="$PROJECT_DIR$/SchoolHourJavaFX/SchoolHourJavaFX.iml" />
       <module fileurl="file://$PROJECT_DIR$/SchoolHourLogic/SchoolHourLogic.iml" filepath="$PROJECT_DIR$/SchoolHourLogic/SchoolHourLogic.iml" />
       <module fileurl="file://$PROJECT_DIR$/SchoolHourUI/SchoolHourUI.iml" filepath="$PROJECT_DIR$/SchoolHourUI/SchoolHourUI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SchoolHourWeb/SchoolHourWeb.iml" filepath="$PROJECT_DIR$/SchoolHourWeb/SchoolHourWeb.iml" />
     </modules>
   </component>
 </project>
