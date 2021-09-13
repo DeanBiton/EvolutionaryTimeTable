@@ -1,5 +1,7 @@
 package Engine.Evolution;
 
+import Engine.Evolution.MySolution.Crossover.AspectOriented;
+import Engine.Evolution.Selection.RouletteWheel;
 import Engine.ShowException;
 import Engine.Evolution.EndCondition.EndCondition;
 import Engine.Evolution.MySolution.Crossover.Crossover;
@@ -7,8 +9,6 @@ import Engine.Evolution.MySolution.Crossover.CrossoverSelector;
 import Engine.Evolution.MySolution.MyMutation.Mutation;
 import Engine.Evolution.Selection.Selection;
 import Engine.Evolution.Selection.SelectionSelector;
-import Engine.Xml.JAXBClasses.ETTCrossover;
-import Engine.Xml.JAXBClasses.ETTEvolutionEngine;
 import javafx.util.Pair;
 
 import java.io.Serializable;
@@ -25,15 +25,16 @@ public class EvolutionaryAlgorithmData implements Serializable {
     private List<EndCondition> endCondition;
     private List<Mutation> mutations;
 
-    public EvolutionaryAlgorithmData(ETTEvolutionEngine ettEvolutionEngine, List<Mutation> mutations) {
+    public EvolutionaryAlgorithmData(List<Mutation> mutations) {
         this.mutations = mutations;
-        initialPopulation = ettEvolutionEngine.getETTInitialPopulation().getSize();
-        selection = ETTgetSelection(ettEvolutionEngine);
-        crossover = ETTgetCrossover(ettEvolutionEngine.getETTCrossover());
+        initialPopulation = 10; // ettEvolutionEngine.getETTInitialPopulation().getSize();
+        selection = new RouletteWheel(0); // ETTgetSelection(ettEvolutionEngine);
+        crossover = new AspectOriented(0, AspectOriented.OrientationType.TEACHER); // ETTgetCrossover(ettEvolutionEngine.getETTCrossover());
         this.endCondition = new ArrayList<>();
         bestSolution = null;
     }
 
+    /*
     private Selection ETTgetSelection(ETTEvolutionEngine ettEvolutionEngine) {
         String name = ettEvolutionEngine.getETTSelection().getType();
         String configuration = ettEvolutionEngine.getETTSelection().getConfiguration();
@@ -56,6 +57,7 @@ public class EvolutionaryAlgorithmData implements Serializable {
         String configuration = ettCrossover.getConfiguration();
         return CrossoverSelector.valueOf(crossovername).create(cuttingPoints, configuration);
     }
+*/
 
     public EvolutionaryAlgorithmData(int initialPopulation, Selection selection, Crossover crossover) {
         this.initialPopulation = initialPopulation;

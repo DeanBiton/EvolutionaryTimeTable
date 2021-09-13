@@ -1,3 +1,6 @@
+import Engine.Evolution.MySolution.TupleGroup;
+import Engine.Evolution.Rule;
+
 public class Program {
 
     public static void main(String[] args) {
@@ -25,21 +28,31 @@ public class Program {
             //s.setCrossover(aspect);
            // Thread.sleep(5000);
             //s.resume();*/
-
-/*            Engine.SchoolHourManager s = new Engine.SchoolHourManager();
-            s.LoadXML("C:\\Users\\user\\Desktop\\EX2-small.xml");
+/*
+            Engine.SchoolHourManager s = new Engine.SchoolHourManager();
+            s.LoadXML("C:\\Users\\user\\Desktop\\סמסטר קיץ\\תרגילי הקורס\\תרגיל 3\\EX3-small.xml");
 
             TupleGroup tupleGroup = new TupleGroup(s.data);
             tupleGroup.random();
-            double fitness = Rule.RuleType.Sequentiality.fitnessRuleCalc(tupleGroup);
-            System.out.println(fitness);*/
-
+            double fitness = Rule.RuleType.WorkingHoursPreference.fitnessRuleCalc(tupleGroup);
+            System.out.println(fitness);
+*/
         }
         catch (Exception ex)
         {
             System.out.println(ex.getMessage());
         }
     }
+    /*
+    			<ETT-Teacher id="3">
+				<ETT-Name>Alila Maslul</ETT-Name>
+				<ETT-Working-Hours>4</ETT-Working-Hours>
+				<ETT-Teaching>
+					<ETT-Teaches subject-id="3"/>
+				</ETT-Teaching>
+			</ETT-Teacher>
+
+     */
 }
 
 

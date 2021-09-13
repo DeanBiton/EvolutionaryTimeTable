@@ -326,6 +326,52 @@ public class Rule implements Serializable {
                 return longetsHoursInADay;
             }
         }
+        , DayOffClass{
+            public double fitnessRuleCalc(Evolutionary evolutionary) {
+                double sumOfClassroomsScore = 0;
+                TupleGroup group = getTupleGroup(evolutionary);
+                int numberOfClassrooms = group.getData().getClassrooms().size();
+                int numberOfDays = group.getData().getNumberOfDays();
+
+                for(Classroom classroom : group.getData().getClassrooms().values())
+                {
+                    Set<Integer> classroomLearningDays = new HashSet<>();
+                    group.getTuples().stream().
+                            filter(tuple -> tuple.getClassroom() == classroom).
+                            forEach(tuple -> classroomLearningDays.add(tuple.getDay()));
+
+                    sumOfClassroomsScore += classroomLearningDays.size() == numberOfDays? 0 : 100;
+                }
+
+                return sumOfClassroomsScore / numberOfClassrooms;
+            }
+        }
+        , WorkingHoursPreference {
+            public double fitnessRuleCalc(Evolutionary evolutionary) {
+                double sumOfTeachersScore = 0;
+                TupleGroup group = getTupleGroup(evolutionary);
+                int numberOfTeachers = group.getData().getTeachers().size();
+
+                for(Teacher teacher : group.getData().getTeachers().values())
+                {
+                    int workingHoursDemanded = teacher.getWorkingHours();
+                    List<Tuple> teacherTuples = group.getTuples().stream().
+                            filter(tuple -> tuple.getTeacher() == teacher).
+                            collect(Collectors.toList());
+
+                    if(teacherTuples.size() <= workingHoursDemanded)
+                    {
+                        sumOfTeachersScore += (double) teacherTuples.size() / workingHoursDemanded;
+                    }
+                    else
+                    {
+                        sumOfTeachersScore += (double) workingHoursDemanded / teacherTuples.size();
+                    }
+                }
+
+                return 100 * sumOfTeachersScore / numberOfTeachers;
+            }
+        }
         ;
 
         int totalHours = 0;

@@ -15,10 +15,10 @@ public class SchoolHourData implements Serializable {
     private final Map<Integer,Classroom> classrooms = new TreeMap<>();
     private final Map<Integer, Subject> subjects=new TreeMap<>() ;
     private final List<Rule> rules = new ArrayList<>();
-    private final int  numberOfDays;
+    private final int numberOfDays;
     private final int numberOfHoursInADay;
     private final int hardRulesWeight;
-    private final List<Mutation> mutations = new ArrayList<>();
+    private List<Mutation> mutations = new ArrayList<>();
 
     public List<Mutation> getMutations() {
         return mutations;
@@ -74,7 +74,12 @@ public class SchoolHourData implements Serializable {
 
                 teacher_subjects.add(teach.getSubjectId());
             }
-            if (null != teachers.putIfAbsent(t.getId(), new Teacher(t.getId(), t.getETTName(), teacher_subjects)))
+
+            if(t.getETTWorkingHours() <= 0)
+                throw new ShowException("teacher id =  " + t.getId() + ", have non-positive working hours");
+
+
+            if (null != teachers.putIfAbsent(t.getId(), new Teacher(t.getId(), t.getETTName(), teacher_subjects, t.getETTWorkingHours())))
                 throw new ShowException("teachers with same id "+t.getId());
 
         }
@@ -134,7 +139,7 @@ public class SchoolHourData implements Serializable {
             rules.add(rule);
         }
     }
-
+/*
     private void createMutations(ETTMutations ettMutations)
     {
         for(ETTMutation mutation:ettMutations.getETTMutation())
@@ -149,7 +154,7 @@ public class SchoolHourData implements Serializable {
 
         }
     }
-
+*/
     public SchoolHourData(ETTDescriptor descriptor) throws Exception {
         ETTTimeTable timeTable = descriptor.getETTTimeTable();
         numberOfDays = timeTable.getDays();//days
@@ -167,7 +172,8 @@ public class SchoolHourData implements Serializable {
         createClassrooms(timeTable.getETTClasses());
         hardRulesWeight = timeTable.getETTRules().getHardRulesWeight();
         createRules(timeTable.getETTRules());
-        createMutations(descriptor.getETTEvolutionEngine().getETTMutations());
+        mutations = new ArrayList<>();
+        //createMutations(descriptor.getETTEvolutionEngine().getETTMutations());
     }
 
     private String getFullName(List<String> names){
@@ -210,5 +216,9 @@ public class SchoolHourData implements Serializable {
         Subject randomSubject = subjects.get(randomSubjectIndex);
 
         return new Tuple(randomDay,randomHour,randomClassroom,randomTeacher,randomSubject);
+    }
+
+    public void setMutations(List<Mutation> mutations) {
+        this.mutations = mutations;
     }
 }
