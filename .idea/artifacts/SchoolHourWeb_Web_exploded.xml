@@ -6,6 +6,8 @@
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="SchoolHourWeb" />
+          <element id="module-source" name="SchoolHourWebLogic" />
+          <element id="module-source" name="SchoolHourLogic" />
         </element>
       </element>
     </root>
