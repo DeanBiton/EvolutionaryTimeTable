@@ -4,6 +4,7 @@ import App.Constants.Constants;
 import App.Utils.ServletUtils;
 import App.Utils.SessionUtils;
 import Users.UserManager;
+//import Users.UserManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -17,17 +18,14 @@ import static App.Constants.Constants.USERNAME;
 
 public class LoginServlet extends HttpServlet {
 
-
     // urls that starts with forward slash '/' are considered absolute
     // urls that doesn't start with forward slash '/' are considered relative to the place where this servlet request comes from
     // you can use absolute paths, but then you need to build them from scratch, starting from the context path
     // ( can be fetched from request.getContextPath() ) and then the 'absolute' path from it.
     // Each method with it's pros and cons...
-
-
-    private final String USER_PAGE_URL = "../UserPage/user.html";
-    private final String SIGN_UP_URL = "../signup/signup.html";
-    private final String LOGIN_ERROR_URL = "/pages/loginerror/login_attempt_after_error.jsp";  // must start with '/' since will be used in request dispatcher...
+    private final String CHAT_ROOM_URL = "../UserPage/user.html";
+    private final String SIGN_UP_URL = "../UserPage/nothing.html";
+    private final String LOGIN_ERROR_URL = "/Pages/loginerror/login_attempt_after_error.jsp";  // must start with '/' since will be used in request dispatcher...
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,34 +37,17 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/plain;charset=UTF-8");
-        String usernameFromSession = null;
-
-        if(request.getCookies() != null)
-        {
-            for(Cookie cookie : request.getCookies())
-            {
-                if(cookie.getName().equals("userName"))
-                {
-                    usernameFromSession = cookie.getValue();
-                    break;
-                }
-            }
-        }
-
+        response.setContentType("text/html;charset=UTF-8");
+        String usernameFromSession = SessionUtils.getUsername(request);
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
-
-        if (usernameFromSession == null) { //user is not logged in yet
-
+        if (usernameFromSession == null) {
+            //user is not logged in yet
             String usernameFromParameter = request.getParameter(USERNAME);
             if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
-                //no username in session and no username in parameter - not standard situation. it's a conflict
-
-                // stands for conflict in server state
-                response.setStatus(409);
-
-                // returns answer to the browser to go back to the sign up URL page
-                //response.getOutputStream().println(SIGN_UP_URL);
+                //no username in session and no username in parameter -
+                //redirect back to the index page
+                //this return an HTTP code back to the browser telling it to load
+                response.sendRedirect(SIGN_UP_URL);
             } else {
                 //normalize the username value
                 usernameFromParameter = usernameFromParameter.trim();
@@ -86,10 +67,14 @@ public class LoginServlet extends HttpServlet {
                 synchronized (this) {
                     if (userManager.isUserExists(usernameFromParameter)) {
                         String errorMessage = "Username " + usernameFromParameter + " already exists. Please enter a different username.";
-
-                        // stands for unauthorized as there is already such user with this name
-                        response.setStatus(401);
-                        response.getOutputStream().println(errorMessage);
+                        // username already exists, forward the request back to index.jsp
+                        // with a parameter that indicates that an error should be displayed
+                        // the request dispatcher obtained from the servlet context is one that MUST get an absolute path (starting with'/')
+                        // and is relative to the web app root
+                        // see this link for more details:
+                        // http://timjansen.github.io/jarfiller/guide/servlet25/requestdispatcher.xhtml
+                        request.setAttribute(Constants.USER_NAME_ERROR, errorMessage);
+                        getServletContext().getRequestDispatcher(LOGIN_ERROR_URL).forward(request, response);
                     }
                     else {
                         //add the new user to the users list
@@ -98,19 +83,16 @@ public class LoginServlet extends HttpServlet {
                         //the true parameter means that if a session object does not exists yet
                         //create a new one
                         request.getSession(true).setAttribute(Constants.USERNAME, usernameFromParameter);
-                        Cookie cookie = new Cookie("userName", usernameFromParameter);
-                        response.addCookie(cookie);
+
                         //redirect the request to the chat room - in order to actually change the URL
                         System.out.println("On login, request URI is: " + request.getRequestURI());
-                        response.setStatus(200);
-                        response.getOutputStream().println(USER_PAGE_URL);
+                        response.sendRedirect(CHAT_ROOM_URL);
                     }
                 }
             }
         } else {
             //user is already logged in
-            response.setStatus(200);
-            response.getOutputStream().println(USER_PAGE_URL);
+            response.sendRedirect(CHAT_ROOM_URL);
         }
     }
 
@@ -152,5 +134,4 @@ public class LoginServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }
