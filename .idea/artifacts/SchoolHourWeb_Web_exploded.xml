@@ -8,7 +8,12 @@
           <element id="module-output" name="SchoolHourWeb" />
           <element id="module-source" name="SchoolHourWebLogic" />
           <element id="module-source" name="SchoolHourLogic" />
+          <element id="module-output" name="SchoolHourWebLogic" />
         </element>
+      </element>
+      <element id="directory" name="lib">
+        <element id="artifact" artifact-name="SchoolHourWebLogic" />
+        <element id="artifact" artifact-name="SchoolHourLogic" />
       </element>
     </root>
   </artifact>

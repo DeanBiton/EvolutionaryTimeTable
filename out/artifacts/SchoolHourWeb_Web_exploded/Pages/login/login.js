@@ -24,17 +24,27 @@ $("#loginForm").submit(function() {
 
 function login()
 {
-    console.log("started function login");
+    var IsNull= '@Session["JSESSIONID"]'!= null;
+
+    console.log( IsNull);
+    if(    sessionStorage.getItem("JSESSIONID")!=null   )
+    {
+        document.getElementById("loginForm").submit();
+
+    }
+    /*console.log("started function login");
     $.ajax({
-        data: $(loginForm).serialize(),
-        url: this.action,
+        data: $("#loginForm").serialize(),
+        url: $("#loginForm").action,
         timeout: 2000,
         error: function(errorObject) {
 
         },
         success: function(nextPageUrl) {
+            console.log("success");
+
             window.location.replace(nextPageUrl);
         }
 
-    });
+    });*/
 }
