@@ -10,6 +10,9 @@
           <element id="module-source" name="SchoolHourLogic" />
           <element id="module-output" name="SchoolHourWebLogic" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="gson-2.1" />
+        </element>
       </element>
       <element id="directory" name="lib">
         <element id="artifact" artifact-name="SchoolHourWebLogic" />
