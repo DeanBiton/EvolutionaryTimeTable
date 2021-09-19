@@ -9,9 +9,11 @@
           <element id="module-source" name="SchoolHourWebLogic" />
           <element id="module-source" name="SchoolHourLogic" />
           <element id="module-output" name="SchoolHourWebLogic" />
+          <element id="module-output" name="SchoolHourLogic" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="gson-2.1" />
+          <element id="file-copy" path="$PROJECT_DIR$/SchoolHourLogic/lib/commons-lang3-3.12.0.jar" />
         </element>
       </element>
       <element id="directory" name="lib">

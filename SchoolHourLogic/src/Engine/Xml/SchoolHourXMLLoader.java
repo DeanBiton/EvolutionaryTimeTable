@@ -1,9 +1,31 @@
 package Engine.Xml;
 import javax.xml.bind.*;
 import java.io.File;
+import java.io.InputStream;
+
 import Engine.Xml.JAXBClasses.*;
 
 public class SchoolHourXMLLoader {
+
+    public static ETTDescriptor LoadXML(InputStream XMLfile) throws Exception {
+        JAXBContext jaxbContext;
+        ETTDescriptor descriptor = null;
+
+        try {
+            jaxbContext = getJAXBContent(ETTDescriptor.class);
+            Unmarshaller jaxbUnmarshaller = getUnmarshaller(jaxbContext);
+            descriptor = (ETTDescriptor) jaxbUnmarshaller.unmarshal(XMLfile);
+
+            if(descriptor == null)
+            {
+                throw new RuntimeException("Error in creating the descriptor object");
+            }
+        }
+        catch (JAXBException e) {
+            throw e;
+        }
+        return descriptor;
+    }
 
     public static ETTDescriptor LoadXML(File XMLfile) throws Exception {
         JAXBContext jaxbContext;

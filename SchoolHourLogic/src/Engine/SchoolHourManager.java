@@ -53,6 +53,47 @@ public class SchoolHourManager {
         return xmlFile;
     }
 
+    public void LoadXML(ETTDescriptor descriptor) throws Exception
+    {
+
+        data = new SchoolHourData(descriptor);
+        dtoData = new DTOSchoolHoursData(data);
+        EvolutionaryAlgorithmData eaData=new EvolutionaryAlgorithmData(data.getMutations());
+        schoolHourEvolutionaryAlgorithm = new SchoolHourEvolutionaryAlgorithm(eaData, data);
+
+
+        //  Selection selection=getSelection(discriptor.getETTEvolutionEngine());
+        //  Crossover crossover = getCrossover(discriptor.getETTEvolutionEngine().getETTCrossover());
+        //   int initialPopulation=discriptor.getETTEvolutionEngine().getETTInitialPopulation().getSize();
+        // schoolHourEvolutionaryAlgorithm = new SchoolHourEvolutionaryAlgorithm(initialPopulation, selection, crossover, data);
+
+
+        stopAlgorithm();
+        xmlFileLoadedSuccessfully = true;
+        currentThread = null;
+        evolutionaryAlgorithmRunned = false;
+    }
+
+    public void LoadXML(InputStream XMLfile) throws Exception
+    {
+        ETTDescriptor discriptor = SchoolHourXMLLoader.LoadXML(XMLfile);
+        data = new SchoolHourData(discriptor);
+        dtoData = new DTOSchoolHoursData(data);
+        EvolutionaryAlgorithmData eaData=new EvolutionaryAlgorithmData(data.getMutations());
+        schoolHourEvolutionaryAlgorithm = new SchoolHourEvolutionaryAlgorithm(eaData, data);
+
+
+        //  Selection selection=getSelection(discriptor.getETTEvolutionEngine());
+        //  Crossover crossover = getCrossover(discriptor.getETTEvolutionEngine().getETTCrossover());
+        //   int initialPopulation=discriptor.getETTEvolutionEngine().getETTInitialPopulation().getSize();
+        // schoolHourEvolutionaryAlgorithm = new SchoolHourEvolutionaryAlgorithm(initialPopulation, selection, crossover, data);
+
+
+        stopAlgorithm();
+        xmlFileLoadedSuccessfully = true;
+        currentThread = null;
+        evolutionaryAlgorithmRunned = false;
+    }
     public void LoadXML(File XMLfile) throws Exception
     {
         ETTDescriptor discriptor = SchoolHourXMLLoader.LoadXML(XMLfile);
