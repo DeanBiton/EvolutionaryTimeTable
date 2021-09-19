@@ -22,7 +22,10 @@
         <servlet-name>CurrentUserServlet</servlet-name>
         <servlet-class>App.Servlets.CurrentUserServlet</servlet-class>
     </servlet>
-
+    <servlet>
+        <servlet-name>ProblemsListServlet</servlet-name>
+        <servlet-class>App.Servlets.ProblemsListServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -35,5 +38,9 @@
     <servlet-mapping>
         <servlet-name>CurrentUserServlet</servlet-name>
         <url-pattern>/currentUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProblemsListServlet</servlet-name>
+        <url-pattern>/Problem/problemList</url-pattern>
     </servlet-mapping>
 </web-app>
