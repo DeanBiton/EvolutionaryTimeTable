@@ -15,7 +15,8 @@ public class ProblemsManager {
     }
 
     public synchronized void addproblem(InputStream xmlFile,String uploaderName) throws Exception {
-        problems.add(new TimeTableProblem(xmlFile, uploaderName));
+
+        problems.add(new TimeTableProblem(xmlFile, uploaderName,problems.size()+1));
     }
 
     public synchronized List<TimeTableProblem> getProblems() {

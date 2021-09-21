@@ -16,5 +16,10 @@ function wrapBuildingURLWithContextPath() {
     };
 }
 
+const myRedirect = function(newAbsoluteLocation) {
+    const base = window.location.origin + "/SchoolHourWeb_Web_exploded";
+    window.location = base + newAbsoluteLocation;
+}
+
 // call the wrapper method and expose a final method to be used to build complete resource names (buildUrlWithContextPath)
 var buildUrlWithContextPath = wrapBuildingURLWithContextPath(); 
