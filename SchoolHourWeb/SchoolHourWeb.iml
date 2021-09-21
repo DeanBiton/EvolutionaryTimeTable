@@ -23,5 +23,6 @@
     <orderEntry type="module" module-name="SchoolHourWebLogic" />
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 8.5.23" level="application_server_libraries" />
     <orderEntry type="library" name="gson-2.1" level="project" />
+    <orderEntry type="module" module-name="SchoolHourLogic" />
   </component>
 </module>

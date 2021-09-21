@@ -5,7 +5,7 @@ import Engine.Evolution.MySolution.SchoolHourData;
 import Engine.Evolution.Rule;
 
 public class DTOShortProblem {
-
+    private int id;
     private int numberOfTriedUsers;
     private String uploadUser;
     private double maxFitness;
@@ -18,6 +18,7 @@ public class DTOShortProblem {
     int NumberOfSoftRules;
 
     public DTOShortProblem(TimeTableProblem timeTableProblem) {
+        this.id=timeTableProblem.getId();
         this.uploadUser=timeTableProblem.getUploadUser();
         this.maxFitness=timeTableProblem.getMaxFitness();
         DTOSchoolHoursData DTOschoolHourData=timeTableProblem.getSchoolHourManager().getDataAndAlgorithmSettings().getDtoSchoolHoursData();

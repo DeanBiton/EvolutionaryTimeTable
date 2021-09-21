@@ -36,7 +36,37 @@ function refreshProblemsList(problems) {
         listRow.appendChild(document.createTextNode(problem.uploadUser));
         let btn = document.createElement("BUTTON");
         btn.innerText= "enter"
+        $(btn).on("click", function () {
+
+          //  let formData = new FormData();
+
+            //formData.append( 'id', problem.id );
+
+            $.ajax({
+               // data: {"id": problem.id},
+                method: "POST",
+                url: "/SchoolHourWeb_Web_exploded/Pages/Algorithm/enter?id="+problem.id,
+                timeout: 2000,
+                processData: false,
+                contentType: false,
+                error: function (errorObj) {
+                    $("#fileUploadErrorDiv").text("ERROR " + errorObj.responseText)
+                },
+                success: function (redirectPath) {
+                    myRedirect(redirectPath);
+                }
+            });
+
+            return false;
+        })
+
+
         listRow.appendChild(btn);
+
+
+
+
+
 
         $(listRow).appendTo(problemsList);
     })

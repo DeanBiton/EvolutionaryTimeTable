@@ -38,22 +38,22 @@ function refreshProblemsList(problems) {
         btn.innerText= "enter"
         $(btn).on("click", function () {
 
-            let formData = new FormData();
+          //  let formData = new FormData();
 
-            formData.append( 'id', problem.id );
+            //formData.append( 'id', problem.id );
 
             $.ajax({
-                data: formData,
-                method: "GET",
-                url: this.action,
+               // data: {"id": problem.id},
+                method: "POST",
+                url: "/SchoolHourWeb_Web_exploded/Pages/Algorithm/enter?id="+problem.id,
                 timeout: 2000,
                 processData: false,
                 contentType: false,
                 error: function (errorObj) {
                     $("#fileUploadErrorDiv").text("ERROR " + errorObj.responseText)
                 },
-                success: function (goodXmlFile) {
-                    $("#fileUploadErrorDiv").text("GOOD " +goodXmlFile)
+                success: function (redirectPath) {
+                    myRedirect(redirectPath);
                 }
             });
 

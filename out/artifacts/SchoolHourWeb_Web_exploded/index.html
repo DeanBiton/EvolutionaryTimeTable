@@ -7,6 +7,8 @@
     <!-- Link the Bootstrap (from twitter) CSS framework in order to use its classes-->
     <link rel="stylesheet" href="common/bootstrap.min.css">
     <script src="Common/jquery-3.6.0.min.js" ></script>
+    <script src="Common/context-path-helper.js"></script>
+
     <script src="index.js"></script>
 
     <!-- Link jQuery JavaScript library in order to use the $ (jQuery) method-->
@@ -16,10 +18,8 @@
 <body style="margin-left: 20px;">
 <h1>You are about to sign up to the ultimate online chat, ever created by a human being !!!</h1>
 <script>
-    const myRedirect = function(newAbsoluteLocation) {
-    const base = window.location.origin + "/SchoolHourWeb_Web_exploded";
-    window.location = base + newAbsoluteLocation;
-}
+
+
     $(myRedirect("/Pages/login/login.html"));
 </script>
 <a href="Pages/login/login.html" class="btn btn-info btn-lg active" role="button">Go to Online Chat using short response login page!</a>
