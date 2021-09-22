@@ -2,6 +2,7 @@ package Engine.Evolution;
 
 import Engine.Evolution.MySolution.Crossover.AspectOriented;
 import Engine.Evolution.Selection.RouletteWheel;
+import Engine.Evolution.Selection.Truncation;
 import Engine.ShowException;
 import Engine.Evolution.EndCondition.EndCondition;
 import Engine.Evolution.MySolution.Crossover.Crossover;
@@ -28,7 +29,7 @@ public class EvolutionaryAlgorithmData implements Serializable {
     public EvolutionaryAlgorithmData(List<Mutation> mutations) {
         this.mutations = mutations;
         initialPopulation = 10; // ettEvolutionEngine.getETTInitialPopulation().getSize();
-        selection = new RouletteWheel(0); // ETTgetSelection(ettEvolutionEngine);
+        selection = new Truncation(10, 20); // ETTgetSelection(ettEvolutionEngine);
         crossover = new AspectOriented(0, AspectOriented.OrientationType.TEACHER); // ETTgetCrossover(ettEvolutionEngine.getETTCrossover());
         this.endCondition = new ArrayList<>();
         bestSolution = null;
@@ -72,6 +73,11 @@ public class EvolutionaryAlgorithmData implements Serializable {
     }
 
     public void setInitialPopulation(int initialPopulation) {
+        if(initialPopulation <= 0)
+        {
+            throw new RuntimeException("Initial population must be a positive integer");
+        }
+
         this.initialPopulation = initialPopulation;
     }
 
