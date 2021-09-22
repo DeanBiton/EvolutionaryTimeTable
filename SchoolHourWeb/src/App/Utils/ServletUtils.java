@@ -1,5 +1,6 @@
 package App.Utils;
 
+import Engine.SchoolHourManager;
 import Problem.ProblemsManager;
 import Users.UserManager;
 
@@ -37,6 +38,14 @@ public class ServletUtils {
 			}
 		}
 		return (ProblemsManager) servletContext.getAttribute(PROBLEMS_MANAGER_ATTRIBUTE_NAME);
+	}
+
+	public static SchoolHourManager getCurrentSchoolHourManager(HttpServletRequest request)
+	{
+		ProblemsManager problemsManager = ServletUtils.getProblemsManager(request.getServletContext());
+		int id = Integer.parseInt(request.getParameter("id"));
+
+		return problemsManager.getSchoolHourManager(id, SessionUtils.getUsername(request));
 	}
 
 	public static int getIntParameter(HttpServletRequest request, String name) {

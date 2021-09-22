@@ -4,10 +4,15 @@ import Engine.Evolution.Selection.RouletteWheel;
 
 public class DTORouletteWheel implements DTOSelection{
 
+    private String name;
     private RouletteWheel rouletteWheel;
+    private int elitism;
 
     public DTORouletteWheel(RouletteWheel rouletteWheel) {
+
         this.rouletteWheel = rouletteWheel;
+        this.name = rouletteWheel.getName();
+        this.elitism = rouletteWheel.getElitism();
     }
 
 

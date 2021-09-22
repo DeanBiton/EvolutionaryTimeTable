@@ -4,10 +4,15 @@ import Engine.Evolution.Selection.Truncation;
 
 public class DTOTruncation implements DTOSelection{
 
+    private String name;
     private Truncation truncation;
+    private int elitism;
 
     public DTOTruncation(Truncation truncation) {
+
         this.truncation = truncation;
+        this.name = truncation.getName();
+        this.elitism = truncation.getElitism();
     }
 
     public final int getTopPercent() {

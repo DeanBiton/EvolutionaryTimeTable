@@ -1,5 +1,7 @@
 package Problem;
 
+import Engine.SchoolHourManager;
+
 import java.io.File;
 import java.io.InputStream;
 import java.util.Collections;
@@ -23,4 +25,8 @@ public class ProblemsManager {
         return Collections.unmodifiableList(problems);
     }
 
+    public SchoolHourManager getSchoolHourManager(int id, String userName)
+    {
+        return problems.get(id-1).getUserManager(userName);
+    }
 }
