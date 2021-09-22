@@ -12,6 +12,7 @@ var elitism;
 var selectionParameterText;
 var selectionParameter;
 var selectionParameterDiv;
+var selectionMessage;
 
 var form;
 
@@ -29,14 +30,15 @@ function updateConstants()
     selectionParameterText = document.getElementById("selectionParameterText");
     selectionParameter = document.getElementById("selectionParameter");
     selectionParameterDiv = document.getElementById("selectionParameterDiv");
+    selectionMessage = document.getElementById("selectionMessage");
 
     form = document.getElementById("updateSettingsForm");
 }
 
-// gets a DTOEvolutionaryAlgorithmSettings instance
-function updateSettings(settings) {
-    initialPopulation.value = settings.initialPopulation;
+/// Updating settings
 
+function updateSelection(settings)
+{
     selection.value = settings.dtoSelection.name;
     elitism.value = settings.dtoSelection.elitism;
 
@@ -53,6 +55,12 @@ function updateSettings(settings) {
     }
 }
 
+// gets a DTOEvolutionaryAlgorithmSettings instance
+function updateSettings(settings) {
+    initialPopulation.value = settings.initialPopulation;
+    updateSelection(settings);
+}
+
 function getDTOEvolutionaryAlgorithmSettings() {
     $.ajax({
         url: GET_SETTINGS_URL + "?id=" + new URLSearchParams(window.location.search).get("id"),
@@ -64,6 +72,7 @@ function getDTOEvolutionaryAlgorithmSettings() {
 
 function updateMessages(messages) {
     initialPopulationMessage.innerText = messages["initialPopulation"];
+    selectionMessage.innerText = messages["selection"];
 }
 
 $(function () {
@@ -72,6 +81,9 @@ $(function () {
         const settingsParams = new URLSearchParams();
         settingsParams.append("id", ID);
         settingsParams.append("initialPopulation", initialPopulation.value);
+        settingsParams.append("selection", selection.value);
+        settingsParams.append("elitism", elitism.value);
+        settingsParams.append("selectionParameter", selectionParameter.value);
 
         $.ajax({
             method: "POST",
@@ -91,12 +103,6 @@ $(function () {
 function addListeners()
 {
     selection.addEventListener("change", function () {
-        /*
-        let toDisplayParamter = selection.value !== "RouletteWheel" ? "visible" : "hidden";
-
-        selectionParameterText.style.visibility = toDisplayParamter;
-        selectionParameter.style.visibility = toDisplayParamter;
-*/
         let toDisplayParamter = selection.value !== "RouletteWheel" ? "" : "none";
 
         selectionParameterText.style.display = toDisplayParamter;
