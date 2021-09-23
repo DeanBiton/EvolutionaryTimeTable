@@ -1,7 +1,13 @@
 package App.Servlets;
 
 import Engine.DTO.DTOEvolutionaryAlgorithmSettings;
+import Engine.Evolution.MySolution.Crossover.AspectOriented;
+import Engine.Evolution.MySolution.Crossover.Crossover;
+import Engine.Evolution.MySolution.Crossover.DayTimeOriented;
+import Engine.Evolution.Selection.RouletteWheel;
+import Engine.Evolution.Selection.Selection;
 import Engine.Evolution.Selection.Tournament;
+import Engine.Evolution.Selection.Truncation;
 import Engine.SchoolHourManager;
 import com.google.gson.Gson;
 import javafx.util.Pair;
@@ -33,7 +39,8 @@ public class UpdateAlgorithmSettingsServlet extends HttpServlet {
             SchoolHourManager manager = getCurrentSchoolHourManager(request);
 
             setInitialPopulation(manager, messages, request.getParameter("initialPopulation"));
-
+            setSelection(manager, messages, request);
+            setCrossover(manager, messages, request);
 
             String json = gson.toJson(messages);
             out.println(json);
@@ -98,63 +105,137 @@ public class UpdateAlgorithmSettingsServlet extends HttpServlet {
         }
     }
 
+    private Integer parseIntegerParameter(String parameterString, StringBuilder parameterMessage, HttpServletRequest request, String parameterName)
+    {
+        Integer parameter;
+
+        try {
+            parameter = Integer.parseInt(request.getParameter(parameterString));
+        }
+        catch (Exception exception)
+        {
+            if(parameterMessage.length() != 0)
+                parameterMessage.append(System.lineSeparator());
+            parameterMessage.append(parameterName).append(" must be an integer");
+            parameter = null;
+        }
+
+        return parameter;
+    }
+
+    private Double parseDoubleParameter(String parameterString, StringBuilder parameterMessage, HttpServletRequest request, String parameterName)
+    {
+        Double parameter;
+
+        try {
+            parameter = Double.parseDouble(request.getParameter(parameterString));
+        }
+        catch (Exception exception)
+        {
+            if(parameterMessage.length() != 0)
+                parameterMessage.append(System.lineSeparator());
+            parameterMessage.append(parameterName).append(" must be an double");
+            parameter = null;
+        }
+
+        return parameter;
+    }
+
     private void setSelection(SchoolHourManager manager, Map<String, String> messages, HttpServletRequest request)
     {
         StringBuilder selectionMessage = new StringBuilder();
         String selectionString = request.getParameter("selection");
-        int elitism;
-        int topPercent;
-        double pte;
         boolean passToConstructor = true;
+        Integer elitism;
+        Integer topPercent = null;
+        Double pte = null;
 
-        try{
-            elitism = Integer.parseInt(request.getParameter("elitism"));
-        }
-        catch (NumberFormatException ex)
-        {
-            selectionMessage.append("elitism must be an integer");
-            passToConstructor = false;
-        }
+        elitism = parseIntegerParameter("elitism", selectionMessage, request, "elitism");
+        passToConstructor = elitism != null;
 
-        try{
-            topPercent = Integer.parseInt(request.getParameter("selectionParameter"));
-        }
-        catch (Exception ex)
+        if(selectionString.equals("Truncation"))
         {
-            if(selectionMessage.length()!=0)
-                selectionMessage.append(System.lineSeparator());
-            selectionMessage.append("Top percent must be an integer");
-            passToConstructor = false;
+            topPercent = parseIntegerParameter("selectionParameter", selectionMessage, request, "Top percent");
+            if(topPercent == null)
+                passToConstructor = false;
         }
-
-        try{
-            pte = Double.parseDouble(request.getParameter("selectionParameter"));
-        }
-        catch (Exception ex)
+        else if(selectionString.equals("Tournament"))
         {
-            if(selectionMessage.length()!=0)
-                selectionMessage.append(System.lineSeparator());
-            selectionMessage.append("PTE must be a double");
-            passToConstructor = false;
+            pte = parseDoubleParameter("selectionParameter", selectionMessage, request, "PTE");
+            if(pte == null)
+                passToConstructor = false;
         }
 
         if(passToConstructor)
         {
             try
             {
+                Selection selection = null;
                 switch (selectionString){
                     case "Truncation":
+                        selection = new Truncation(topPercent, elitism);
                         break;
                     case "RouletteWheel":
+                        selection = new RouletteWheel(elitism);
                         break;
                     case "Tournament":
+                        selection = new Tournament(elitism, pte);
                         break;
                 }
+
+                manager.setSelection(selection);
             }
             catch (Exception exception)
             {
-
+                selectionMessage.append(exception.getMessage());
             }
         }
+
+        if(selectionMessage.length() == 0)
+            selectionMessage.append("updated successfully");
+
+        messages.put("selection", selectionMessage.toString());
+    }
+
+    private void setCrossover(SchoolHourManager manager, Map<String, String> messages, HttpServletRequest request)
+    {
+        StringBuilder crossoverMessage = new StringBuilder();
+        String crossoverString = request.getParameter("crossover");
+        boolean passToConstructor = true;
+        Integer numberOfSeparators;
+        AspectOriented.OrientationType orientationType = null;
+
+        if(crossoverString.equals("AspectOriented"))
+            orientationType = AspectOriented.OrientationType.valueOf(request.getParameter("orientationType"));
+
+        numberOfSeparators = parseIntegerParameter("numberOfSeparators", crossoverMessage, request, "Number of separators");
+        passToConstructor = numberOfSeparators != null;
+
+        if(passToConstructor)
+        {
+            try
+            {
+                Crossover crossover = null;
+                switch (crossoverString){
+                    case "DayTimeOriented":
+                        crossover = new DayTimeOriented(numberOfSeparators);
+                        break;
+                    case "AspectOriented":
+                        crossover = new AspectOriented(numberOfSeparators, orientationType);
+                        break;
+                }
+
+                manager.setCrossover(crossover);
+            }
+            catch (Exception exception)
+            {
+                crossoverMessage.append(exception.getMessage());
+            }
+        }
+
+        if(crossoverMessage.length() == 0)
+            crossoverMessage.append("updated successfully");
+
+        messages.put("crossover", crossoverMessage.toString());
     }
 }
