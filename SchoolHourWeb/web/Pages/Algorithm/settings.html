@@ -30,9 +30,35 @@
     </div>
 
     <div id="selectionParameterDiv">
-        <label for="selectionParameter" id="selectionParameterText">elitism:</label>
+        <label for="selectionParameter" id="selectionParameterText"></label>
         <input type="text" id="selectionParameter">  </input>
         <h4 id="selectionMessage"></h4>
+    </div>
+
+    <div>
+        <h2> Crossover </h2>
+        <label for="Crossover">crossover:</label>
+        <select name="Crossover" id="crossover">
+            <option value="DayTimeOriented">DayTimeOriented</option>
+            <option value="AspectOriented">AspectOriented</option>
+        </select>
+
+        <label for="numberOfSeparators">Number of separators: </label>
+        <input type="text" id="numberOfSeparators">  </input>
+    </div>
+
+    <div id="orientationTypeDiv">
+        <label for="orientationType" id="orientationTypeText">Orientation type:</label>
+        <select name="Crossover" id="orientationType">
+            <option value="TEACHER">TEACHER</option>
+            <option value="CLASS">CLASS</option>
+        </select>
+
+        <h4 id="crossoverMessage"></h4>
+    </div>
+
+    <div>
+        <h2> Mutations </h2>
     </div>
 
     <div id="update">
@@ -40,5 +66,7 @@
             <button type="submit">Update</button>
         </form>
     </div>
+
+
 </body>
 </html>

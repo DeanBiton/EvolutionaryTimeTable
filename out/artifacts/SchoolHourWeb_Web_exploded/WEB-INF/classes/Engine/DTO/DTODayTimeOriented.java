@@ -5,9 +5,14 @@ import Engine.Evolution.MySolution.Crossover.DayTimeOriented;
 public class DTODayTimeOriented implements DTOCrossover {
 
     private DayTimeOriented dayTimeOriented;
+    private String name;
+    private int numberOfSeparators;
 
     public DTODayTimeOriented(DayTimeOriented dayTimeOriented) {
+
         this.dayTimeOriented = dayTimeOriented;
+        this.name = dayTimeOriented.getName();
+        this.numberOfSeparators = dayTimeOriented.getNumberOfSeperators();
     }
 
     @Override

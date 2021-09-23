@@ -13,6 +13,11 @@ public class Tournament extends Selection{
 
     public Tournament(int elitism, double pte) {
         super(elitism);
+
+        if(pte <= 0 || pte >= 1)
+        {
+            throw new RuntimeException ("pte must be between 0 and 1");
+        }
         this.pte = pte;
     }
 

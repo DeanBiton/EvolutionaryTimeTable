@@ -16,6 +16,11 @@ public abstract class Crossover implements Serializable {
 
     Crossover(int _numberOfSeparators)
     {
+        if(_numberOfSeparators < 0)
+        {
+            throw new RuntimeException("Number of separators must be non-negative");
+        }
+
         numberOfSeparators = _numberOfSeparators;
     }
 
