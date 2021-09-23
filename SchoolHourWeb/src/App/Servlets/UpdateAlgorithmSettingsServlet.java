@@ -4,6 +4,9 @@ import Engine.DTO.DTOEvolutionaryAlgorithmSettings;
 import Engine.Evolution.MySolution.Crossover.AspectOriented;
 import Engine.Evolution.MySolution.Crossover.Crossover;
 import Engine.Evolution.MySolution.Crossover.DayTimeOriented;
+import Engine.Evolution.MySolution.MyMutation.Flipping;
+import Engine.Evolution.MySolution.MyMutation.Mutation;
+import Engine.Evolution.MySolution.MyMutation.Sizer;
 import Engine.Evolution.Selection.RouletteWheel;
 import Engine.Evolution.Selection.Selection;
 import Engine.Evolution.Selection.Tournament;
@@ -19,10 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static App.Utils.ServletUtils.getCurrentSchoolHourManager;
 
@@ -41,6 +41,7 @@ public class UpdateAlgorithmSettingsServlet extends HttpServlet {
             setInitialPopulation(manager, messages, request.getParameter("initialPopulation"));
             setSelection(manager, messages, request);
             setCrossover(manager, messages, request);
+            setMutations(manager, request);
 
             String json = gson.toJson(messages);
             out.println(json);
@@ -237,5 +238,36 @@ public class UpdateAlgorithmSettingsServlet extends HttpServlet {
             crossoverMessage.append("updated successfully");
 
         messages.put("crossover", crossoverMessage.toString());
+    }
+
+    private void setMutations(SchoolHourManager manager, HttpServletRequest request)
+    {
+        Double probability;
+        Integer mutationParameter = 0;
+        Flipping.FlippingComponent flippingComponent;
+        List<Mutation> mutations = new ArrayList<>();
+
+        String[] mutationTypes = request.getParameterValues("mutation");
+        String[] probabilities = request.getParameterValues("probability");
+        String[] mutationParameters = request.getParameterValues("mutationParameter");
+        String[] flippingComponents = request.getParameterValues("flippingComponent");
+
+        if(mutationTypes != null)
+        {
+            for(int mutationNumber = 0; mutationNumber < mutationTypes.length; mutationNumber++)
+            {
+                probability = Double.parseDouble(probabilities[mutationNumber]);
+                mutationParameter = Integer.parseInt(mutationParameters[mutationNumber]);
+                if(mutationTypes[mutationNumber].equals("Flipping"))
+                {
+                    flippingComponent = Flipping.FlippingComponent.valueOf(flippingComponents[mutationNumber]);
+                    mutations.add(new Flipping(probability, mutationParameter, flippingComponent));
+                }
+                else
+                    mutations.add(new Sizer(probability, mutationParameter));
+            }
+
+            manager.setMutations(mutations);
+        }
     }
 }

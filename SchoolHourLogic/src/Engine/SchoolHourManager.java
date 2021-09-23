@@ -303,7 +303,10 @@ public class SchoolHourManager {
         schoolHourEvolutionaryAlgorithm.setSelection(selection);
     }
 
-    public void setMutations(List<Mutation> mutations){schoolHourEvolutionaryAlgorithm.setMutations(mutations);}
+    public void setMutations(List<Mutation> mutations){
+        schoolHourEvolutionaryAlgorithm.setMutations(mutations);
+        dtoData = new DTOSchoolHoursData(data);
+    }
 
     public void setInitialPopulation(int initialPopulation)
     {
