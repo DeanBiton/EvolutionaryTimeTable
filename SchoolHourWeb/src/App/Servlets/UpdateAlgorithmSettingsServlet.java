@@ -270,4 +270,32 @@ public class UpdateAlgorithmSettingsServlet extends HttpServlet {
             manager.setMutations(mutations);
         }
     }
+
+    private void setEndConditions(SchoolHourManager manager, Map<String, String> messages, HttpServletRequest request)
+    {
+        StringBuilder endConditionsMessage = new StringBuilder();
+        boolean passToConstructor;
+        Double fitness;
+        Integer numberOfGenerations;
+        Integer time;
+
+        //fitness = parseIntegerParameter("fitness", e)
+        /*
+        if(passToConstructor)
+        {
+            try
+            {
+
+            }
+            catch (Exception exception)
+            {
+                endConditionsMessage.append(exception.getMessage());
+            }
+        }
+
+        if(endConditionsMessage.length() == 0)
+            endConditionsMessage.append("updated successfully");
+*/
+        messages.put("endConditions", endConditionsMessage.toString());
+    }
 }
