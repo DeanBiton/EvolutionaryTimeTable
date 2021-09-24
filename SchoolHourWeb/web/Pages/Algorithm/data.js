@@ -1,5 +1,6 @@
-
+var refreshRate = 200; //milli seconds
 var GET_DATA_URL = buildUrlWithContextPath("Algorithm/getData");
+var GET_USER2DTOMANAGER_URL = buildUrlWithContextPath("Algorithm/getUsersRunningProblem");
 
 
 
@@ -117,6 +118,7 @@ function createRulesTable(ruless) {
     generateTable(rulesTable, rulesData);
 }
 
+
 // gets a DTOEvolutionaryAlgorithmSettings instance
 function updateData(datas) {
     createTimeTable(datas);
@@ -125,6 +127,9 @@ function updateData(datas) {
     createClassesTable(datas)
     createRulesTable(datas.rules)
 }
+
+
+
 
 function getDTOSchoolHoursData() {
     $.ajax({
@@ -135,6 +140,33 @@ function getDTOSchoolHoursData() {
     });
 }
 
+function createUsersProblemsTable(user2DTOManager) {
+
+    let UsersProblemsTable = document.getElementById("usersProblemsTable");
+    $(UsersProblemsTable).empty();
+
+    let usersProblemsData = [];
+    for (let [key, value] of Object.entries(user2DTOManager))
+    {
+
+
+        usersProblemsData.push({USer:key,Fitness: value.fitness,Generation:value.NumberOfGenerations});
+    } //teachers.forEach((values,keys) => {teachersData.push({ID:values})})
+
+
+    let headers= Object.keys(usersProblemsData[0]);
+    generateTableHead(UsersProblemsTable, headers);
+    generateTable(UsersProblemsTable, usersProblemsData);
+}
+
+function getuser2DTOManager() {
+    $.ajax({
+        url: GET_USER2DTOMANAGER_URL + "?id=" + new URLSearchParams(window.location.search).get("id"),
+        success: function(user2DTOManager) {
+            createUsersProblemsTable(user2DTOManager);
+        }
+    });
+}
 
 
 
@@ -143,6 +175,6 @@ function getDTOSchoolHoursData() {
 //activate the timer calls after the page is loaded
 $(function() {
     getDTOSchoolHoursData();
-
+    setInterval(getuser2DTOManager, refreshRate);
 
 });
