@@ -337,6 +337,7 @@ function addListeners()
 $(function() { // onload...do
     addListeners();
     getDTOEvolutionaryAlgorithmSettings();
+    createTopNav();
 });
 
 // Initialize constants

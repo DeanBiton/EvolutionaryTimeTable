@@ -1,6 +1,6 @@
 package Engine.Evolution;
-import Engine.Evolution.EndCondition.EndCondition;
-import Engine.Evolution.EndCondition.EndConditionGetterClass;
+import Engine.DTO.DTOAlgorithmContidions;
+import Engine.Evolution.EndCondition.*;
 import Engine.Evolution.MySolution.Crossover.Crossover;
 import Engine.Evolution.MySolution.MyMutation.Mutation;
 import Engine.Evolution.Selection.Selection;
@@ -265,4 +265,37 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
     }
 
     public  EndConditionGetterClass getEndCondtionsStatus() {return endConditionGetterClass; }
+    
+    public void setEndConditions(List<EndCondition> endConditions) {
+        synchronized (eaData.getEndConditionAlgorithm())
+        {
+            if(isSettingAvailable)
+            {
+                eaData.setEndConditionAlgorithm(endConditions);
+            }
+            else
+            {
+                throw new RuntimeException("can't set end conditions while the algorithm is running.");
+            }
+        }
+    }
+
+    public DTOAlgorithmContidions getDTOAlgorithmEndConditions()
+    {
+        double fitness = -1;
+        int numberOfGeneration = -1;
+        int time = -1;
+
+        for(EndCondition endCondition : eaData.getEndConditionAlgorithm())
+        {
+            if(endCondition instanceof ByFitness)
+                fitness = ((ByFitness)endCondition).getFitness();
+            else if(endCondition instanceof NumberOfGenerations)
+                numberOfGeneration = ((NumberOfGenerations)endCondition).getNumberOfGenerations();
+            else
+                time = ((ByTime)endCondition).getMinutes();
+        }
+
+        return new DTOAlgorithmContidions(new EndConditionGetterClass(numberOfGeneration, fitness, time));
+    }
 }
