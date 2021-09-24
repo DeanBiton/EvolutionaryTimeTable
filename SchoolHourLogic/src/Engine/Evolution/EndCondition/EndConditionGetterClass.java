@@ -10,6 +10,12 @@ public class EndConditionGetterClass {
         this.fitness = fitness;
         this.time=time;
     }
+    public void update(int numberOfGenerations, double fitness,int time)
+    {
+        NumberOfGenerations = numberOfGenerations;
+        this.fitness = fitness;
+        this.time=time;
+    }
 
     public int getNumberOfGenerations() {
         return NumberOfGenerations;
