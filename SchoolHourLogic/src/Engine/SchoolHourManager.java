@@ -317,5 +317,7 @@ public class SchoolHourManager {
         return isSuspended;
     }
 
+    public DTOAlgorithmContidions getAlgorithmConditions() {return new DTOAlgorithmContidions(schoolHourEvolutionaryAlgorithm.getEndCondtionsStatus());}
+
 }
 

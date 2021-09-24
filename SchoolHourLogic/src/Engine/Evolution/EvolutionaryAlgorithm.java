@@ -19,6 +19,7 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
     private boolean suspended = false;
     private StopWatch stopWatch = new StopWatch();
     private boolean isSettingAvailable = true;
+    private EndConditionGetterClass endConditionGetterClass= new EndConditionGetterClass(0,0,0);
 
     public  EvolutionaryAlgorithm(int _initialPopulation, Selection _selection, Crossover _crossover)
     {
@@ -102,7 +103,7 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
                 generation.get(0).fitness();
             }
 
-            EndConditionGetterClass endConditionGetterClass=new EndConditionGetterClass(currentGeneration,eaData.getBestSolution().fitness(),(int)stopWatch.getTime(TimeUnit.MINUTES));
+             endConditionGetterClass.update(currentGeneration,eaData.getBestSolution().fitness(),(int)stopWatch.getTime(TimeUnit.MINUTES));
             EndConditionIsMet= eaData.getEndConditionAlgorithm().stream().anyMatch(t-> t.checkCondition(endConditionGetterClass));
             uiAdapter.updateTime(stopWatch.getTime(TimeUnit.SECONDS));
 
@@ -262,4 +263,6 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
     public List<EndCondition> getEndConditionAlgorithm() {
         return eaData.getEndConditionAlgorithm();
     }
+
+    public  EndConditionGetterClass getEndCondtionsStatus() {return endConditionGetterClass; }
 }
