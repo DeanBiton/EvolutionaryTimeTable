@@ -1,6 +1,10 @@
 package App.Servlets;
 
 import Engine.DTO.DTOEvolutionaryAlgorithmSettings;
+import Engine.Evolution.EndCondition.ByFitness;
+import Engine.Evolution.EndCondition.ByTime;
+import Engine.Evolution.EndCondition.EndCondition;
+import Engine.Evolution.EndCondition.NumberOfGenerations;
 import Engine.Evolution.MySolution.Crossover.AspectOriented;
 import Engine.Evolution.MySolution.Crossover.Crossover;
 import Engine.Evolution.MySolution.Crossover.DayTimeOriented;
@@ -42,6 +46,7 @@ public class UpdateAlgorithmSettingsServlet extends HttpServlet {
             setSelection(manager, messages, request);
             setCrossover(manager, messages, request);
             setMutations(manager, request);
+            setEndConditions(manager, messages, request);
 
             String json = gson.toJson(messages);
             out.println(json);
@@ -274,28 +279,76 @@ public class UpdateAlgorithmSettingsServlet extends HttpServlet {
     private void setEndConditions(SchoolHourManager manager, Map<String, String> messages, HttpServletRequest request)
     {
         StringBuilder endConditionsMessage = new StringBuilder();
-        boolean passToConstructor;
+        boolean passToConstructor = true;
         Double fitness;
         Integer numberOfGenerations;
         Integer time;
+        List<EndCondition> endConditions = new ArrayList<>();
 
-        //fitness = parseIntegerParameter("fitness", e)
-        /*
+        if(request.getParameter("fitnessCheckBox").equals("true"))
+        {
+            fitness = parseDoubleParameter("fitness", endConditionsMessage, request, "fitness ");
+            if(fitness != null)
+            {
+                try {
+                    endConditions.add(new ByFitness(fitness));
+                }
+                catch (Exception exception) {
+                    passToConstructor = false;
+                    endConditionsMessage.append(exception.getMessage());
+                }
+            }
+            else
+                passToConstructor = false;
+        }
+
+        if(request.getParameter("generationNumberCheckBox").equals("true"))
+        {
+            numberOfGenerations = parseIntegerParameter("generationNumber", endConditionsMessage, request, "Generation number ");
+            if(numberOfGenerations != null)
+            {
+                try {
+                    endConditions.add(new NumberOfGenerations(numberOfGenerations));
+                }
+                catch (Exception exception) {
+                    passToConstructor = false;
+                    endConditionsMessage.append(endConditionsMessage.length() != 0? "\n" : "");
+                    endConditionsMessage.append(exception.getMessage());
+                }
+            }
+            else
+                passToConstructor = false;
+        }
+
+        if(request.getParameter("timeCheckBox").equals("true"))
+        {
+            time = parseIntegerParameter("time", endConditionsMessage, request, "Time ");
+            if(time != null)
+            {
+                try {
+                    endConditions.add(new ByTime(time));
+                }
+                catch (Exception exception) {
+                    passToConstructor = false;
+                    endConditionsMessage.append(endConditionsMessage.length() != 0? "\n" : "");
+                    endConditionsMessage.append(exception.getMessage());
+                }
+            }
+            else
+                passToConstructor = false;
+        }
+
         if(passToConstructor)
         {
-            try
+            if(endConditions.size() == 0)
+                endConditionsMessage.append("Must choose at least 1 end condition.");
+            else
             {
-
-            }
-            catch (Exception exception)
-            {
-                endConditionsMessage.append(exception.getMessage());
+                manager.setEndConditions(endConditions);
+                endConditionsMessage.append("updated successfully");
             }
         }
 
-        if(endConditionsMessage.length() == 0)
-            endConditionsMessage.append("updated successfully");
-*/
         messages.put("endConditions", endConditionsMessage.toString());
     }
 }
