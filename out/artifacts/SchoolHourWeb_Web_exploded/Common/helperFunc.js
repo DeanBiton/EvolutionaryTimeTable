@@ -34,8 +34,23 @@ function addRowToTable(table, row) {
     }
 }
 
+function generateaRefs(elements,div) {
+
+
+    for (let e of elements) {
+        let a = document.createElement("a");
+        a.id = e;
+        div.appendChild(a);
+
+    }
+}
 function createTopNav()
 {
+    let div = document.getElementById("topnav");
+    const elements=    ["userHomeLink","schoolDataLink","algorithmLink","settingsLink"];
+
+    generateaRefs(elements,div);
+
     let userHomeLink = document.getElementById("userHomeLink");
     let schoolDataLink = document.getElementById("schoolDataLink");
     let algorithmLink = document.getElementById("algorithmLink");
@@ -55,4 +70,5 @@ function createTopNav()
     userHomeLink.href = "../UserPage/user.html";
     userHomeLink.innerText="Home";
 }
+
 
