@@ -19,6 +19,10 @@ public class ByFitness implements EndCondition {
         this.fitness = fitness;
     }
 
+    public double getFitness() {
+        return fitness;
+    }
+
     @Override
     public boolean checkCondition(EndConditionGetterClass endConditionGetterClass) {
         if(fitness>endConditionGetterClass.getFitness())
