@@ -7,6 +7,7 @@ import Engine.Xml.SchoolHourXMLLoader;
 import javax.print.attribute.standard.MediaSize;
 import java.io.File;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +21,11 @@ public class TimeTableProblem {
     private double maxFitness;
     private Map<String,SchoolHourManager> user2manager;
 
-    public TimeTableProblem(InputStream xmlInputStream,String uploaderName, int id) throws Exception {
+    public Map<String, SchoolHourManager> getUser2manager() {
+        return Collections.unmodifiableMap(user2manager);
+    }
+
+    public TimeTableProblem(InputStream xmlInputStream, String uploaderName, int id) throws Exception {
         descriptor = SchoolHourXMLLoader.LoadXML(xmlInputStream);
         schoolHourManager=new SchoolHourManager();
         schoolHourManager.LoadXML(descriptor);

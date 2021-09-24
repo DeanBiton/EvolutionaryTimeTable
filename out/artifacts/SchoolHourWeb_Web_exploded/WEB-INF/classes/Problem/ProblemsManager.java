@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 
 public class ProblemsManager {
@@ -25,6 +26,10 @@ public class ProblemsManager {
         return Collections.unmodifiableList(problems);
     }
 
+    public Map<String,SchoolHourManager> getUser2Manager(int id)
+    {
+        return problems.get(id-1).getUser2manager();
+    }
     public SchoolHourManager getSchoolHourManager(int id, String userName)
     {
         return problems.get(id-1).getUserManager(userName);
