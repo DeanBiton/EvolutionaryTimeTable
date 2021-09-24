@@ -184,6 +184,7 @@ function updateMessages(messages) {
     initialPopulationMessage.innerText = messages["initialPopulation"];
     selectionMessage.innerText = messages["selection"];
     crossoverMessage.innerText = messages["crossover"];
+    endConditionsMessage.innerText = messages["endConditions"];
 }
 
 // sends update form
@@ -219,7 +220,6 @@ function getSettingsParams()
     settingsParams.append("crossover", crossover.value);
     settingsParams.append("numberOfSeparators", numberOfSeparators.value);
     settingsParams.append("orientationType", orientationType.value);
-
     for(let rowNumber = 1; rowNumber < mutationsTable.rows.length; rowNumber++)
     {
         row = mutationsTable.rows[rowNumber];
@@ -231,6 +231,13 @@ function getSettingsParams()
         else
             settingsParams.append("flippingComponent", "");
     }
+
+    settingsParams.append("fitnessCheckBox", fitnessCheckBox.checked);
+    settingsParams.append("fitness", fitness.value);
+    settingsParams.append("generationNumberCheckBox", generationNumberCheckBox.checked);
+    settingsParams.append("generationNumber", generationNumber.value);
+    settingsParams.append("timeCheckBox", timeCheckBox.checked);
+    settingsParams.append("time", time.value);
 
     return settingsParams;
 }
