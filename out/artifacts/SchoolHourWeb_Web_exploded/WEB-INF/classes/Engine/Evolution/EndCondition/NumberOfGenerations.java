@@ -15,6 +15,10 @@ public class NumberOfGenerations implements EndCondition {
         this.numberOfGenerations = _numberOfGenerations;
     }
 
+    public int getNumberOfGenerations() {
+        return numberOfGenerations;
+    }
+
     @Override
     public boolean checkCondition(EndConditionGetterClass endConditionGetterClass) {
         if(numberOfGenerations>endConditionGetterClass.getNumberOfGenerations())

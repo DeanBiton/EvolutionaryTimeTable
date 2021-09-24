@@ -1,5 +1,6 @@
 package Engine.Evolution;
 
+import Engine.Evolution.EndCondition.NumberOfGenerations;
 import Engine.Evolution.MySolution.Crossover.AspectOriented;
 import Engine.Evolution.Selection.RouletteWheel;
 import Engine.Evolution.Selection.Truncation;
@@ -32,6 +33,7 @@ public class EvolutionaryAlgorithmData implements Serializable {
         selection = new Truncation(10, 20); // ETTgetSelection(ettEvolutionEngine);
         crossover = new AspectOriented(0, AspectOriented.OrientationType.TEACHER); // ETTgetCrossover(ettEvolutionEngine.getETTCrossover());
         this.endCondition = new ArrayList<>();
+        this.endCondition.add(new NumberOfGenerations(100));
         bestSolution = null;
     }
 

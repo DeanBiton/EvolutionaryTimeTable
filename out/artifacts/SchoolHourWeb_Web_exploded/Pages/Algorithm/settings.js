@@ -112,6 +112,30 @@ function addHTMLMutation()
 }
 
 // Updating settings
+function updateEndConditions(settings)
+{
+    if(settings.dtoEndConditions.fitness !== -1)
+    {
+        fitnessCheckBox.checked = true;
+        fitness.disabled = false;
+        fitness.value = settings.dtoEndConditions.fitness;
+    }
+
+    if(settings.dtoEndConditions.NumberOfGenerations !== -1)
+    {
+        generationNumberCheckBox.checked = true;
+        generationNumber.disabled = false;
+        generationNumber.value = settings.dtoEndConditions.NumberOfGenerations;
+    }
+
+    if(settings.dtoEndConditions.time !== -1)
+    {
+        timeCheckBox.checked = true;
+        time.disabled = false;
+        time.value = settings.dtoEndConditions.time;
+    }
+}
+
 function updateSelection(settings)
 {
     selection.value = settings.dtoSelection.name;
@@ -169,6 +193,7 @@ function updateSettings(settings) {
     updateSelection(settings);
     updateCrossover(settings);
     updateMutations(settings);
+    updateEndConditions(settings);
 }
 
 function getDTOEvolutionaryAlgorithmSettings() {
@@ -312,6 +337,7 @@ function addListeners()
 $(function() { // onload...do
     addListeners();
     getDTOEvolutionaryAlgorithmSettings();
+    createTopNav();
 });
 
 // Initialize constants

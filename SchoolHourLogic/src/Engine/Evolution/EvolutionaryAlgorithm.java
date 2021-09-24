@@ -1,6 +1,6 @@
 package Engine.Evolution;
-import Engine.Evolution.EndCondition.EndCondition;
-import Engine.Evolution.EndCondition.EndConditionGetterClass;
+import Engine.DTO.DTOAlgorithmContidions;
+import Engine.Evolution.EndCondition.*;
 import Engine.Evolution.MySolution.Crossover.Crossover;
 import Engine.Evolution.MySolution.MyMutation.Mutation;
 import Engine.Evolution.Selection.Selection;
