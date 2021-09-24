@@ -34,3 +34,25 @@ function addRowToTable(table, row) {
     }
 }
 
+function createTopNav()
+{
+    let userHomeLink = document.getElementById("userHomeLink");
+    let schoolDataLink = document.getElementById("schoolDataLink");
+    let algorithmLink = document.getElementById("algorithmLink");
+    let settingsLink = document.getElementById("settingsLink");
+
+    const  idParam="?id="+new URLSearchParams(window.location.search).get("id");
+
+    algorithmLink.href="algorithm.html" + idParam
+    algorithmLink.innerText = "Algorithm";
+
+    schoolDataLink.href = "data.html"+ idParam
+    schoolDataLink.innerText ="School Data";
+
+    settingsLink.href= "settings.html"+ idParam
+    settingsLink.innerText="Settings";
+
+    userHomeLink.href = "../UserPage/user.html";
+    userHomeLink.innerText="Home";
+}
+

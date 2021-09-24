@@ -170,11 +170,9 @@ function getuser2DTOManager() {
 
 
 
-
-
 //activate the timer calls after the page is loaded
 $(function() {
     getDTOSchoolHoursData();
     setInterval(getuser2DTOManager, refreshRate);
-
+    createTopNav();
 });
