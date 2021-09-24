@@ -125,7 +125,8 @@ public class SchoolHourManager {
                 schoolHourEvolutionaryAlgorithm.getInitialPopulation(),
                 dtoData.getDtoMutations(),
                 DTOSelection.getDTOSelection(schoolHourEvolutionaryAlgorithm.getSelection()),
-                DTOCrossover.getDTOCrossover(schoolHourEvolutionaryAlgorithm.getCrossover()));
+                DTOCrossover.getDTOCrossover(schoolHourEvolutionaryAlgorithm.getCrossover()),
+                schoolHourEvolutionaryAlgorithm.getDTOAlgorithmEndConditions());
 
         return new DTODataAndAlgorithmSettings(dtoEvolutionaryAlgorithmSettings, dtoData);
     }
@@ -319,5 +320,9 @@ public class SchoolHourManager {
 
     public DTOAlgorithmContidions getAlgorithmConditions() {return new DTOAlgorithmContidions(schoolHourEvolutionaryAlgorithm.getEndCondtionsStatus());}
 
+    public void setEndConditions(List<EndCondition> endConditions)
+    {
+        schoolHourEvolutionaryAlgorithm.setEndConditions(endConditions);
+    }
 }
 

@@ -12,6 +12,10 @@ public class ByTime implements EndCondition{
         this.minutes = minutes;
     }
 
+    public int getMinutes() {
+        return minutes;
+    }
+
     @Override
     public boolean checkCondition(EndConditionGetterClass endConditionGetterClass) {
         if(minutes>endConditionGetterClass.getTime())
