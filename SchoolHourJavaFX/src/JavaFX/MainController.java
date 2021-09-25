@@ -376,7 +376,7 @@ public class MainController {
         algorithmSettingsController.setNewSettings();
         spinButtonAnimation(BTNRunAlgorithm);
         UIAdapter uiAdapter = createUIAdapter();
-        manager.runEvolutionaryAlgorithm(endConditions, printEveryThisNumberOfGenerations, uiAdapter);
+        //manager.runEvolutionaryAlgorithm(endConditions, printEveryThisNumberOfGenerations, uiAdapter);
         isAlgorithmActive.setValue(true);
         isAlgorithmAlive.setValue(true);
         BTNRunAlgorithm.disableProperty().setValue(true);

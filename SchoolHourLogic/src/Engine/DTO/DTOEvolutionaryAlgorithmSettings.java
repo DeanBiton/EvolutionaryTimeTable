@@ -31,4 +31,8 @@ public class DTOEvolutionaryAlgorithmSettings {
     public DTOCrossover getDtoCrossover() {
         return dtoCrossover;
     }
+
+    public DTOAlgorithmContidions getDtoEndConditions() {
+        return dtoEndConditions;
+    }
 }

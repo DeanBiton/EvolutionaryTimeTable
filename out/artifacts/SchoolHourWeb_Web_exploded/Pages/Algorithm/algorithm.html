@@ -8,6 +8,7 @@
     <script src="../../Common/context-path-helper.js"></script>
 
     <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="../../Common/bootstrap.css">
 
     <script src="algorithm.js"></script>
 
@@ -15,5 +16,33 @@
 </head>
 <body>
 <div id="topnav"></div>
+<div id="run">
+    <button onclick="submitAlgorithmFunction(this)">Run</button>
+    <button onclick="submitAlgorithmFunction(this)">Resume</button>
+    <button onclick="submitAlgorithmFunction(this)">Stop</button>
+</div>
+
+<div id="progressBarGenWrapper" style="display: none">
+    <span class="progress-title">Generation  Progress</span>
+    <div  class="progress" >
+        <div id="progressBarGen" class="progress-bar " role="progressbar" aria-valuenow=""
+             aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
+    </div>
+</div>
+<div id="progressBarTimeWrapper" style="display: none">
+    <span class="progress-title">Time Progress</span>
+    <div  class="progress" >
+        <div id="progressBarTime" class="progress-bar" role="progressbar" aria-valuenow=""
+             aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
+    </div>
+</div>
+<div id="progressBarFitnessWrapper" style="display: none">
+    <span class="progress-title">Fitness Progress</span>
+    <div  class="progress" >
+        <div id="progressBarFitness" class="progress-bar" role="progressbar" aria-valuenow=""
+             aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
+    </div>
+</div>
+
 </body>
 </html>
