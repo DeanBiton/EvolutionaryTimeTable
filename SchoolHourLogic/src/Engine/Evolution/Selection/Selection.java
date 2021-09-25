@@ -45,7 +45,7 @@ public abstract class Selection implements Serializable {
         int numberOfParent = (currentGen.size()-elitism) % 2 == 0 ? (currentGen.size()-elitism) : (currentGen.size()-elitism) + 1;
 
         Collections.sort(currentGen, Collections.reverseOrder(Evolutionary::compare));
-        for(int i = 0; i < elitism; i++)
+        for(int i = 0; i < elitism && i < currentGen.size(); i++)
         {
             Evolutionary child = currentGen.get(i).clone();
             child.resetFitness();
