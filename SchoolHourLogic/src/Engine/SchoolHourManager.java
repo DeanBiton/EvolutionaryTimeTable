@@ -131,6 +131,7 @@ public class SchoolHourManager {
         return new DTODataAndAlgorithmSettings(dtoEvolutionaryAlgorithmSettings, dtoData);
     }
 
+/*
     public void runEvolutionaryAlgorithm(List<EndCondition> endConditions, int printEveryThisNumberOfGenerations, SchoolHourUIAdapter uiAdapter)
     {
         if(!xmlFileLoadedSuccessfully)
@@ -145,6 +146,26 @@ public class SchoolHourManager {
                 evolutionaryAlgorithmRunned = true;
             }
             uiAdapter.algorithmEnded();
+        }
+                ,"EvolutionaryAlgorithm");
+        currentThread.start();
+
+    }
+*/
+
+    public void runEvolutionaryAlgorithm()
+    {
+        if(!xmlFileLoadedSuccessfully)
+        {
+            throw new RuntimeException("Engine.SchoolHourManager did not load a file");
+        }
+        stopAlgorithm();
+        currentThread=new Thread(() -> {
+            schoolHourEvolutionaryAlgorithm.runAlgorithm(100);
+            synchronized (evolutionaryAlgorithmRunned)
+            {
+                evolutionaryAlgorithmRunned = true;
+            }
         }
                 ,"EvolutionaryAlgorithm");
         currentThread.start();
