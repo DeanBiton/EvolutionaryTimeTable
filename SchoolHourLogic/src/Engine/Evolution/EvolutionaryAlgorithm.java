@@ -33,7 +33,7 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
 
     public boolean isActivated(){ return eaData.getBestSolution()!=null;}
 
-    public void runAlgorithm (List<EndCondition> endConditions, int printEveryThisNumberOfGenerations, SchoolHourUIAdapter uiAdapter) {
+    public void runAlgorithm (int printEveryThisNumberOfGenerations) {
         isSettingAvailable = false;
         LocalDateTime time1 = LocalDateTime.now();
         stopWatch.reset();
@@ -42,7 +42,6 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
         eaData.setBestSolution(null);
         eaData.initEveryGenAndItsBestSolution();
         int currentGeneration = 0;
-        eaData.setEndConditionAlgorithm(endConditions);
         boolean EndConditionIsMet=false;
 
         Evolutionary thisGenBestSolution;
@@ -68,21 +67,21 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
                 break;
             }
             currentGeneration++;
-            uiAdapter.updateGenerationNumber(currentGeneration);
+            //uiAdapter.updateGenerationNumber(currentGeneration);
 
             generation.get(0).fitness();
             thisGenBestSolution = generation.stream().max(Evolutionary::compare).get();
             if(eaData.getBestSolution() == null)
             {
                 eaData.setBestSolution(thisGenBestSolution);
-                uiAdapter.updateBestSolution(thisGenBestSolution);
+                //uiAdapter.updateBestSolution(thisGenBestSolution);
             }
             else
             {
                 if(thisGenBestSolution.fitness() > eaData.getBestSolution().fitness())
                 {
                     eaData.setBestSolution(thisGenBestSolution);
-                    uiAdapter.updateBestSolution(thisGenBestSolution);
+                    //uiAdapter.updateBestSolution(thisGenBestSolution);
                 }
             }
 
@@ -93,7 +92,7 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
                     //eaData.getEveryGenAndItsBestSolution().add(new Pair(currentGeneration, thisGenBestSolution.fitness()));
                     //System.out.print("currentGeneration= "+currentGeneration);
                     //System.out.println(", thisGenBestSolution.fitness= " +thisGenBestSolution.fitness());
-                    uiAdapter.addThisGenBestSolution(thisGenBestSolution, currentGeneration);
+                    //uiAdapter.addThisGenBestSolution(thisGenBestSolution, currentGeneration);
                 }
             }
 
@@ -105,7 +104,7 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
 
              endConditionGetterClass.update(currentGeneration,eaData.getBestSolution().fitness(),(int)stopWatch.getTime(TimeUnit.MINUTES));
             EndConditionIsMet= eaData.getEndConditionAlgorithm().stream().anyMatch(t-> t.checkCondition(endConditionGetterClass));
-            uiAdapter.updateTime(stopWatch.getTime(TimeUnit.SECONDS));
+            //uiAdapter.updateTime(stopWatch.getTime(TimeUnit.SECONDS));
 
         }
         isSettingAvailable = true;
