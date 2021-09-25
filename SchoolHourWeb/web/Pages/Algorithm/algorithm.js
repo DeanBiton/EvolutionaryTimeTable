@@ -5,7 +5,6 @@ const ALGORITHM_END_CONDITIONS_URL = buildUrlWithContextPath("Algorithm/algorith
 let END_TIME;
 let END_GEN;
 let END_FITNESS;
-var algorithmFunction;
 const DO_NOT_SHOW=-1;
 
 let progressBarGen ;
