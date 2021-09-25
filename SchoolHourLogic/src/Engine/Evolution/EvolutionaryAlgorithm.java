@@ -102,7 +102,7 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
                 generation.get(0).fitness();
             }
 
-             endConditionGetterClass.update(currentGeneration,eaData.getBestSolution().fitness(),(int)stopWatch.getTime(TimeUnit.MINUTES));
+             endConditionGetterClass.update(currentGeneration,eaData.getBestSolution().fitness(),stopWatch.getTime(TimeUnit.SECONDS));
             EndConditionIsMet= eaData.getEndConditionAlgorithm().stream().anyMatch(t-> t.checkCondition(endConditionGetterClass));
             //uiAdapter.updateTime(stopWatch.getTime(TimeUnit.SECONDS));
 

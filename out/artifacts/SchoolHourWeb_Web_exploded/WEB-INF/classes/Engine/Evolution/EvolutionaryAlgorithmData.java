@@ -31,7 +31,7 @@ public class EvolutionaryAlgorithmData implements Serializable {
         this.mutations = mutations;
         initialPopulation = 10; // ettEvolutionEngine.getETTInitialPopulation().getSize();
         selection = new Truncation(10, 20); // ETTgetSelection(ettEvolutionEngine);
-        crossover = new AspectOriented(0, AspectOriented.OrientationType.TEACHER); // ETTgetCrossover(ettEvolutionEngine.getETTCrossover());
+        crossover = new AspectOriented(10, AspectOriented.OrientationType.TEACHER); // ETTgetCrossover(ettEvolutionEngine.getETTCrossover());
         this.endCondition = new ArrayList<>();
         this.endCondition.add(new NumberOfGenerations(100));
         bestSolution = null;

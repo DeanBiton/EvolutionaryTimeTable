@@ -276,7 +276,7 @@ public class SchoolHourSystem {
         {
             List<EndCondition> endConditions = InputsFromUser.getEndConditions();
             int printEveryThisNumberOfGenerations = InputsFromUser.getPositiveInput("In how many generations would you like the information to be represented?", Integer.class);
-            manager.runEvolutionaryAlgorithm(endConditions, printEveryThisNumberOfGenerations, null);
+          //  manager.runEvolutionaryAlgorithm(endConditions, printEveryThisNumberOfGenerations, null);
         }
     }
 

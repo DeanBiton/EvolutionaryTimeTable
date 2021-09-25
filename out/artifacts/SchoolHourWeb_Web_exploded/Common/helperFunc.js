@@ -44,6 +44,9 @@ function generateaRefs(elements,div) {
 
     }
 }
+
+const  idParam="?id="+new URLSearchParams(window.location.search).get("id");
+
 function createTopNav()
 {
     let div = document.getElementById("topnav");
@@ -55,8 +58,6 @@ function createTopNav()
     let schoolDataLink = document.getElementById("schoolDataLink");
     let algorithmLink = document.getElementById("algorithmLink");
     let settingsLink = document.getElementById("settingsLink");
-
-    const  idParam="?id="+new URLSearchParams(window.location.search).get("id");
 
     algorithmLink.href="algorithm.html" + idParam
     algorithmLink.innerText = "Algorithm";

@@ -18,7 +18,7 @@ public class ByTime implements EndCondition{
 
     @Override
     public boolean checkCondition(EndConditionGetterClass endConditionGetterClass) {
-        if(minutes>endConditionGetterClass.getTime())
+        if(minutes*60>endConditionGetterClass.getTime())
             return false;
         else
             return true;
