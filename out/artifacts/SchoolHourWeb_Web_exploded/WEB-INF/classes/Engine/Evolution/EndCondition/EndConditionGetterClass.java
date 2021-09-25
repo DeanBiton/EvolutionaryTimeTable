@@ -4,13 +4,13 @@ package Engine.Evolution.EndCondition;
 public class EndConditionGetterClass {
     private int NumberOfGenerations;
     private double fitness;
-    private double time;
-    public EndConditionGetterClass(int numberOfGenerations, double fitness,double time) {
+    private int time;
+    public EndConditionGetterClass(int numberOfGenerations, double fitness,int time) {
         NumberOfGenerations = numberOfGenerations;
         this.fitness = fitness;
         this.time=time;
     }
-    public void update(int numberOfGenerations, double fitness,double time)
+    public void update(int numberOfGenerations, double fitness,int time)
     {
         NumberOfGenerations = numberOfGenerations;
         this.fitness = fitness;
@@ -25,7 +25,7 @@ public class EndConditionGetterClass {
         return fitness;
     }
 
-    public double getTime(){return time;}
+    public int getTime(){return time;}
 
 
 }

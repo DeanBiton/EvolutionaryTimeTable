@@ -55,6 +55,7 @@ function updateProgress(status)
     progressBarGen.style.width=gen;
     progressBarGen.innerText=gen;
 
+    console.log((status.dtoAlgorithmContidions.time/(END_TIME*60)));
     let time=((status.dtoAlgorithmContidions.time/(END_TIME*60))*100).toFixed(2)+percent;
     progressBarTime.style.width=time;
     progressBarTime.innerText=time;
