@@ -4,6 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>users logged in</title>
     <script src="../../Common/jquery-3.6.0.min.js"></script>
+    <script src="../../Common/helperFunc.js"></script>
     <script src="../../Common/context-path-helper.js"></script>
     <script src="user.js"></script>
     <!--<link rel="stylesheet" href="../../common/bootstrap.min.css">
@@ -11,22 +12,17 @@
 </head>
 
 <body>
-<div id="welcome"></div>
-<div class="input">
-
-    <!-- place holder to show the users list -->
-    <ul id="userslist">
-    </ul>
-
+<div id="topDiv">
+    <h4 id="welcome"></h4>
+    <div class="input">
+        <label>users online:</label>
+        <!-- place holder to show the users list -->
+        <ul id="userslist">
+        </ul>
+    </div>
 </div>
-
-
 <div >
-
-    <!-- place holder to show the problems list -->
-    <ul id="problemsList">
-    </ul>
-
+    <table id="problemsTable" class="rtable cancelScrollPane"></table>
 </div>
 
 <form id="uploadForm" action="UploadXmlServlet"
