@@ -16,10 +16,9 @@ public class TimeTableProblem {
     private int id;
     private ETTDescriptor descriptor;
     private SchoolHourManager schoolHourManager;
-    private int numberOfTriedUsers=0;
     private String uploadUser;
-    private double maxFitness;
     private Map<String,SchoolHourManager> user2manager;
+    private double fitness = 0;
 
     public Map<String, SchoolHourManager> getUser2manager() {
         return Collections.unmodifiableMap(user2manager);
@@ -60,7 +59,7 @@ public class TimeTableProblem {
     }
 
     public int getNumberOfTriedUsers() {
-        return numberOfTriedUsers;
+        return user2manager.size();
     }
 
     public String getUploadUser() {
@@ -68,6 +67,27 @@ public class TimeTableProblem {
     }
 
     public double getMaxFitness() {
-        return maxFitness;
+        double maxFitness = 0;
+
+        if(user2manager.size() != 0)
+        {
+            maxFitness = user2manager.values().stream().
+                    mapToDouble(manager -> {
+                        double fitness = 0;
+
+                        try {
+                            fitness = manager.getBestSolution().getFitness();
+                        }
+                        catch (Exception exception){}
+
+                        return fitness;
+                    }).
+                    max().getAsDouble();
+        }
+
+        if(maxFitness > fitness)
+            fitness = maxFitness;
+
+        return fitness;
     }
 }
