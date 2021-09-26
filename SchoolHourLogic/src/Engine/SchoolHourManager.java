@@ -27,6 +27,7 @@ public class SchoolHourManager {
     private boolean xmlFileLoadedSuccessfully = false;
     private boolean isSuspended= false;
     private Boolean evolutionaryAlgorithmRunned = false;
+    private algorithmStatus status = algorithmStatus.STOPPED;
 
     public void LoadXML(String XMLPath) throws Exception {
         File xmlFile = getXMLFile(XMLPath);
@@ -166,10 +167,14 @@ public class SchoolHourManager {
             {
                 evolutionaryAlgorithmRunned = true;
             }
+            synchronized (status)
+            {
+                status = algorithmStatus.STOPPED;
+            }
         }
                 ,"EvolutionaryAlgorithm");
         currentThread.start();
-
+        status = algorithmStatus.RUNNING;
     }
 
     public DTOTupleGroupWithFitnessDetails getBestSolution()
@@ -211,6 +216,7 @@ public class SchoolHourManager {
                 try {
                     currentThread.join();
                     isSuspended = false;
+                    status = algorithmStatus.STOPPED;
                 } catch (InterruptedException e) {}
             }
         }
@@ -223,13 +229,17 @@ public class SchoolHourManager {
 
                 schoolHourEvolutionaryAlgorithm.suspend();
                 isSuspended=true;
+                status = algorithmStatus.PAUSED;
             }
         }
     }
 
     public void resume() {
         if(isSuspended)
+        {
             schoolHourEvolutionaryAlgorithm.resume();
+            status = algorithmStatus.RUNNING;
+        }
 
         isSuspended = false;
     }
@@ -344,6 +354,15 @@ public class SchoolHourManager {
     public void setEndConditions(List<EndCondition> endConditions)
     {
         schoolHourEvolutionaryAlgorithm.setEndConditions(endConditions);
+    }
+
+    public enum algorithmStatus
+    {
+        RUNNING, PAUSED, STOPPED
+    }
+
+    public algorithmStatus getAlgorithmStatus() {
+        return status;
     }
 }
 
