@@ -2,15 +2,11 @@ package Engine.Evolution;
 
 import Engine.Evolution.EndCondition.NumberOfGenerations;
 import Engine.Evolution.MySolution.Crossover.AspectOriented;
-import Engine.Evolution.Selection.RouletteWheel;
 import Engine.Evolution.Selection.Truncation;
-import Engine.ShowException;
 import Engine.Evolution.EndCondition.EndCondition;
 import Engine.Evolution.MySolution.Crossover.Crossover;
-import Engine.Evolution.MySolution.Crossover.CrossoverSelector;
 import Engine.Evolution.MySolution.MyMutation.Mutation;
 import Engine.Evolution.Selection.Selection;
-import Engine.Evolution.Selection.SelectionSelector;
 import javafx.util.Pair;
 
 import java.io.Serializable;
@@ -26,15 +22,17 @@ public class EvolutionaryAlgorithmData implements Serializable {
     private List<Pair<Integer, Double>> everyGenAndItsBestSolution;
     private List<EndCondition> endCondition;
     private List<Mutation> mutations;
+    private Integer showEveryGeneration;
 
     public EvolutionaryAlgorithmData(List<Mutation> mutations) {
         this.mutations = mutations;
-        initialPopulation = 10; // ettEvolutionEngine.getETTInitialPopulation().getSize();
-        selection = new Truncation(10, 20); // ETTgetSelection(ettEvolutionEngine);
+        initialPopulation = 100; // ettEvolutionEngine.getETTInitialPopulation().getSize();
+        selection = new Truncation(10, 2); // ETTgetSelection(ettEvolutionEngine);
         crossover = new AspectOriented(10, AspectOriented.OrientationType.TEACHER); // ETTgetCrossover(ettEvolutionEngine.getETTCrossover());
         this.endCondition = new ArrayList<>();
-        this.endCondition.add(new NumberOfGenerations(100));
+        this.endCondition.add(new NumberOfGenerations(1000));
         bestSolution = null;
+        showEveryGeneration = 100;
     }
 
     /*
@@ -130,5 +128,15 @@ public class EvolutionaryAlgorithmData implements Serializable {
     public void setMutations(List<Mutation> mutations) {
         this.mutations.clear();
         this.mutations.addAll(mutations);
+    }
+
+    public Integer getShowEveryGeneration() {
+        return showEveryGeneration;
+    }
+
+    public void setShowEveryGeneration(Integer showEveryGeneration) {
+        if(showEveryGeneration < 0)
+            throw new RuntimeException("Show Every Generation must be non-negative");
+        this.showEveryGeneration = showEveryGeneration;
     }
 }
