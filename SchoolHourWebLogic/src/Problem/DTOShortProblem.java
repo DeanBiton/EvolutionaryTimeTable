@@ -29,6 +29,7 @@ public class DTOShortProblem {
         this.NumberOfSubjects=DTOschoolHourData.getSubjects().size();
         this.NumberOfHardRules= (int) DTOschoolHourData.getRules().stream().filter(r->r.getImplementationLevel().equals(Rule.RuleImplementationLevel.Hard)).count();
         this.NumberOfSoftRules=DTOschoolHourData.getRules().size()-this.NumberOfHardRules;
+        this.numberOfTriedUsers=timeTableProblem.getNumberOfTriedUsers();
 
     }
 }
