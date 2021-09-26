@@ -14,6 +14,21 @@ let progressBarGenWrapper;
 let progressBarTimeWrapper;
 let progressBarFitnessWrapper;
 
+let runButton;
+let pauseResumeButton;
+let stopButton;
+
+function setButtonsAccessibility(algorithmStatus)
+{
+    runButton.disabled = algorithmStatus !== "STOPPED";
+    pauseResumeButton.disabled = algorithmStatus === "STOPPED";
+    stopButton.disabled = algorithmStatus === "STOPPED";
+
+    if(algorithmStatus === "STOPPED")
+    {
+        pauseResumeButton.innerText = "Pause";
+    }
+}
 
 function createConsts()
 {
@@ -24,7 +39,11 @@ function createConsts()
 
      progressBarGenWrapper = document.getElementById("progressBarGenWrapper");
      progressBarTimeWrapper = document.getElementById("progressBarTimeWrapper");
-     progressBarFitnessWrapper = document.getElementById("progressBarFitnessWrapper")
+     progressBarFitnessWrapper = document.getElementById("progressBarFitnessWrapper");
+
+    runButton = document.getElementById("runButton");
+    pauseResumeButton = document.getElementById("pauseResumeButton");
+    stopButton = document.getElementById("stopButton");
 }
 
 function submitAlgorithmFunction(button)
@@ -69,6 +88,7 @@ function getAlgorithmStatus() {
         url: ALGORITHM_STATUS_URL+idParam,
         success: function(status) {
             updateProgress(status);
+            setButtonsAccessibility(status.algorithmStatus);
         }
     });
 }
@@ -99,8 +119,26 @@ function getEndConditions() {
     });
 }
 
+function pauseResumeClicked()
+{
+    pauseResumeButton.onclick = function()  {
+        submitAlgorithmFunction(this);
+
+        if(pauseResumeButton.innerText === "Resume")
+            pauseResumeButton.innerText = "Pause";
+        else
+            pauseResumeButton.innerText = "Resume";
+    }
+}
+
+function addListeners()
+{
+    pauseResumeClicked();
+}
+
 $(function() {
     createConsts();
+    addListeners();
     createTopNav();
     getEndConditions();
     setInterval(getAlgorithmStatus, 200);
