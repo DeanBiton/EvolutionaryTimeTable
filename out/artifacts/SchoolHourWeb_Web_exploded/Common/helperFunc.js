@@ -73,3 +73,16 @@ function createTopNav()
 }
 
 
+
+function createTable(id)
+{
+    const table = document.getElementById("id");
+    let thead = document.createElement("thead");
+    let tbody = document.createElement("tbody");
+    //let tr = document.createElement("tr");
+
+    table.appendChild(thead);
+    table.appendChild(tbody);
+
+}
+

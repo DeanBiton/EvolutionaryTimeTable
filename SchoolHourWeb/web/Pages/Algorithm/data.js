@@ -23,8 +23,8 @@ function createTimeTable(data) {
     ];
     let headers= Object.keys(timeData[0]);
     let timetable = document.getElementById("attributesContent");
-    generateTableHead(timetable, headers);
     generateTable(timetable, timeData);
+    generateTableHead(timetable, headers);
 
 }
 
@@ -54,8 +54,9 @@ function createTeachersTable(data) {
 
     let headers= Object.keys(teachersData[0]);
     let teachersTable = document.getElementById("teachersContent");
-    generateTableHead(teachersTable, headers);
     generateTable(teachersTable, teachersData);
+    generateTableHead(teachersTable, headers);
+
 }
 
 function createSubjectsTable(subjects) {
@@ -72,8 +73,9 @@ function createSubjectsTable(subjects) {
 
     let headers= Object.keys(subjectsData[0]);
     let subjectsTable = document.getElementById("subjectsContent");
-    generateTableHead(subjectsTable, headers);
     generateTable(subjectsTable, subjectsData);
+    generateTableHead(subjectsTable, headers);
+
 }
 
 function createClassesTable(data) {
@@ -96,8 +98,9 @@ function createClassesTable(data) {
 
     let headers= Object.keys(classesData[0]);
     let classesTable = document.getElementById("classesContent");
-    generateTableHead(classesTable, headers);
     generateTable(classesTable, classesData);
+    generateTableHead(classesTable, headers);
+
 }
 
 
@@ -114,8 +117,9 @@ function createRulesTable(ruless) {
 
     let headers= Object.keys(rulesData[0]);
     let rulesTable = document.getElementById("rulesContent");
-    generateTableHead(rulesTable, headers);
     generateTable(rulesTable, rulesData);
+    generateTableHead(rulesTable, headers);
+
 }
 
 
@@ -155,8 +159,9 @@ function createUsersProblemsTable(user2DTOManager) {
 
 
     let headers= Object.keys(usersProblemsData[0]);
-    generateTableHead(UsersProblemsTable, headers);
     generateTable(UsersProblemsTable, usersProblemsData);
+    generateTableHead(UsersProblemsTable, headers);
+
 }
 
 function getuser2DTOManager() {
