@@ -42,6 +42,7 @@ public class UpdateAlgorithmSettingsServlet extends HttpServlet {
             Map<String, String> messages = new HashMap<>();
             SchoolHourManager manager = getCurrentSchoolHourManager(request);
 
+            setShowEveryGeneration(manager, messages, request);
             setInitialPopulation(manager, messages, request.getParameter("initialPopulation"));
             setSelection(manager, messages, request);
             setCrossover(manager, messages, request);
@@ -92,6 +93,33 @@ public class UpdateAlgorithmSettingsServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private void setShowEveryGeneration(SchoolHourManager manager, Map<String, String> messages, HttpServletRequest request)
+    {
+        StringBuilder showEveryGenerationMessage = new StringBuilder();
+        boolean passToConstructor = true;
+        Integer showEveryGeneration;
+
+        showEveryGeneration = parseIntegerParameter("showEveryGeneration", showEveryGenerationMessage, request, "Show Every Generation");
+        passToConstructor = showEveryGeneration != null;
+
+        if(passToConstructor)
+        {
+            try
+            {
+                manager.setShowEveryGeneration(showEveryGeneration);
+            }
+            catch (Exception exception)
+            {
+                showEveryGenerationMessage.append(exception.getMessage());
+            }
+        }
+
+        if(showEveryGenerationMessage.length() == 0)
+            showEveryGenerationMessage.append("updated successfully");
+
+        messages.put("showEveryGeneration", showEveryGenerationMessage.toString());
+    }
 
     private void setInitialPopulation(SchoolHourManager manager, Map<String, String> messages, String initialPopulationString)
     {
