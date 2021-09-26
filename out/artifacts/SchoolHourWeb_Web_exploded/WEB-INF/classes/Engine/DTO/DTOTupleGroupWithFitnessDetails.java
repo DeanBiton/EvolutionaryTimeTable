@@ -2,10 +2,8 @@ package Engine.DTO;
 
 import Engine.Evolution.MySolution.TupleGroup;
 import Engine.Evolution.Rule;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 public class DTOTupleGroupWithFitnessDetails extends DTOTupleGroup{
 
