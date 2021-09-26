@@ -127,7 +127,8 @@ public class SchoolHourManager {
                 dtoData.getDtoMutations(),
                 DTOSelection.getDTOSelection(schoolHourEvolutionaryAlgorithm.getSelection()),
                 DTOCrossover.getDTOCrossover(schoolHourEvolutionaryAlgorithm.getCrossover()),
-                schoolHourEvolutionaryAlgorithm.getDTOAlgorithmEndConditions());
+                schoolHourEvolutionaryAlgorithm.getDTOAlgorithmEndConditions(),
+                schoolHourEvolutionaryAlgorithm.getShowEveryGeneration());
 
         return new DTODataAndAlgorithmSettings(dtoEvolutionaryAlgorithmSettings, dtoData);
     }
@@ -162,7 +163,7 @@ public class SchoolHourManager {
         }
         stopAlgorithm();
         currentThread=new Thread(() -> {
-            schoolHourEvolutionaryAlgorithm.runAlgorithm(100);
+            schoolHourEvolutionaryAlgorithm.runAlgorithm();
             synchronized (evolutionaryAlgorithmRunned)
             {
                 evolutionaryAlgorithmRunned = true;
@@ -325,6 +326,8 @@ public class SchoolHourManager {
     public String getSaveAndLoadFileEnding() {
         return saveAndLoadFileEnding;
     }
+
+    public void setShowEveryGeneration(Integer showEveryGeneration){ schoolHourEvolutionaryAlgorithm.setShowEveryGeneration(showEveryGeneration);}
 
     public void setCrossover(Crossover crossover)
     {
