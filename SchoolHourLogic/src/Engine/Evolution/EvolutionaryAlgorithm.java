@@ -33,7 +33,7 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
 
     public boolean isActivated(){ return eaData.getBestSolution()!=null;}
 
-    public void runAlgorithm (int printEveryThisNumberOfGenerations) {
+    public void runAlgorithm () {
         isSettingAvailable = false;
         LocalDateTime time1 = LocalDateTime.now();
         stopWatch.reset();
@@ -85,7 +85,7 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
                 }
             }
 
-            if(currentGeneration % printEveryThisNumberOfGenerations == 0)
+            if(currentGeneration % eaData.getShowEveryGeneration() == 0)
             {
                 synchronized (eaData.getEveryGenAndItsBestSolution())
                 {
@@ -296,5 +296,26 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
         }
 
         return new DTOAlgorithmContidions(new EndConditionGetterClass(numberOfGeneration, fitness, time));
+    }
+
+    public Integer getShowEveryGeneration() {
+        synchronized (eaData.getShowEveryGeneration())
+        {
+            return eaData.getShowEveryGeneration();
+        }
+    }
+
+    public void setShowEveryGeneration(Integer showEveryGeneration) {
+        synchronized (eaData.getShowEveryGeneration())
+        {
+            if(isSettingAvailable)
+            {
+                eaData.setShowEveryGeneration(showEveryGeneration);
+            }
+            else
+            {
+                throw new RuntimeException("can't set showEveryGeneration while the algorithm is running.");
+            }
+        }
     }
 }
