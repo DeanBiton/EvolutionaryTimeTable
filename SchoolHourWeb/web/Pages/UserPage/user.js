@@ -25,25 +25,17 @@ function refreshUsersList(users) {
 
 //problems = a list of DTOshortProblem, essentially an array of javascript types:
 
-function refreshProblemsList(problems) {
+function refreshProblemsTable(problems) {
     //clear all current users
-    var problemsList = $("#problemsList");
-
-    $(problemsList).empty();
+    let problemsTable = document.getElementById("problemsTable");
+    problemsTable.innerHTML = "";
 
     $.each(problems || [], function (index,problem){
-        let listRow = document.createElement("li");
-        listRow.appendChild(document.createTextNode(problem.uploadUser));
         let btn = document.createElement("BUTTON");
-        btn.innerText= "enter"
+        btn.innerText= "enter";
+
         $(btn).on("click", function () {
-
-          //  let formData = new FormData();
-
-            //formData.append( 'id', problem.id );
-
             $.ajax({
-               // data: {"id": problem.id},
                 method: "POST",
                 url: "/SchoolHourWeb_Web_exploded/Pages/Algorithm/enter?id="+problem.id,
                 timeout: 2000,
@@ -60,15 +52,25 @@ function refreshProblemsList(problems) {
             return false;
         })
 
+        let row = {"Uploader User": problem.uploadUser,
+            "Number of days" : problem.NumberOfDays ,
+            "Number of hours" : problem.NumberOfHours,
+            "Number of subjects" : problem.NumberOfSubjects,
+            "Number of teachers" : problem.NumberOfTeachers,
+            "Number of classrooms" : problem.NumberOfClasses,
+            "Number of hard rules" : problem.NumberOfHardRules,
+            "Number of soft rules" : problem.NumberOfSoftRules,
+            "Number of solvers" : problem.numberOfTriedUsers,
+            "Best fitness " : problem.maxFitness,
+            "Enter problem": btn};
 
-        listRow.appendChild(btn);
+        if(problemsTable.rows.length === 0)
+        {
+            let headers = Object.keys(row);
+            generateTableHead(problemsTable, headers);
+        }
 
-
-
-
-
-
-        $(listRow).appendTo(problemsList);
+        addRowToTable(problemsTable, row);
     })
 
 
@@ -90,6 +92,7 @@ function ajaxCurrentUser() {
         }
     });
 }
+
 function ajaxUsersList() {
     $.ajax({
         url: USER_LIST_URL,
@@ -99,23 +102,21 @@ function ajaxUsersList() {
     });
 }
 
-function ajaxProblemsList() {
+function ajaxProblemsTable() {
     $.ajax({
         url: PROBLEMS_LIST_URL,
         success: function(problems) {
-            refreshProblemsList(problems);
+            refreshProblemsTable(problems);
         }
     });
 }
-
-
 
 //activate the timer calls after the page is loaded
 $(function() {
     ajaxCurrentUser();
     //The users list is refreshed automatically every second
     setInterval(ajaxUsersList, refreshRate);
-    setInterval(ajaxProblemsList, refreshRate);
+    setInterval(ajaxProblemsTable, refreshRate);
 
 });
 
