@@ -7,9 +7,10 @@ import Engine.SchoolHourManager;
 public class DTOAlgorithmStatus {
 
     DTOAlgorithmContidions dtoAlgorithmContidions;
-    String algorithmStatus;
+    SchoolHourManager.algorithmStatus algorithmStatus;
 
     public DTOAlgorithmStatus(SchoolHourManager manager) {
         dtoAlgorithmContidions = manager.getAlgorithmConditions();
+        algorithmStatus = manager.getAlgorithmStatus();
     }
 }
