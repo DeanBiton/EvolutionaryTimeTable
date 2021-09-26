@@ -112,6 +112,11 @@ function addHTMLMutation()
 }
 
 // Updating settings
+function updateShowEveryGeneration(settings)
+{
+    showEveryGeneration.value = settings.showEveryGeneration;
+}
+
 function updateEndConditions(settings)
 {
     if(settings.dtoEndConditions.fitness !== -1)
@@ -190,6 +195,7 @@ function updateMutations(setting)
 function updateSettings(settings) {
     // settings is a DTOEvolutionaryAlgorithmSettings instance
     initialPopulation.value = settings.initialPopulation;
+    updateShowEveryGeneration(settings);
     updateSelection(settings);
     updateCrossover(settings);
     updateMutations(settings);
@@ -210,6 +216,7 @@ function updateMessages(messages) {
     selectionMessage.innerText = messages["selection"];
     crossoverMessage.innerText = messages["crossover"];
     endConditionsMessage.innerText = messages["endConditions"];
+    showEveryGenerationMessage.innerText = messages["showEveryGeneration"];
 }
 
 // sends update form
@@ -238,6 +245,7 @@ function getSettingsParams()
 {
     let settingsParams = new URLSearchParams();
     settingsParams.append("id", ID);
+    settingsParams.append("showEveryGeneration", showEveryGeneration.value);
     settingsParams.append("initialPopulation", initialPopulation.value);
     settingsParams.append("selection", selection.value);
     settingsParams.append("elitism", elitism.value);
@@ -345,6 +353,9 @@ const GET_SETTINGS_URL = buildUrlWithContextPath("Algorithm/getSettings");
 const UPDATE_SETTINGS_URL = buildUrlWithContextPath("Algorithm/updateSettings");
 const ID = new URLSearchParams(window.location.search).get("id");
 
+// show every generation
+const showEveryGeneration = document.getElementById("showEveryGeneration");
+const showEveryGenerationMessage = document.getElementById("showEveryGenerationMessage");
 // end conditions
 const fitnessCheckBox = document.getElementById("fitnessCheckBox");
 const fitness = document.getElementById("fitness");
