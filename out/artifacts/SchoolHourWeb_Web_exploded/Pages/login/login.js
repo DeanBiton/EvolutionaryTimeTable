@@ -1,8 +1,4 @@
-
-$(function() { // onload...do
-    login();
-});
-
+const IS_Username_Exist_URL = buildUrlWithContextPath("login/userCheck");
 
 $("#loginForm").submit(function() {
     $.ajax({
@@ -22,15 +18,32 @@ $("#loginForm").submit(function() {
     return false;
 });
 
+function isUsernameExist() {
+    $.ajax({
+        method: "POST",
+        url: IS_Username_Exist_URL,
+        timeout: 2000,
+        processData: false,
+        contentType: false,
+        error: function (errorObj) {
+            $("#fileUploadErrorDiv").text("ERROR " + errorObj.responseText)
+        },
+        success: function(redirectPath) {
+            if(redirectPath !== "")
+                myRedirect(redirectPath);
+        }
+    });
+}
+
 function login()
 {
     var IsNull= '@Session["JSESSIONID"]'!= null;
 
     console.log( IsNull);
-    if(    sessionStorage.getItem("JSESSIONID")!=null   )
+    if(sessionStorage.getItem("JSESSIONID")!=null)
     {
         document.getElementById("loginForm").submit();
-
+        $("#loginForm").submit();
     }
     /*console.log("started function login");
     $.ajax({
@@ -48,3 +61,7 @@ function login()
 
     });*/
 }
+
+$(function() { // onload...do
+    isUsernameExist();
+});

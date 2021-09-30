@@ -7,13 +7,13 @@ import java.util.*;
 
 public class DTOTupleGroupWithFitnessDetails extends DTOTupleGroup{
 
-    private Map<DTORule, Double> rulesScores;
+    private List<DTORule> rules;
     private double hardRulesAverage;
     private double softRulesAverage;
 
     public DTOTupleGroupWithFitnessDetails(TupleGroup tupleGroup, DTOSchoolHoursData schoolHoursData) {
         super(tupleGroup, schoolHoursData);
-        rulesScores = new HashMap<>();
+        rules = new ArrayList<>();
         hardRulesAverage = 0;
         softRulesAverage = 0;
         getRulesScore();
@@ -40,7 +40,7 @@ public class DTOTupleGroupWithFitnessDetails extends DTOTupleGroup{
                 SumOfSoftRulesScore += score;
             }
 
-            rulesScores.put(new DTORule(rule), score);
+            this.rules.add(new DTORule(rule, score));
         }
 
         if(numberOfHardRules > 0)
@@ -55,8 +55,8 @@ public class DTOTupleGroupWithFitnessDetails extends DTOTupleGroup{
         }
     }
 
-    public Map<DTORule, Double> getRulesScores() {
-        return rulesScores;
+    public List<DTORule> getRules() {
+        return rules;
     }
 
     public double getHardRulesAverage() {

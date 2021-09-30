@@ -134,11 +134,8 @@ $(function () {
             timeout: 2000,
             processData: false,
             contentType: false,
-            error: function (errorObj) {
-                $("#fileUploadErrorDiv").text("ERROR " + errorObj.responseText)
-            },
-            success: function (goodXmlFile) {
-                $("#fileUploadErrorDiv").text("GOOD " +goodXmlFile)
+            success: function (message) {
+                $("#fileUploadErrorDiv").text(message)
             }
         });
 

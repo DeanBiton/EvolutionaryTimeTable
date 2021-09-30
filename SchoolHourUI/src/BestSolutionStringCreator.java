@@ -149,14 +149,14 @@ public class BestSolutionStringCreator {
         stringBuilder.append(System.lineSeparator());
         stringBuilder.append("Rules and their scores:");
         stringBuilder.append(System.lineSeparator());
-        for (DTORule dtoRule : dtoTupleGroupWithFitnessDetails.getRulesScores().keySet())
+        for (DTORule dtoRule : dtoTupleGroupWithFitnessDetails.getRules())
         {
             stringBuilder.append("Rule name: ");
             stringBuilder.append(dtoRule.getRuleType().name());
             stringBuilder.append(", ");
             stringBuilder.append(dtoRule.getRuleImplementationLevel().name());
             stringBuilder.append(", Score: ");
-            stringBuilder.append(String.format("%.3f", dtoTupleGroupWithFitnessDetails.getRulesScores().get(dtoRule)));
+            stringBuilder.append(String.format("%.3f", dtoRule.getScore()));
             stringBuilder.append(System.lineSeparator());
         }
 

@@ -2,38 +2,42 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>users logged in</title>
+    <title>Evolutionary Time Table</title>
     <script src="../../Common/jquery-3.6.0.min.js"></script>
+    <script src="../../Common/helperFunc.js"></script>
     <script src="../../Common/context-path-helper.js"></script>
     <script src="user.js"></script>
+
+    <link rel="stylesheet" href="../../Common/bootstrap.css">
+    <link rel="stylesheet" href="user.css">
+
     <!--<link rel="stylesheet" href="../../common/bootstrap.min.css">
     <link rel="stylesheet" href="chatroom.css">  -->
 </head>
 
 <body>
-<div id="welcome"></div>
-<div class="input">
-
-    <!-- place holder to show the users list -->
-    <ul id="userslist">
-    </ul>
-
+<div id="topDiv">
+    <h4 id="welcome"></h4>
+    <div class="input">
+        <label>users online:</label>
+        <!-- place holder to show the users list -->
+        <ul id="userslist">
+        </ul>
+    </div>
 </div>
-
-
 <div >
-
-    <!-- place holder to show the problems list -->
-    <ul id="problemsList">
-    </ul>
-
+    <table id="problemsTable" class="rtable cancelScrollPane"></table>
 </div>
 
 <form id="uploadForm" action="UploadXmlServlet"
       enctype="multipart/form-data" method="POST">
 
     <input type="Submit" value="Upload File">
-    <input type="file" name="file1" id="fileInput">
+    <input type="file" name="file1" id="fileInput" accept="text/xml">
+
 </form>
+<div id="fileUploadErrorDiv">
+
+</div>
 </body>
 </html>

@@ -78,6 +78,8 @@ public class SchoolHourData implements Serializable {
             if(t.getETTWorkingHours() <= 0)
                 throw new ShowException("teacher id =  " + t.getId() + ", have non-positive working hours");
 
+            if(t.getETTWorkingHours() > numberOfDays * numberOfHoursInADay)
+                throw new ShowException("teacher id =  " + t.getId() + ", working hours is bigger then D*H");
 
             if (null != teachers.putIfAbsent(t.getId(), new Teacher(t.getId(), t.getETTName(), teacher_subjects, t.getETTWorkingHours())))
                 throw new ShowException("teachers with same id "+t.getId());
