@@ -22,7 +22,6 @@ public class AlgorithmControlsServlet extends HttpServlet {
         //returning JSON objects, not HTML
         response.setContentType("application/json");
         try (PrintWriter out = response.getWriter()) {
-            Gson gson = new Gson();
             SchoolHourManager manager = getCurrentSchoolHourManager(request);
             String buttonString = request.getParameter("buttonString");
             String message = "success";
@@ -49,8 +48,7 @@ public class AlgorithmControlsServlet extends HttpServlet {
                 message = exception.getMessage();
             }
 
-            String json = gson.toJson(message);
-            out.println(json);
+            out.println();
             out.flush();
         }
     }

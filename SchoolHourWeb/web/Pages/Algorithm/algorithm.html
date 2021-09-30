@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Evolutionary Time Table</title>
     <script src="../../Common/jquery-3.6.0.min.js"></script>
     <script src="../../Common/helperFunc.js"></script>
     <script src="../../Common/context-path-helper.js"></script>
 
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="../../Common/bootstrap.css">
+    <link rel="stylesheet" href="algorithm.css">
 
     <script src="algorithm.js"></script>
 
@@ -22,27 +23,36 @@
     <button id="stopButton" onclick="submitAlgorithmFunction(this)">Stop</button>
 </div>
 
-<div id="progressBarGenWrapper" style="display: none">
-    <span class="progress-title">Generation  Progress</span>
-    <div  class="progress" >
-        <div id="progressBarGen" class="progress-bar " role="progressbar" aria-valuenow=""
-             aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
+<div>
+    <span id="progressBarGenTitle" >Generations: </span><br>
+    <span id="progressBarTimeTitle" >Time: </span><br>
+    <span id="progressBarFitnessTitle">Fitness: </span><br><br>
+</div>
+
+<div id="progressBars">
+    <div id="progressBarGenWrapper">
+        <span class="progress-title"> Generations Bar: </span>
+        <div  id="genProgress" class="progress" >
+            <div id="progressBarGen" class="progress-bar " role="progressbar" aria-valuenow=""
+                 aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
+        </div>
+    </div>
+    <div id="progressBarTimeWrapper">
+        <span class="progress-title"> Time Bar: </span>
+        <div  id="timeProgress" class="progress" >
+            <div id="progressBarTime" class="progress-bar" role="progressbar" aria-valuenow=""
+                 aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
+        </div>
+    </div>
+    <div id="progressBarFitnessWrapper">
+        <span class="progress-title"> Fitness Bar: </span>
+        <div  id="fitnessProgress" class="progress" >
+            <div id="progressBarFitness" class="progress-bar" role="progressbar" aria-valuenow=""
+                 aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
+        </div>
     </div>
 </div>
-<div id="progressBarTimeWrapper" style="display: none">
-    <span class="progress-title">Time Progress</span>
-    <div  class="progress" >
-        <div id="progressBarTime" class="progress-bar" role="progressbar" aria-valuenow=""
-             aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
-    </div>
-</div>
-<div id="progressBarFitnessWrapper" style="display: none">
-    <span class="progress-title">Fitness Progress</span>
-    <div  class="progress" >
-        <div id="progressBarFitness" class="progress-bar" role="progressbar" aria-valuenow=""
-             aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
-    </div>
-</div>
+
 
 
 <button onclick="getBestSolution()">Show Best Solution</button>
@@ -71,18 +81,12 @@
         <h3>Class:</h3>
         <select id="classroomsComoBox"></select>
         <div id="ClassTableDiv"></div>
-
+        <table id="ClassroomTable"></table>
     </div>
 
     <div id="Rules" class="tabcontent">
         <table id="RulesTable"></table>
-
     </div>
-
-
-
-
 </div>
-
 </body>
 </html>

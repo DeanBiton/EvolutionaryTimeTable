@@ -24,7 +24,7 @@ public class LoginServlet extends HttpServlet {
     // ( can be fetched from request.getContextPath() ) and then the 'absolute' path from it.
     // Each method with it's pros and cons...
     private final String CHAT_ROOM_URL = "../UserPage/user.html";
-    private final String SIGN_UP_URL = "../UserPage/nothing.html";
+    private final String SIGN_UP_URL = "../login/login.html";
     private final String LOGIN_ERROR_URL = "/Pages/loginerror/login_attempt_after_error.jsp";  // must start with '/' since will be used in request dispatcher...
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

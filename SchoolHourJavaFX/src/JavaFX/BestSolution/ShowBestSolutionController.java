@@ -419,7 +419,7 @@ public class ShowBestSolutionController {
         tableView.getColumns().add(scoreColumn);
 
         List<RuleView> rulesView = new ArrayList<>();
-        presentedSolution.getRulesScores().forEach((dtoRule, score) -> rulesView.add(new RuleView(dtoRule, score)));
+        presentedSolution.getRules().forEach((dtoRule, score) -> rulesView.add(new RuleView(dtoRule, score)));
         rulesView.sort(new Comparator<RuleView>() {
             @Override
             public int compare(RuleView o1, RuleView o2) {

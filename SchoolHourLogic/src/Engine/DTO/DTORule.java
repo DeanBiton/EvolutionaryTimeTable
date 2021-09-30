@@ -9,6 +9,7 @@ public class DTORule {
     private String name;
     private Rule.RuleImplementationLevel implementationLevel;
     private String etc;
+    private Double score;
 
     public DTORule(Rule rule) {
         this.rule = rule;
@@ -25,6 +26,11 @@ public class DTORule {
         }
     }
 
+    public DTORule(Rule rule, double score)
+    {
+        this(rule);
+        this.score = score;
+    }
     public final Rule.RuleType getRuleType() {
         return rule.getType();
     }
@@ -43,6 +49,10 @@ public class DTORule {
 
     public String getEtc() {
         return etc;
+    }
+
+    public Double getScore() {
+        return score;
     }
 
     @Override

@@ -5,6 +5,7 @@ import App.Utils.ServletUtils;
 import App.Utils.SessionUtils;
 import Problem.ProblemsManager;
 import Users.UserManager;
+import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -30,6 +31,7 @@ public class UploadXmlServlet  extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (SessionUtils.isLoggedIn(request)) {
+            String message = "";
             ProblemsManager problemsManager = ServletUtils.getProblemsManager(request.getServletContext());
 
             Part filePart= request.getPart("file");
@@ -51,15 +53,17 @@ public class UploadXmlServlet  extends HttpServlet {
                         // ServerUtils.writeJson(response, new Response("file uploaded succesfully"));
                     } catch (Exception e) {
                         //   ServerUtils.writeJson(response, new Response(var9.getMessage(), xmlApi.getAllErrors()));
-                        System.out.println("exception");
-
+                        message = "Error: " + e.getMessage();
                     }
 
                 }
+
+
             }
 
             //response.sendRedirect(USER_URL);
-
+            response.getWriter().print(message);
         }
+
     }
 }
