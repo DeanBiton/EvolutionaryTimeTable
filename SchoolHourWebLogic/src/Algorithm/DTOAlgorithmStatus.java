@@ -8,9 +8,11 @@ public class DTOAlgorithmStatus {
 
     DTOAlgorithmContidions dtoAlgorithmContidions;
     SchoolHourManager.algorithmStatus algorithmStatus;
+    Double maximumFitnessFound;
 
     public DTOAlgorithmStatus(SchoolHourManager manager) {
         dtoAlgorithmContidions = manager.getAlgorithmConditions();
         algorithmStatus = manager.getAlgorithmStatus();
+        maximumFitnessFound = manager.getMaximumFitnessFound();
     }
 }
