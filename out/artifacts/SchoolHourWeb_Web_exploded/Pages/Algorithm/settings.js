@@ -82,6 +82,8 @@ function addMutationToTable(mutationType, probability, mutationParameter, flippi
         deleteMutationButton.innerText = "clicked";
         deleteMutation();
     });
+    if(disable === true)
+        deleteMutationButton.disabled = true;
 
     let row = {Mutation : mutationType, Probability : probability ,
         ETC : mutationType === "Flipping"? ("max tuples: " + mutationParameter +", flipping component: "+ flippingComponent)
@@ -192,14 +194,20 @@ function updateMutations(setting)
     }
 }
 
-function updateSettings(settings) {
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function updateSettings(settings) {
     // settings is a DTOEvolutionaryAlgorithmSettings instance
     initialPopulation.value = settings.initialPopulation;
     updateShowEveryGeneration(settings);
     updateSelection(settings);
     updateCrossover(settings);
-    updateMutations(settings);
     updateEndConditions(settings);
+    getAlgorithmStatus();
+    await sleep(700);
+    updateMutations(settings);
 }
 
 function getDTOEvolutionaryAlgorithmSettings() {
@@ -341,6 +349,43 @@ function addListeners()
     mutationType.addEventListener("change", mutationChanged);
 }
 
+// disable page
+function disablePage()
+{
+    inputs = document.getElementsByTagName('input');
+    selects = document.getElementsByTagName('select');
+    for(let input of inputs)
+        input.disabled = true;
+    for(let select of selects)
+        select.disabled = true;
+    updateButton.disabled = true;
+    addMutationButton.disabled = true;
+}
+
+function getAlgorithmStatus()
+{
+
+    $.ajax({
+        method: "POST",
+        url: ALGORITHM_STATUS_URL+idParam,
+        timeout: 2000,
+        success: function(status) {
+            if(status.algorithmStatus === "RUNNING")
+            {
+                disable = true;
+                disablePage();
+            }
+            else
+                disable = false;
+        },
+        error: function (errorObj) {
+            console.log("ERROR " + errorObj.responseText);
+        }
+    });
+    //async: false,
+
+}
+
 // on load
 $(function() { // onload...do
     addListeners();
@@ -392,6 +437,12 @@ const flippingComponentText = document.getElementById("flippingComponentText");
 const flippingComponent = document.getElementById("flippingComponent");
 const mutationMessage = document.getElementById("mutationMessage");
 const mutationsTable = document.getElementById("mutationsTable");
+const addMutationButton = document.getElementById("addMutationButton");
 
-// update form
+// update
 const form = document.getElementById("updateSettingsForm");
+const updateButton = document.getElementById("updateButton");
+
+//disable page
+let disable;
+const ALGORITHM_STATUS_URL = buildUrlWithContextPath("Algorithm/algorithmStatus");

@@ -4,6 +4,7 @@ import App.Constants.Constants;
 import App.Utils.ServletUtils;
 import App.Utils.SessionUtils;
 import Users.UserManager;
+import com.google.gson.Gson;
 //import Users.UserManager;
 
 import javax.servlet.ServletException;
@@ -37,7 +38,7 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+      //  response.setContentType("text/html;charset=UTF-8");
         String usernameFromSession = SessionUtils.getUsername(request);
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
         if (usernameFromSession == null) {
@@ -73,8 +74,16 @@ public class LoginServlet extends HttpServlet {
                         // and is relative to the web app root
                         // see this link for more details:
                         // http://timjansen.github.io/jarfiller/guide/servlet25/requestdispatcher.xhtml
-                        request.setAttribute(Constants.USER_NAME_ERROR, errorMessage);
-                        getServletContext().getRequestDispatcher(LOGIN_ERROR_URL).forward(request, response);
+                      //  request.setAttribute(Constants.USER_NAME_ERROR, errorMessage);
+                       // getServletContext().getRequestDispatcher(LOGIN_ERROR_URL).forward(request, response);
+
+
+                        response.setStatus(401);
+                        Gson gson = new Gson();
+
+                        String json = gson.toJson(errorMessage);
+                        response.getWriter().println(json);
+                        return;
                     }
                     else {
                         //add the new user to the users list
@@ -86,13 +95,13 @@ public class LoginServlet extends HttpServlet {
 
                         //redirect the request to the chat room - in order to actually change the URL
                         System.out.println("On login, request URI is: " + request.getRequestURI());
-                        response.sendRedirect(CHAT_ROOM_URL);
+                        response.getOutputStream().println(CHAT_ROOM_URL);
                     }
                 }
             }
         } else {
             //user is already logged in
-            response.sendRedirect(CHAT_ROOM_URL);
+            response.getOutputStream().println(CHAT_ROOM_URL);
         }
     }
 
