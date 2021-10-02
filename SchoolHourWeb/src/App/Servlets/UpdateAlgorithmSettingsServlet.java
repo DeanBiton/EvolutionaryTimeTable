@@ -285,23 +285,19 @@ public class UpdateAlgorithmSettingsServlet extends HttpServlet {
         String[] mutationParameters = request.getParameterValues("mutationParameter");
         String[] flippingComponents = request.getParameterValues("flippingComponent");
 
-        if(mutationTypes != null)
-        {
-            for(int mutationNumber = 0; mutationNumber < mutationTypes.length; mutationNumber++)
-            {
+        if(mutationTypes != null) {
+            for (int mutationNumber = 0; mutationNumber < mutationTypes.length; mutationNumber++) {
                 probability = Double.parseDouble(probabilities[mutationNumber]);
                 mutationParameter = Integer.parseInt(mutationParameters[mutationNumber]);
-                if(mutationTypes[mutationNumber].equals("Flipping"))
-                {
+                if (mutationTypes[mutationNumber].equals("Flipping")) {
                     flippingComponent = Flipping.FlippingComponent.valueOf(flippingComponents[mutationNumber]);
                     mutations.add(new Flipping(probability, mutationParameter, flippingComponent));
-                }
-                else
+                } else
                     mutations.add(new Sizer(probability, mutationParameter));
             }
-
-            manager.setMutations(mutations);
         }
+
+        manager.setMutations(mutations);
     }
 
     private void setEndConditions(SchoolHourManager manager, Map<String, String> messages, HttpServletRequest request)

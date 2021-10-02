@@ -1,5 +1,6 @@
 package App.Servlets;
 
+import Algorithm.DTOAlgorithmStatus;
 import App.Utils.ServletUtils;
 import Engine.DTO.DTOAlgorithmContidions;
 import Engine.DTO.DTOEvolutionaryAlgorithmSettings;
@@ -34,8 +35,8 @@ public class GetUsersRunningProblemServlet  extends HttpServlet {
             String id=request.getParameter("id");
             ProblemsManager problemsManager = ServletUtils.getProblemsManager(getServletContext());
             Map<String, SchoolHourManager> user2Manager = problemsManager.getUser2Manager(Integer.parseInt(id));
-            Map<String, DTOAlgorithmContidions> user2DTOManager =new HashMap<>();
-            user2Manager.forEach((k, v)->user2DTOManager.putIfAbsent(k,v.getAlgorithmConditions()));
+            Map<String, DTOAlgorithmStatus> user2DTOManager =new HashMap<>();
+            user2Manager.forEach((k, v)->user2DTOManager.putIfAbsent(k,new DTOAlgorithmStatus(v)));
 
 
             String json = gson.toJson(user2DTOManager);
