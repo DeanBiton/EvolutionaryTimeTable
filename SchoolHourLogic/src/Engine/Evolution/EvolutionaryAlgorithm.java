@@ -85,6 +85,9 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
                 }
             }
 
+            if(thisGenBestSolution.fitness() > eaData.getMaximumFitnessFound())
+                eaData.setMaximumFitnessFound(thisGenBestSolution.fitness());
+
             if(currentGeneration % eaData.getShowEveryGeneration() == 0)
             {
                 synchronized (eaData.getEveryGenAndItsBestSolution())
@@ -316,6 +319,13 @@ public abstract class EvolutionaryAlgorithm implements Serializable {
             {
                 throw new RuntimeException("can't set showEveryGeneration while the algorithm is running.");
             }
+        }
+    }
+
+    public Double getMaximumFitnessFound() {
+        synchronized (eaData.getMaximumFitnessFound())
+        {
+            return eaData.getMaximumFitnessFound();
         }
     }
 }
