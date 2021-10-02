@@ -31,7 +31,7 @@ public class UploadXmlServlet  extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (SessionUtils.isLoggedIn(request)) {
-            String message = "";
+            String message = "File loaded successfully";
             ProblemsManager problemsManager = ServletUtils.getProblemsManager(request.getServletContext());
 
             Part filePart= request.getPart("file");
