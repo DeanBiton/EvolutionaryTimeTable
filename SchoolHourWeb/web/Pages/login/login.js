@@ -1,22 +1,5 @@
 const IS_Username_Exist_URL = buildUrlWithContextPath("login/userCheck");
 
-$("#loginForm").submit(function() {
-    $.ajax({
-        data: $(this).serialize(),
-        url: this.action,
-        timeout: 2000,
-        error: function(errorObject) {
-            console.error("Failed to login !");
-            $("#error-placeholder").append(errorObject.responseText)
-        },
-        success: function(nextPageUrl) {
-            window.location.replace(nextPageUrl);
-        }
-    });
-
-    // by default - we'll always return false so it doesn't redirect the user.
-    return false;
-});
 
 function isUsernameExist() {
     $.ajax({
@@ -64,4 +47,24 @@ function login()
 
 $(function() { // onload...do
     isUsernameExist();
+
+    $("#loginForm").submit(function() {
+        $.ajax({
+            data: $(this).serialize(),
+            url: this.action,
+            timeout: 2000,
+
+            error: function (errorObject) {
+                console.error("Failed to login !");
+                console.log(errorObject.responseText)
+                $("#loginError").text(errorObject.responseText);
+            },
+            success: function(nextPageUrl) {
+                window.location.replace(nextPageUrl);
+            }
+        });
+
+        // by default - we'll always return false so it doesn't redirect the user.
+        return false;
+    });
 });

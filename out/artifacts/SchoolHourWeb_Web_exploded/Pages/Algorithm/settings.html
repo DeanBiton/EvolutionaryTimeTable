@@ -123,14 +123,14 @@
                     <option value="H">H</option>
                     <option value="D">D</option>
                 </select>
-                <button onclick="addHTMLMutation()">add</button>
+                <button id="addMutationButton" onclick="addHTMLMutation()">add</button>
                 <h4 id="mutationMessage"></h4>
                 <table id="mutationsTable" class="rtable cancelScrollPane"></table>
             </div>
         </div>
         <div id="update">
             <form id="updateSettingsForm" method="POST">
-                <button type="submit">Update Changes</button>
+                <button id="updateButton" type="submit">Update Changes</button>
             </form>
         </div>
     </div>
