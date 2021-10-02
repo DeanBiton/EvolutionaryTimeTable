@@ -49,7 +49,6 @@ public class TimeTableProblem {
         return user2manager.get(userName);
     }
 
-
     public SchoolHourManager getSchoolHourManager() {
         return schoolHourManager;
     }
@@ -76,7 +75,7 @@ public class TimeTableProblem {
                         double fitness = 0;
 
                         try {
-                            fitness = manager.getBestSolution().getFitness();
+                            fitness = manager.getMaximumFitnessFound();
                         }
                         catch (Exception exception){}
 
