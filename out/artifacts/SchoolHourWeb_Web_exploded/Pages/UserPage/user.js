@@ -37,7 +37,7 @@ function refreshProblemsTable(problems) {
         $(btn).on("click", function () {
             $.ajax({
                 method: "POST",
-                url: "/SchoolHourWeb_Web_exploded/Pages/Algorithm/enter?id="+problem.id,
+                url: "/EvolutionaryTimeTable/Pages/Algorithm/enter?id="+problem.id,
                 timeout: 2000,
                 processData: false,
                 contentType: false,

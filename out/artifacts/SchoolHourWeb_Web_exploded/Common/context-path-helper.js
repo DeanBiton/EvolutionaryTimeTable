@@ -17,7 +17,7 @@ function wrapBuildingURLWithContextPath() {
 }
 
 const myRedirect = function(newAbsoluteLocation) {
-    const base = window.location.origin + "/SchoolHourWeb_Web_exploded";
+    const base = window.location.origin + "/EvolutionaryTimeTable";
     window.location = base + newAbsoluteLocation;
 }
 

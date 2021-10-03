@@ -32,13 +32,11 @@ public class EnterAlgorithmServlet  extends HttpServlet {
         {
             problemsManager.getProblems().get(Integer.parseInt(id)-1).addUserManager(SessionUtils.getUsername(request)); //add manager for username
             response.getOutputStream().println("/Pages/Algorithm/settings.html?id="+Integer.parseInt(id));
-           // response.sendRedirect("/SchoolHourWeb_Web_exploded/Pages/Algorithm/settings.html");
         }
         else
         {
             response.getOutputStream().println("/Pages/Algorithm/data.html?id="+Integer.parseInt(id));
 
-         //   response.sendRedirect("/SchoolHourWeb_Web_exploded/Pages/Algorithm/data.html");
 
         }
 
