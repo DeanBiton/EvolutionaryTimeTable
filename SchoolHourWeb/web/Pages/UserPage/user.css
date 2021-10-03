@@ -16,3 +16,18 @@ th {
 table, td, th {
     border: 1px solid black;
 }
+
+
+#uploadForm{
+    margin-left: 10px;
+}
+#welcome{
+    font-size: 30px;
+    margin-left: 10px;
+}
+#topDiv{
+    margin-left: 10px;
+}
+#fileUploadErrorDiv{
+    margin-left: 10px;
+}

@@ -23,6 +23,7 @@ public class EvolutionaryAlgorithmData implements Serializable {
     private List<EndCondition> endCondition;
     private List<Mutation> mutations;
     private Integer showEveryGeneration;
+    private Double maximumFitnessFound;
 
     public EvolutionaryAlgorithmData(List<Mutation> mutations) {
         this.mutations = mutations;
@@ -33,6 +34,7 @@ public class EvolutionaryAlgorithmData implements Serializable {
         this.endCondition.add(new NumberOfGenerations(1000));
         bestSolution = null;
         showEveryGeneration = 100;
+        maximumFitnessFound = 0.0;
     }
 
     /*
@@ -138,5 +140,15 @@ public class EvolutionaryAlgorithmData implements Serializable {
         if(showEveryGeneration < 0)
             throw new RuntimeException("Show Every Generation must be non-negative");
         this.showEveryGeneration = showEveryGeneration;
+    }
+
+    public Double getMaximumFitnessFound() {
+        return maximumFitnessFound;
+    }
+
+    public void setMaximumFitnessFound(Double maximumFitnessFound) {
+        if(maximumFitnessFound < 0)
+            throw new RuntimeException("maximum Fitness must be non-negative");
+        this.maximumFitnessFound = maximumFitnessFound;
     }
 }

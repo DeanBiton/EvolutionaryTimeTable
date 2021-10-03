@@ -180,7 +180,7 @@ function updateCrossover(settings)
 
 function updateMutations(setting)
 {
-    mutationsTable.innerHTML = "";
+    mutationsTable.innerHTML = "<tbody></tbody>";
     for(let DTOFlipping of setting.dtoMutations.flippings)
     {
         addMutationToTable("Flipping", DTOFlipping.flipping.probability,
@@ -219,12 +219,24 @@ function getDTOEvolutionaryAlgorithmSettings() {
     });
 }
 
+function updatedSuccessfullyColor(message)
+{
+    if(message==="updated successfully")
+        return "green";
+    else
+        return "red";
+}
 function updateMessages(messages) {
     initialPopulationMessage.innerText = messages["initialPopulation"];
+    initialPopulationMessage.style.color=updatedSuccessfullyColor(messages["initialPopulation"]);
     selectionMessage.innerText = messages["selection"];
+    selectionMessage.style.color=updatedSuccessfullyColor(messages["selection"]);
     crossoverMessage.innerText = messages["crossover"];
+    crossoverMessage.style.color=updatedSuccessfullyColor(messages["crossover"]);
     endConditionsMessage.innerText = messages["endConditions"];
+    endConditionsMessage.style.color=updatedSuccessfullyColor(messages["endConditions"]);
     showEveryGenerationMessage.innerText = messages["showEveryGeneration"];
+    showEveryGenerationMessage.style.color=updatedSuccessfullyColor(messages["showEveryGeneration"]);
 }
 
 // sends update form

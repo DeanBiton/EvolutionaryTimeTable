@@ -10,32 +10,46 @@
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="../../Common/bootstrap.css">
     <link rel="stylesheet" href="algorithm.css">
+    <link rel="stylesheet" href="../../Common/w3.css">
 
     <script src="algorithm.js"></script>
 
 
 </head>
 <body>
-<div id="topnav"></div>
-<div id="run">
+<div id="topnav" class="w3-top">
+    <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+        <a id="userHomeLink" class="w3-bar-item w3-button">HOME</a>
+        <!-- Float links to the right. Hide them on small screens -->
+        <div class="w3-right w3-hide-small">
+            <a id="schoolDataLink" class="w3-bar-item w3-button">School Data</a>
+            <a id="algorithmLink" class="w3-bar-item w3-button">Algorithm</a>
+            <a id="settingsLink" class="w3-bar-item w3-button">Settings</a>
+        </div>
+    </div>
+</div>
+<section id="contenetSection">
+
+<div id="run" class="w3-center">
     <button id="runButton" onclick="submitAlgorithmFunction(this)">Run</button>
     <button id="pauseResumeButton" onclick="submitAlgorithmFunction(this)">Resume</button>
     <button id="stopButton" onclick="submitAlgorithmFunction(this)">Stop</button>
 </div>
-
-<div>
-    <span id="progressBarGenTitle" >Generations: </span><br>
-    <span id="progressBarTimeTitle" >Time: </span><br>
-    <span id="progressBarFitnessTitle">Fitness: </span><br><br>
+<br>
+<div class="w3-center">
+    <span id="progressBarGenTitle"  class="h3">Generations: </span><br>
+    <span id="progressBarTimeTitle" class="h3">Time: </span><br>
+    <span id="progressBarFitnessTitle" class="h3">Fitness: </span><br><br>
 </div>
 
 <div id="progressBars">
     <div id="progressBarGenWrapper">
-        <span class="progress-title"> Generations Bar: </span>
+        <span class="progress-title" > Generations Bar: </span>
         <div  id="genProgress" class="progress" >
             <div id="progressBarGen" class="progress-bar " role="progressbar" aria-valuenow=""
                  aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
         </div>
+        <br>
     </div>
     <div id="progressBarTimeWrapper">
         <span class="progress-title"> Time Bar: </span>
@@ -43,6 +57,7 @@
             <div id="progressBarTime" class="progress-bar" role="progressbar" aria-valuenow=""
                  aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
         </div>
+        <br>
     </div>
     <div id="progressBarFitnessWrapper">
         <span class="progress-title"> Fitness Bar: </span>
@@ -54,11 +69,12 @@
 </div>
 
 
+<br>
+<div id="bestSolutionDiv"  class="w3-center" style="min-height: 700px;" >
+    <button onclick="getBestSolution()" >Show Best Solution</button>
 
-<button onclick="getBestSolution()">Show Best Solution</button>
-<div id="bestSolutionDiv" style="min-height: 700px;">
     <h2 id="bestSolutionErrorLabel"></h2>
-    <div id="bestSolutionGeneralDetails">General Details</div>
+    <div id="bestSolutionGeneralDetails"></div>
 
 
     <div class="tab" id="BestSolutionTabsPanel">
@@ -68,25 +84,26 @@
         <button class="tablinks" onclick="showHideBestSolution('Rules')">Rules</button>
     </div>
     <div id="RawTab" class="tabcontent">
-        <table id="RawTable"></table>
+        <table id="RawTable" class="styled-table"></table>
     </div>
 
     <div id="Teacher" class="tabcontent">
         <h3>Teacher:</h3>
         <select id="teachersComoBox"></select>
-        <table id="TeacherTable"></table>
+        <table id="TeacherTable" class="styled-table"></table>
     </div>
 
     <div id="Class" class="tabcontent">
         <h3>Class:</h3>
         <select id="classroomsComoBox"></select>
         <div id="ClassTableDiv"></div>
-        <table id="ClassroomTable"></table>
+        <table id="ClassroomTable" class="styled-table"></table>
     </div>
 
     <div id="Rules" class="tabcontent">
-        <table id="RulesTable"></table>
+        <table id="RulesTable" class="styled-table"></table>
     </div>
 </div>
+</section>
 </body>
 </html>
