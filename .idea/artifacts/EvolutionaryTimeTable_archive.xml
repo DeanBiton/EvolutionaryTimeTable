@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="EvolutionaryTimeTable archive">
+    <output-path>$PROJECT_DIR$/out/artifacts/EvolutionaryTimeTable_archive</output-path>
+    <root id="archive" name="EvolutionaryTimeTable archive.war">
+      <element id="artifact" artifact-name="EvolutionaryTimeTable" />
+    </root>
+  </artifact>
+</component>

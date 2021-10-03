@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Evolutionary Time Table</title>
+    <script src="../../Common/jquery-3.6.0.min.js"></script>
+    <script src="../../Common/helperFunc.js"></script>
+    <script src="../../Common/context-path-helper.js"></script>
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="settings.css">
+
+    <link rel="stylesheet" href="../../Common/w3.css">
+
+</head>
+<body>
+<div id="topnav" class="w3-top">
+    <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+        <a id="userHomeLink" class="w3-bar-item w3-button">HOME</a>
+        <!-- Float links to the right. Hide them on small screens -->
+        <div class="w3-right w3-hide-small">
+            <a id="schoolDataLink" class="w3-bar-item w3-button">School Data</a>
+            <a id="algorithmLink" class="w3-bar-item w3-button">Algorithm</a>
+            <a id="settingsLink" class="w3-bar-item w3-button">Settings</a>
+        </div>
+    </div>
+</div>
+<section id="contenetSection">
+
+       <div id="showEveryGenerationDiv">
+            <h2> Show Every Generation:</h2>
+            <input type="text" id="showEveryGeneration"></input>
+            <h4 id="showEveryGenerationMessage"></h4>
+        </div>
+    <hr class="w3-border-grey" style="margin-left: 0px;width:40%">
+
+    <div id="endConditionsDiv">
+            <h2> End Conditions:</h2>
+            <table>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="fitnessCheckBox" onclick=endConditionCheckBoxClicked(id)>
+                    </td>
+                    <td>
+                        <label for="fitnessCheckBox">By Fitness</label>
+                    </td>
+                    <td>
+                        <input type="text" id="fitness" disabled=true></input>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="generationNumberCheckBox" onclick=endConditionCheckBoxClicked(id)>
+                    </td>
+                    <td>
+                        <label for="generationNumberCheckBox">By Generation number</label>
+                    </td>
+                    <td>
+                        <input type="text" id="generationNumber" disabled=true></input>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="timeCheckBox" onclick=endConditionCheckBoxClicked(id)>
+                    </td>
+                    <td>
+                        <label for="timeCheckBox">By Time (min)</label>
+                    </td>
+                    <td>
+                        <input type="text" id="time" disabled=true></input>
+                    </td>
+                </tr>
+            </table>
+            <h4 id="endConditionsMessage"></h4>
+        </div>
+    <hr class="w3-border-grey" style="margin-left: 0px;width:40%">
+
+    <div id = "initialPopulationDiv" >
+            <h2> Initial Population:</h2>
+            <input type="text" id="initialPopulation">  </input>
+            <h4 id="initialPopulationMessage"></h4>
+        </div>
+    <hr class="w3-border-grey" style="margin-left: 0px;width:40%">
+
+    <div id = "selectionDiv">
+            <div>
+                <h2>Selection:</h2>
+                <label for="Selection">selection:</label>
+                <select name="Selection" id="selection">
+                    <option value="Truncation">Truncation</option>
+                    <option value="RouletteWheel">RouletteWheel</option>
+                    <option value="Tournament">Tournament</option>
+                </select>
+                <label for="elitism">elitism:</label>
+                <input type="text" id="elitism">  </input>
+            </div>
+            <div id="selectionParameterDiv">
+                <label for="selectionParameter" id="selectionParameterText"></label>
+                <input type="text" id="selectionParameter">  </input>
+                <h4 id="selectionMessage"></h4>
+            </div>
+        </div>
+    <hr class="w3-border-grey" style="margin-left: 0px;width:40%">
+
+    <div id = "crossoverDiv">
+            <div>
+                <h2>Crossover:</h2>
+                <label for="Crossover">crossover:</label>
+                <select name="Crossover" id="crossover">
+                    <option value="DayTimeOriented">DayTimeOriented</option>
+                    <option value="AspectOriented">AspectOriented</option>
+                </select>
+                <label for="numberOfSeparators">Number of separators: </label>
+                <input type="text" id="numberOfSeparators">  </input>
+            </div>
+            <div id="orientationTypeDiv">
+                <label for="orientationType" id="orientationTypeText">Orientation type:</label>
+                <select name="Crossover" id="orientationType">
+                    <option value="TEACHER">TEACHER</option>
+                    <option value="CLASS">CLASS</option>
+                </select>
+                <h4 id="crossoverMessage"></h4>
+            </div>
+        </div>
+    <hr class="w3-border-grey" style="margin-left: 0px;width:40%">
+
+    <div id="mutationsDiv">
+            <div>
+                <h2>Mutations:</h2>
+                <label for="mutationType">Mutation type:</label>
+                <select name="Mutation" id="mutationType">
+                    <option value="Flipping">Flipping</option>
+                    <option value="Sizer">Sizer</option>
+                </select>
+
+                <label for="mutationProbability">probability: </label>
+                <input type="text" id="mutationProbability">  </input>
+            </div>
+            <div>
+                <label for="mutationParameter" id="mutationParameterText">Max tuples: </label>
+                <input type="text" id="mutationParameter">  </input>
+                <label for="flippingComponent" id="flippingComponentText">Flipping component:</label>
+                <select name="flippingComponent" id="flippingComponent">
+                    <option value="S">S</option>
+                    <option value="T">T</option>
+                    <option value="C">C</option>
+                    <option value="H">H</option>
+                    <option value="D">D</option>
+                </select>
+                <button id="addMutationButton" onclick="addHTMLMutation()">add</button>
+                <h4 id="mutationMessage"></h4>
+                <table id="mutationsTable" class="styled-table"></table>
+            </div>
+        </div>
+    <hr class="w3-border-grey" style="margin-left: 0px;width:40%">
+
+    <br>
+        <div id="update">
+            <form id="updateSettingsForm" method="POST">
+                <button id="updateButton" class="noselect" type="submit">Update Changes</button>
+            </form>
+        </div>
+    </div>
+</section>
+</body>
+
+    <script src="settings.js"></script>
+</html>
