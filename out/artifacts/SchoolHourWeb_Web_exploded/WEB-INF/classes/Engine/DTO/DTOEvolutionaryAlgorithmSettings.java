@@ -8,14 +8,18 @@ public class DTOEvolutionaryAlgorithmSettings {
     private DTOCrossover dtoCrossover;
     private DTOAlgorithmContidions dtoEndConditions;
     private Integer showEveryGeneration;
+    private Double maximumFitnessFound;
+
     public DTOEvolutionaryAlgorithmSettings(int initialPopulation, DTOMutations dtoMutations, DTOSelection dtoSelection,
-                                            DTOCrossover dtoCrossover, DTOAlgorithmContidions dtoEndConditions, Integer showEveryGeneration) {
+                                            DTOCrossover dtoCrossover, DTOAlgorithmContidions dtoEndConditions,
+                                            Integer showEveryGeneration, Double maximumFitnessFound) {
         this.initialPopulation = initialPopulation;
         this.dtoMutations = dtoMutations;
         this.dtoSelection = dtoSelection;
         this.dtoCrossover = dtoCrossover;
         this.dtoEndConditions = dtoEndConditions;
         this.showEveryGeneration = showEveryGeneration;
+        this.maximumFitnessFound = maximumFitnessFound;
     }
 
     public int getInitialPopulation() {

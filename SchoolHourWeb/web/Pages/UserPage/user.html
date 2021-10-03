@@ -10,14 +10,24 @@
 
     <link rel="stylesheet" href="../../Common/bootstrap.css">
     <link rel="stylesheet" href="user.css">
-
+    <link rel="stylesheet" href="../Algorithm/common.css">
+    <link rel="stylesheet" href="../../Common/w3.css">
     <!--<link rel="stylesheet" href="../../common/bootstrap.min.css">
     <link rel="stylesheet" href="chatroom.css">  -->
 </head>
 
 <body>
+
+<div id="topnav" class="w3-top">
+    <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+        <label id="welcome" class="w3-bar-item"></label>
+        <!-- Float links to the right. Hide them on small screens -->
+    </div>
+</div>
+
+<section id="contenetSection">
 <div id="topDiv">
-    <h4 id="welcome"></h4>
+    <br>
     <div class="input">
         <label>users online:</label>
         <!-- place holder to show the users list -->
@@ -25,10 +35,16 @@
         </ul>
     </div>
 </div>
-<div >
-    <table id="problemsTable" class="rtable cancelScrollPane"></table>
-</div>
 
+
+
+<div >
+    <hr class="w3-border-grey" tyle="margin: auto; width:40%">
+
+    <table id="problemsTable" class="styled-table"></table>
+
+</div>
+<br>
 <form id="uploadForm" action="UploadXmlServlet"
       enctype="multipart/form-data" method="POST">
 
@@ -39,5 +55,6 @@
 <div id="fileUploadErrorDiv">
 
 </div>
+</section>
 </body>
 </html>

@@ -22,7 +22,7 @@ function generateTable(table, data) {
 }
 
 function addRowToTable(table, row) {
-    let tableRow = table.insertRow();
+    let tableRow = table.getElementsByTagName('tbody')[0].insertRow();
     for (key in row) {
         let cell = tableRow.insertCell();
         let insertCell;
@@ -49,10 +49,11 @@ const  idParam="?id="+new URLSearchParams(window.location.search).get("id");
 
 function createTopNav()
 {
-    let div = document.getElementById("topnav");
-    const elements=    ["userHomeLink","schoolDataLink","algorithmLink","settingsLink"];
 
-    generateaRefs(elements,div);
+
+
+
+
 
     let userHomeLink = document.getElementById("userHomeLink");
     let schoolDataLink = document.getElementById("schoolDataLink");
@@ -60,16 +61,16 @@ function createTopNav()
     let settingsLink = document.getElementById("settingsLink");
 
     algorithmLink.href="algorithm.html" + idParam
-    algorithmLink.innerText = "Algorithm";
+ //   algorithmLink.innerText = "Algorithm";
 
     schoolDataLink.href = "data.html"+ idParam
-    schoolDataLink.innerText ="School Data";
+ //   schoolDataLink.innerText ="School Data";
 
     settingsLink.href= "settings.html"+ idParam
-    settingsLink.innerText="Settings";
+//    settingsLink.innerText="Settings";
 
     userHomeLink.href = "../UserPage/user.html";
-    userHomeLink.innerText="Home";
+ //   userHomeLink.innerText="Home";
 }
 
 

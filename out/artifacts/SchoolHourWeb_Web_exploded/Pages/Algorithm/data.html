@@ -8,44 +8,57 @@
     <script src="../../Common/context-path-helper.js"></script>
     <link rel="stylesheet" href="data.css">
     <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="../../Common/w3.css">
 
     <script src="data.js"></script>
 
 </head>
 <body>
-<div id="topnav"></div>
+
+<div id="topnav" class="w3-top">
+    <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+        <a id="userHomeLink" class="w3-bar-item w3-button">HOME</a>
+        <!-- Float links to the right. Hide them on small screens -->
+        <div class="w3-right w3-hide-small">
+            <a id="schoolDataLink" class="w3-bar-item w3-button">School Data</a>
+            <a id="algorithmLink" class="w3-bar-item w3-button">Algorithm</a>
+            <a id="settingsLink" class="w3-bar-item w3-button">Settings</a>
+        </div>
+    </div>
+</div>
+
 
 <section id="contenetSection">
     <div class="container">
 
         <div id="pageTitle">
-            <h1 id=>Time Problem View Page</h1>
+            <h1 id=>School Data</h1>
         </div>
         <div id="timeAttributes">
             <h2>Time Attributes:</h2>
-            <table id="attributesContent"></table>
+            <table id="attributesContent" class="styled-table"></table>
         </div>
         <div id="teachersDiv">
             <h2>Teachers:</h2>
-            <table id="teachersContent"></table>
+            <table id="teachersContent" class="styled-table"></table>
         </div>
         <div id="subjectsDiv">
             <h2>Subjects:</h2>
-            <table id="subjectsContent"></table>
+            <table id="subjectsContent" class="styled-table"></table>
         </div>
         <div id="classesDiv">
             <h2>Classes:</h2>
-            <table id="classesContent"></table>
+            <table id="classesContent" class="styled-table"></table>
         </div>
         <div id="rulesDiv">
             <h2>Rules:</h2>
-            <table id="rulesContent"></table>
+            <table id="rulesContent" class="styled-table"></table>
 
         </div>
 
         <div id="usersRunningProblemDiv">
-            <h1 id="usersProblemsTitle"></h1>
-            <table id="usersProblemsTable" ></table>
+            <h2>Solvers info:</h2>
+            <table id="usersProblemsTable" class="styled-table"></table>
         </div>
     </div>
 

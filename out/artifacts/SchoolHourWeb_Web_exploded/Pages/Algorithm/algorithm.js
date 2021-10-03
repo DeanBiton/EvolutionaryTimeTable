@@ -196,6 +196,8 @@ function createRulesTable(bestSolution) {
 function createOptions(map, id,name)
 {
     let select = document.getElementById(id);
+    $(select).empty();
+
     for (let [key, value] of Object.entries(map))
     {
         let option = document.createElement("option");
@@ -208,6 +210,7 @@ function createOptions(map, id,name)
 
 function createTeachersTableComoBox(bestSolution)
 {
+
     createOptions(bestSolution.schoolHoursData.teachers,"teachersComoBox","teacher");
 }
 
@@ -253,7 +256,7 @@ function initializeTeacherOrClassroomTable(table)
     let header = [];
     let cornerText = "          Day\nHour ";
 
-    table.innerHTML = "";
+    table.innerHTML = "<tbody></tbody>";
     header.push(cornerText);
     for(let dayNumber = 1; dayNumber <= numberOfDays; dayNumber++)
     {
@@ -263,7 +266,7 @@ function initializeTeacherOrClassroomTable(table)
     generateTableHead(table, header);
     for(let hourNumber = 1; hourNumber <= numberOfHoursInADay; hourNumber++)
     {
-        let row = table.insertRow();
+        let row = table.getElementsByTagName('tbody')[0].insertRow();
         let cell;
         let element = document.createElement("th");
         let text = document.createTextNode(hourNumber.toString());

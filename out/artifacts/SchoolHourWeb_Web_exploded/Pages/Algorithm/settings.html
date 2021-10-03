@@ -7,19 +7,34 @@
     <script src="../../Common/helperFunc.js"></script>
     <script src="../../Common/context-path-helper.js"></script>
     <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="settings.css">
+
+    <link rel="stylesheet" href="../../Common/w3.css">
 
 </head>
 <body>
-<div id="topnav"></div>
+<div id="topnav" class="w3-top">
+    <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+        <a id="userHomeLink" class="w3-bar-item w3-button">HOME</a>
+        <!-- Float links to the right. Hide them on small screens -->
+        <div class="w3-right w3-hide-small">
+            <a id="schoolDataLink" class="w3-bar-item w3-button">School Data</a>
+            <a id="algorithmLink" class="w3-bar-item w3-button">Algorithm</a>
+            <a id="settingsLink" class="w3-bar-item w3-button">Settings</a>
+        </div>
+    </div>
+</div>
+<section id="contenetSection">
 
-    <div id="mainDiv">
-        <div id="showEveryGenerationDiv">
-            <h2> Show Every Generation</h2>
+       <div id="showEveryGenerationDiv">
+            <h2> Show Every Generation:</h2>
             <input type="text" id="showEveryGeneration"></input>
             <h4 id="showEveryGenerationMessage"></h4>
         </div>
-        <div id="endConditionsDiv">
-            <h2> End Conditions</h2>
+    <hr class="w3-border-grey" style="margin-left: 0px;width:40%">
+
+    <div id="endConditionsDiv">
+            <h2> End Conditions:</h2>
             <table>
                 <tr>
                     <td>
@@ -57,14 +72,18 @@
             </table>
             <h4 id="endConditionsMessage"></h4>
         </div>
-        <div id = "initialPopulationDiv" >
-            <h2> Initial Population </h2>
+    <hr class="w3-border-grey" style="margin-left: 0px;width:40%">
+
+    <div id = "initialPopulationDiv" >
+            <h2> Initial Population:</h2>
             <input type="text" id="initialPopulation">  </input>
             <h4 id="initialPopulationMessage"></h4>
         </div>
-        <div id = "selectionDiv">
+    <hr class="w3-border-grey" style="margin-left: 0px;width:40%">
+
+    <div id = "selectionDiv">
             <div>
-                <h2> Selection </h2>
+                <h2>Selection:</h2>
                 <label for="Selection">selection:</label>
                 <select name="Selection" id="selection">
                     <option value="Truncation">Truncation</option>
@@ -80,9 +99,11 @@
                 <h4 id="selectionMessage"></h4>
             </div>
         </div>
-        <div id = "crossoverDiv">
+    <hr class="w3-border-grey" style="margin-left: 0px;width:40%">
+
+    <div id = "crossoverDiv">
             <div>
-                <h2> Crossover </h2>
+                <h2>Crossover:</h2>
                 <label for="Crossover">crossover:</label>
                 <select name="Crossover" id="crossover">
                     <option value="DayTimeOriented">DayTimeOriented</option>
@@ -100,9 +121,11 @@
                 <h4 id="crossoverMessage"></h4>
             </div>
         </div>
-        <div id="mutationsDiv">
+    <hr class="w3-border-grey" style="margin-left: 0px;width:40%">
+
+    <div id="mutationsDiv">
             <div>
-                <h2> Mutations </h2>
+                <h2>Mutations:</h2>
                 <label for="mutationType">Mutation type:</label>
                 <select name="Mutation" id="mutationType">
                     <option value="Flipping">Flipping</option>
@@ -125,15 +148,19 @@
                 </select>
                 <button id="addMutationButton" onclick="addHTMLMutation()">add</button>
                 <h4 id="mutationMessage"></h4>
-                <table id="mutationsTable" class="rtable cancelScrollPane"></table>
+                <table id="mutationsTable" class="styled-table"></table>
             </div>
         </div>
+    <hr class="w3-border-grey" style="margin-left: 0px;width:40%">
+
+    <br>
         <div id="update">
             <form id="updateSettingsForm" method="POST">
-                <button id="updateButton" type="submit">Update Changes</button>
+                <button id="updateButton" class="noselect" type="submit">Update Changes</button>
             </form>
         </div>
     </div>
+</section>
 </body>
 
     <script src="settings.js"></script>

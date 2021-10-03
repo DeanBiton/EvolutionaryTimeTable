@@ -28,7 +28,7 @@ function refreshUsersList(users) {
 function refreshProblemsTable(problems) {
     //clear all current users
     let problemsTable = document.getElementById("problemsTable");
-    problemsTable.innerHTML = "";
+    problemsTable.innerHTML = "<tbody></tbody>";
 
     $.each(problems || [], function (index,problem){
         let btn = document.createElement("BUTTON");

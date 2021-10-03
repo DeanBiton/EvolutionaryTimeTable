@@ -2,30 +2,17 @@ var refreshRate = 200; //milli seconds
 var GET_DATA_URL = buildUrlWithContextPath("Algorithm/getData");
 var GET_USER2DTOMANAGER_URL = buildUrlWithContextPath("Algorithm/getUsersRunningProblem");
 
-
-
-
-
-//let table = document.querySelector("table");
-//let data = Object.keys(mountains[0]);
-//generateTableHead(table, data);
-//generateTable(table, mountains);
-
 function createTimeTable(data) {
     let timeData = [
         { PARAMETER: "Days", VALUE: data.numberOfDays },
         { PARAMETER: "Hours", VALUE: data.numberOfHoursInADay },
         { PARAMETER: "Hard Rules Weight", VALUE: data.hardRulesWeight },
         { PARAMETER: "Soft Rules Weight", VALUE: 100-data.hardRulesWeight },
-
-
-
     ];
     let headers= Object.keys(timeData[0]);
     let timetable = document.getElementById("attributesContent");
     generateTable(timetable, timeData);
     generateTableHead(timetable, headers);
-
 }
 
 function getSubjectName(subjects, id) {
@@ -132,9 +119,6 @@ function updateData(datas) {
     createRulesTable(datas.rules)
 }
 
-
-
-
 function getDTOSchoolHoursData() {
     $.ajax({
         url: GET_DATA_URL + "?id=" + new URLSearchParams(window.location.search).get("id"),
@@ -152,16 +136,12 @@ function createUsersProblemsTable(user2DTOManager) {
     let usersProblemsData = [];
     for (let [key, value] of Object.entries(user2DTOManager))
     {
-
-
-        usersProblemsData.push({USer:key,Fitness: value.fitness,Generation:value.NumberOfGenerations});
+        usersProblemsData.push({User:key,"Maximum Fitness Found": value.maximumFitnessFound,"Current Generation":value.dtoAlgorithmContidions.NumberOfGenerations});
     } //teachers.forEach((values,keys) => {teachersData.push({ID:values})})
-
 
     let headers= Object.keys(usersProblemsData[0]);
     generateTable(UsersProblemsTable, usersProblemsData);
     generateTableHead(UsersProblemsTable, headers);
-
 }
 
 function getuser2DTOManager() {
@@ -172,8 +152,6 @@ function getuser2DTOManager() {
         }
     });
 }
-
-
 
 //activate the timer calls after the page is loaded
 $(function() {
